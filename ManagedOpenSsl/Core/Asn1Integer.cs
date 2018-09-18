@@ -27,36 +27,35 @@ using System;
 
 namespace OpenSSL.Core
 {
-	class Asn1Integer : Base
-	{
-		internal Asn1Integer(IntPtr ptr, bool takeOwnership)
-			: base(ptr, takeOwnership)
-		{ }
+    class Asn1Integer : Base
+    {
+        internal Asn1Integer(IntPtr ptr, bool takeOwnership)
+            : base(ptr, takeOwnership)
+        { }
 
-		public Asn1Integer()
-			: base(Native.ASN1_INTEGER_new(), true)
-		{ }
+        public Asn1Integer()
+            : base(Native.ASN1_INTEGER_new(), true)
+        { }
 
-		public Asn1Integer(int value)
-			: this()
-		{
-			Value = value;
-		}
+        public Asn1Integer(int value)
+            : this()
+        {
+            Value = value;
+        }
 
-		protected override void OnDispose()
-		{
-			Native.ASN1_INTEGER_free(ptr);
-		}
+        protected override void OnDispose()
+        {
+            Native.ASN1_INTEGER_free(ptr);
+        }
 
-		public int Value
-		{
-			get { return Native.ASN1_INTEGER_get(ptr); }
-			set { Native.ExpectSuccess(Native.ASN1_INTEGER_set(ptr, value)); }
-		}
+        public int Value {
+            get { return Native.ASN1_INTEGER_get(ptr); }
+            set { Native.ExpectSuccess(Native.ASN1_INTEGER_set(ptr, value)); }
+        }
 
-		public static int ToInt32(IntPtr ptr)
-		{
-			return Native.ASN1_INTEGER_get(ptr);
-		}
-	}
+        public static int ToInt32(IntPtr ptr)
+        {
+            return Native.ASN1_INTEGER_get(ptr);
+        }
+    }
 }

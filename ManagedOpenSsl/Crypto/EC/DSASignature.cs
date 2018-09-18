@@ -29,69 +29,66 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.Crypto.EC
 {
-	/// <summary>
-	/// Wraps ECDSA_SIG_st
-	/// </summary>
-	public class DSASignature : Base
-	{
-		[StructLayout(LayoutKind.Sequential)]
-		struct ECDSA_SIG_st
-		{
-			public IntPtr r;
-			public IntPtr s;
-		}
+    /// <summary>
+    /// Wraps ECDSA_SIG_st
+    /// </summary>
+    public class DSASignature : Base
+    {
+        [StructLayout(LayoutKind.Sequential)]
+        struct ECDSA_SIG_st
+        {
+            public IntPtr r;
+            public IntPtr s;
+        }
 
-		#region Initialization
-		internal DSASignature(IntPtr ptr, bool owner)
-			: base(ptr, owner)
-		{
-		}
+        #region Initialization
+        internal DSASignature(IntPtr ptr, bool owner)
+            : base(ptr, owner)
+        {
+        }
 
-		/// <summary>
-		/// Calls ECDSA_SIG_new()
-		/// </summary>
-		public DSASignature()
-			: base(Native.ExpectNonNull(Native.ECDSA_SIG_new()), true)
-		{
-		}
-		#endregion
+        /// <summary>
+        /// Calls ECDSA_SIG_new()
+        /// </summary>
+        public DSASignature()
+            : base(Native.ExpectNonNull(Native.ECDSA_SIG_new()), true)
+        {
+        }
+        #endregion
 
-		#region Properties
-		private ECDSA_SIG_st Raw
-		{
-			get { return (ECDSA_SIG_st)Marshal.PtrToStructure(ptr, typeof(ECDSA_SIG_st)); }
-			set { Marshal.StructureToPtr(value, ptr, false); }
-		}
+        #region Properties
+        private ECDSA_SIG_st Raw {
+            get { return (ECDSA_SIG_st)Marshal.PtrToStructure(ptr, typeof(ECDSA_SIG_st)); }
+            set { Marshal.StructureToPtr(value, ptr, false); }
+        }
 
-		/// <summary>
-		/// Returns R
-		/// </summary>
-		public BigNumber R
-		{
-			get { return new BigNumber(Raw.r, false); }
-		}
+        /// <summary>
+        /// Returns R
+        /// </summary>
+        public BigNumber R {
+            get { return new BigNumber(Raw.r, false); }
+        }
 
-		/// <summary>
-		/// Returns S
-		/// </summary>
-		public BigNumber S
-		{
-			get { return new BigNumber(Raw.s, false); }
-		}
-		#endregion
+        /// <summary>
+        /// Returns S
+        /// </summary>
+        public BigNumber S {
+            get { return new BigNumber(Raw.s, false); }
+        }
+        #endregion
 
-		#region Methods
-		#endregion
+        #region Methods
+        #endregion
 
-		#region Overrides
-		/// <summary>
-		/// Calls ECDSA_SIG_free()
-		/// </summary>
-		protected override void OnDispose()
-		{
-			Native.ECDSA_SIG_free(ptr);
-		}
-		#endregion
-	}
+        #region Overrides
+        /// <summary>
+        /// Calls ECDSA_SIG_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.ECDSA_SIG_free(ptr);
+        }
+        #endregion
+    }
 }
 

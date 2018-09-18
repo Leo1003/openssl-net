@@ -29,168 +29,162 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.X509
 {
-	/// <summary>
-	/// Wraps PKCS7
-	/// </summary>
-	public class PKCS7 : Base
-	{
-		#region PKCS7 structures
-		const int NID_pkcs7_signed = 22; // from obj_mac.h
-		const int NID_pkcs7_signedAndEnveloped = 24; // from obj_mac.h
+    /// <summary>
+    /// Wraps PKCS7
+    /// </summary>
+    public class PKCS7 : Base
+    {
+        #region PKCS7 structures
+        const int NID_pkcs7_signed = 22; // from obj_mac.h
+        const int NID_pkcs7_signedAndEnveloped = 24; // from obj_mac.h
 
-		// State definitions
-		const int PKCS7_S_HEADER = 0;
-		const int PKCS7_S_BODY = 1;
-		const int PKCS7_S_TAIL = 2;
+        // State definitions
+        const int PKCS7_S_HEADER = 0;
+        const int PKCS7_S_BODY = 1;
+        const int PKCS7_S_TAIL = 2;
 
-		[StructLayout(LayoutKind.Sequential)]
-		private struct _PKCS7
-		{
-			/* The following is non NULL if it contains ASN1 encoding of
+        [StructLayout(LayoutKind.Sequential)]
+        private struct _PKCS7
+        {
+            /* The following is non NULL if it contains ASN1 encoding of
 			 * this structure */
-			public IntPtr asn1;    //unsigned char *asn1;
-			public int length;     //long length;
-			public int state;      /* used during processing */
-			public int detached;
-			public IntPtr type;    //ASN1_OBJECT *type;
-			/* content as defined by the type */
-			/* all encryption/message digests are applied to the 'contents',
-			 * leaving out the 'type' field. */
-			public IntPtr ptr;     //char *ptr;
-		}
+            public IntPtr asn1;    //unsigned char *asn1;
+            public int length;     //long length;
+            public int state;      /* used during processing */
+            public int detached;
+            public IntPtr type;    //ASN1_OBJECT *type;
+                                   /* content as defined by the type */
+                                   /* all encryption/message digests are applied to the 'contents',
+                                    * leaving out the 'type' field. */
+            public IntPtr ptr;     //char *ptr;
+        }
 
-		[StructLayout(LayoutKind.Sequential)]
-		private struct PKCS7_SIGNED
-		{
-			public IntPtr version;      //ASN1_INTEGER			*version;	/* version 1 */
-			public IntPtr md_algs;      //STACK_OF(X509_ALGOR)		*md_algs;	/* md used */
-			public IntPtr cert;         //STACK_OF(X509)			*cert;		/* [ 0 ] */
-			public IntPtr crl;          //STACK_OF(X509_CRL)		*crl;		/* [ 1 ] */
-			public IntPtr signer_info;  //STACK_OF(PKCS7_SIGNER_INFO)	*signer_info;
-			public IntPtr contents;     //struct pkcs7_st			*contents;
-		}
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PKCS7_SIGNED
+        {
+            public IntPtr version;      //ASN1_INTEGER			*version;	/* version 1 */
+            public IntPtr md_algs;      //STACK_OF(X509_ALGOR)		*md_algs;	/* md used */
+            public IntPtr cert;         //STACK_OF(X509)			*cert;		/* [ 0 ] */
+            public IntPtr crl;          //STACK_OF(X509_CRL)		*crl;		/* [ 1 ] */
+            public IntPtr signer_info;  //STACK_OF(PKCS7_SIGNER_INFO)	*signer_info;
+            public IntPtr contents;     //struct pkcs7_st			*contents;
+        }
 
-		[StructLayout(LayoutKind.Sequential)]
-		private struct PKCS7_SIGN_ENVELOPE
-		{
-			public IntPtr version;          //ASN1_INTEGER			*version;	/* version 1 */
-			public IntPtr md_algs;          //STACK_OF(X509_ALGOR)		*md_algs;	/* md used */
-			public IntPtr cert;             //STACK_OF(X509)			*cert;		/* [ 0 ] */
-			public IntPtr crl;              //STACK_OF(X509_CRL)		*crl;		/* [ 1 ] */
-			public IntPtr signer_info;      //STACK_OF(PKCS7_SIGNER_INFO)	*signer_info;
-			public IntPtr enc_data;         //PKCS7_ENC_CONTENT		*enc_data;
-			public IntPtr recipientinfo;    //STACK_OF(PKCS7_RECIP_INFO)	*recipientinfo;
-		}
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PKCS7_SIGN_ENVELOPE
+        {
+            public IntPtr version;          //ASN1_INTEGER			*version;	/* version 1 */
+            public IntPtr md_algs;          //STACK_OF(X509_ALGOR)		*md_algs;	/* md used */
+            public IntPtr cert;             //STACK_OF(X509)			*cert;		/* [ 0 ] */
+            public IntPtr crl;              //STACK_OF(X509_CRL)		*crl;		/* [ 1 ] */
+            public IntPtr signer_info;      //STACK_OF(PKCS7_SIGNER_INFO)	*signer_info;
+            public IntPtr enc_data;         //PKCS7_ENC_CONTENT		*enc_data;
+            public IntPtr recipientinfo;    //STACK_OF(PKCS7_RECIP_INFO)	*recipientinfo;
+        }
 
-		#endregion
+        #endregion
 
-		#region Initialization
+        #region Initialization
 
-		private PKCS7(IntPtr ptr)
-			: base(ptr, true)
-		{ }
+        private PKCS7(IntPtr ptr)
+            : base(ptr, true)
+        { }
 
-		/// <summary>
-		/// Calls d2i_PKCS7_bio()
-		/// </summary>
-		/// <param name="bio"></param>
-		/// <returns></returns>
-		public static PKCS7 FromDER(BIO bio)
-		{
-			return new PKCS7(Native.ExpectNonNull(Native.d2i_PKCS7_bio(bio.Handle, IntPtr.Zero)));
-		}
+        /// <summary>
+        /// Calls d2i_PKCS7_bio()
+        /// </summary>
+        /// <param name="bio"></param>
+        /// <returns></returns>
+        public static PKCS7 FromDER(BIO bio)
+        {
+            return new PKCS7(Native.ExpectNonNull(Native.d2i_PKCS7_bio(bio.Handle, IntPtr.Zero)));
+        }
 
-		/// <summary>
-		/// Calls PEM_read_bio_PKCS7()
-		/// </summary>
-		/// <param name="bio"></param>
-		/// <returns></returns>
-		public static PKCS7 FromPEM(BIO bio)
-		{
-			return new PKCS7(Native.ExpectNonNull(Native.PEM_read_bio_PKCS7(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)));
-		}
+        /// <summary>
+        /// Calls PEM_read_bio_PKCS7()
+        /// </summary>
+        /// <param name="bio"></param>
+        /// <returns></returns>
+        public static PKCS7 FromPEM(BIO bio)
+        {
+            return new PKCS7(Native.ExpectNonNull(Native.PEM_read_bio_PKCS7(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)));
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		/// <summary>
-		/// Extracts the X509Chain of certificates from the internal PKCS7 structure
-		/// </summary>
-		public X509Chain Certificates
-		{
-			get
-			{
-				if (stack == null)
-				{
-					var type = Native.OBJ_obj2nid(raw.type);
-					switch (type)
-					{
-						case NID_pkcs7_signed:
-							stack = GetStackFromSigned();
-							break;
-						case NID_pkcs7_signedAndEnveloped:
-							stack = GetStackFromSignedAndEnveloped();
-							break;
-						default:
-							throw new NotSupportedException();
-					}
-				}
+        /// <summary>
+        /// Extracts the X509Chain of certificates from the internal PKCS7 structure
+        /// </summary>
+        public X509Chain Certificates {
+            get {
+                if (stack == null) {
+                    var type = Native.OBJ_obj2nid(raw.type);
+                    switch (type) {
+                        case NID_pkcs7_signed:
+                            stack = GetStackFromSigned();
+                            break;
+                        case NID_pkcs7_signedAndEnveloped:
+                            stack = GetStackFromSignedAndEnveloped();
+                            break;
+                        default:
+                            throw new NotSupportedException();
+                    }
+                }
 
-				// Can we remove this and just use a Chain to begin with?
-				X509Chain chain = null;
-				if (stack != null)
-				{
-					chain = new X509Chain();
-					// We have a stack of certificates, build the chain object and return
-					foreach (var cert in stack)
-					{
-						chain.Add(cert);
-					}
-				}
+                // Can we remove this and just use a Chain to begin with?
+                X509Chain chain = null;
+                if (stack != null) {
+                    chain = new X509Chain();
+                    // We have a stack of certificates, build the chain object and return
+                    foreach (var cert in stack) {
+                        chain.Add(cert);
+                    }
+                }
 
-				return chain;
-			}
-		}
+                return chain;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Helpers
+        #region Helpers
 
-		private Core.Stack<X509Certificate> GetStackFromSigned()
-		{
-			var signed = (PKCS7_SIGNED)Marshal.PtrToStructure(raw.ptr, typeof(PKCS7_SIGNED));
-			return new Core.Stack<X509Certificate>(signed.cert, false);
-		}
+        private Core.Stack<X509Certificate> GetStackFromSigned()
+        {
+            var signed = (PKCS7_SIGNED)Marshal.PtrToStructure(raw.ptr, typeof(PKCS7_SIGNED));
+            return new Core.Stack<X509Certificate>(signed.cert, false);
+        }
 
-		private Core.Stack<X509Certificate> GetStackFromSignedAndEnveloped()
-		{
-			var envelope = (PKCS7_SIGN_ENVELOPE)Marshal.PtrToStructure(raw.ptr, typeof(PKCS7_SIGN_ENVELOPE));
-			return new Core.Stack<X509Certificate>(envelope.cert, false);
-		}
+        private Core.Stack<X509Certificate> GetStackFromSignedAndEnveloped()
+        {
+            var envelope = (PKCS7_SIGN_ENVELOPE)Marshal.PtrToStructure(raw.ptr, typeof(PKCS7_SIGN_ENVELOPE));
+            return new Core.Stack<X509Certificate>(envelope.cert, false);
+        }
 
-		#endregion
+        #endregion
 
-		#region Overrides
+        #region Overrides
 
-		/// <summary>
-		/// Calls PKCS7_free()
-		/// </summary>
-		protected override void OnDispose()
-		{
-			Native.PKCS7_free(ptr);
-		}
+        /// <summary>
+        /// Calls PKCS7_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.PKCS7_free(ptr);
+        }
 
-		internal override void OnNewHandle(IntPtr ptr)
-		{
-			raw = (_PKCS7)Marshal.PtrToStructure(ptr, typeof(_PKCS7));
-		}
+        internal override void OnNewHandle(IntPtr ptr)
+        {
+            raw = (_PKCS7)Marshal.PtrToStructure(ptr, typeof(_PKCS7));
+        }
 
-		#endregion
+        #endregion
 
-		#region Fields
-		private _PKCS7 raw;
-		private Core.Stack<X509Certificate> stack;
-		#endregion
-	}
+        #region Fields
+        private _PKCS7 raw;
+        private Core.Stack<X509Certificate> stack;
+        #endregion
+    }
 }

@@ -29,25 +29,25 @@ using System;
 
 namespace OpenSSL.CLI
 {
-	class CmdDH : ICommand
-	{
-		OptionParser options = new OptionParser();
-		public CmdDH()
-		{
-			options.AddOption("-inform", new Option("inform", "PEM"));
-			options.AddOption("-outform", new Option("outform", "PEM"));
-			options.AddOption("-in", new Option("infile", ""));
-			options.AddOption("-out", new Option("outfile", ""));
-			options.AddOption("-check", new Option("check", false));
-			options.AddOption("-text", new Option("text", false));
-			options.AddOption("-C", new Option("code", false));
-			options.AddOption("-noout", new Option("noout", false));
-			options.AddOption("-engine", new Option("engine", ""));
-		}
+    class CmdDH : ICommand
+    {
+        OptionParser options = new OptionParser();
+        public CmdDH()
+        {
+            options.AddOption("-inform", new Option("inform", "PEM"));
+            options.AddOption("-outform", new Option("outform", "PEM"));
+            options.AddOption("-in", new Option("infile", ""));
+            options.AddOption("-out", new Option("outfile", ""));
+            options.AddOption("-check", new Option("check", false));
+            options.AddOption("-text", new Option("text", false));
+            options.AddOption("-C", new Option("code", false));
+            options.AddOption("-noout", new Option("noout", false));
+            options.AddOption("-engine", new Option("engine", ""));
+        }
 
-		void Usage()
-		{
-			Console.Error.WriteLine(
+        void Usage()
+        {
+            Console.Error.WriteLine(
 @"dh [options] <infile >outfile
 where options are
  -inform arg   input format - one of DER | PEM
@@ -59,94 +59,82 @@ where options are
  -C            output C# code
  -noout        no output
  -engine e     use engine e, possibly a hardware device.");
-		}
+        }
 
-		#region ICommand Members
-		public void Execute(string[] args)
-		{
-			try
-			{
-				options.ParseArguments(args);
-			}
-			catch (Exception)
-			{
-				Usage();
-				return;
-			}
+        #region ICommand Members
+        public void Execute(string[] args)
+        {
+            try {
+                options.ParseArguments(args);
+            } catch (Exception) {
+                Usage();
+                return;
+            }
 
-			var infile = this.options.GetString("infile");
-			var bin = Program.GetInFile(options.GetString("infile"));
+            var infile = this.options.GetString("infile");
+            var bin = Program.GetInFile(options.GetString("infile"));
 
-			DH dh;
-			var inform = this.options["inform"] as string;
-			if (inform == "PEM")
-				dh = DH.FromParametersPEM(bin);
-			else if (inform == "DER")
-				dh = DH.FromParametersDER(bin);
-			else
-			{
-				Usage();
-				return;
-			}
-			
-			if (options.IsSet("text"))
-			{
-				Console.WriteLine(dh);
-			}
+            DH dh;
+            var inform = this.options["inform"] as string;
+            if (inform == "PEM")
+                dh = DH.FromParametersPEM(bin);
+            else if (inform == "DER")
+                dh = DH.FromParametersDER(bin);
+            else {
+                Usage();
+                return;
+            }
 
-			if (options.IsSet("check"))
-			{
-				var check = dh.Check();
-				if ((check & DH.CheckCode.NotSuitableGenerator) != 0)
-					Console.WriteLine("the g value is not a generator");
-				if ((check & DH.CheckCode.CheckP_NotPrime) != 0)
-					Console.WriteLine("p value is not prime");
-				if ((check & DH.CheckCode.CheckP_NotSafePrime) != 0)
-					Console.WriteLine("p value is not a safe prime");
-				if ((check & DH.CheckCode.UnableToCheckGenerator) != 0)
-					Console.WriteLine("unable to check the generator value");
-				if (check == 0)
-					Console.WriteLine("DH parameters appear to be ok");
-			}
+            if (options.IsSet("text")) {
+                Console.WriteLine(dh);
+            }
 
-			if (options.IsSet("code"))
-			{
-				Console.WriteLine("-code is currently not implemented.");
-			}
+            if (options.IsSet("check")) {
+                var check = dh.Check();
+                if ((check & DH.CheckCode.NotSuitableGenerator) != 0)
+                    Console.WriteLine("the g value is not a generator");
+                if ((check & DH.CheckCode.CheckP_NotPrime) != 0)
+                    Console.WriteLine("p value is not prime");
+                if ((check & DH.CheckCode.CheckP_NotSafePrime) != 0)
+                    Console.WriteLine("p value is not a safe prime");
+                if ((check & DH.CheckCode.UnableToCheckGenerator) != 0)
+                    Console.WriteLine("unable to check the generator value");
+                if (check == 0)
+                    Console.WriteLine("DH parameters appear to be ok");
+            }
 
-			if (!options.IsSet("noout"))
-			{
-				var outfile = options["outfile"] as string;
-				BIO bout;
-				var outmem = false;
+            if (options.IsSet("code")) {
+                Console.WriteLine("-code is currently not implemented.");
+            }
 
-				if (string.IsNullOrEmpty(outfile))
-				{
-					bout = BIO.MemoryBuffer();
-					outmem = true;
-				}
-				else
-					bout = BIO.File(outfile, "w");
+            if (!options.IsSet("noout")) {
+                var outfile = options["outfile"] as string;
+                BIO bout;
+                var outmem = false;
 
-				var outform = options["outform"] as string;
-				if (outform == "DER")
-					dh.WriteParametersDER(bout);
-				else if (outform == "PEM")
-					dh.WriteParametersPEM(bout);
-				else
-				{
-					Usage();
-					return;
-				}
+                if (string.IsNullOrEmpty(outfile)) {
+                    bout = BIO.MemoryBuffer();
+                    outmem = true;
+                } else
+                    bout = BIO.File(outfile, "w");
 
-				if (outmem)
-				{
-					var cout = Console.OpenStandardOutput();
-					var segment = bout.ReadBytes((int)bout.NumberWritten);
-					cout.Write(segment.Array, segment.Offset, segment.Count);
-				}
-			}
-		}
-		#endregion
-	}
+                var outform = options["outform"] as string;
+                if (outform == "DER")
+                    dh.WriteParametersDER(bout);
+                else if (outform == "PEM")
+                    dh.WriteParametersPEM(bout);
+                else {
+                    Usage();
+                    return;
+                }
+
+                if (outmem) {
+                    var cout = Console.OpenStandardOutput();
+                    var segment = bout.ReadBytes((int)bout.NumberWritten);
+                    cout.Write(segment.Array, segment.Offset, segment.Count);
+                }
+            }
+        }
+        #endregion
+    }
 }

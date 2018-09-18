@@ -29,158 +29,149 @@ using System.Collections.Generic;
 
 namespace OpenSSL.X509
 {
-	/// <summary>
-	/// Contains a chain X509_INFO objects.
-	/// </summary>
-	public class X509Chain : Core.Stack<X509Certificate>
-	{
-		#region Initialization
-		/// <summary>
-		/// Default null constructor
-		/// </summary>
-		public X509Chain() { }
+    /// <summary>
+    /// Contains a chain X509_INFO objects.
+    /// </summary>
+    public class X509Chain : Core.Stack<X509Certificate>
+    {
+        #region Initialization
+        /// <summary>
+        /// Default null constructor
+        /// </summary>
+        public X509Chain() { }
 
-		/// <summary>
-		/// Creates a chain from a BIO. Expects the stream to contain
-		/// a collection of X509_INFO objects in PEM format by calling
-		/// PEM_X509_INFO_read_bio()
-		/// </summary>
-		/// <param name="bio"></param>
-		public X509Chain(BIO bio)
-		{
-			var sk = Native.ExpectNonNull(
-				Native.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)
-			);
+        /// <summary>
+        /// Creates a chain from a BIO. Expects the stream to contain
+        /// a collection of X509_INFO objects in PEM format by calling
+        /// PEM_X509_INFO_read_bio()
+        /// </summary>
+        /// <param name="bio"></param>
+        public X509Chain(BIO bio)
+        {
+            var sk = Native.ExpectNonNull(
+                Native.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)
+            );
 
-			using (var stack = new Core.Stack<X509CertificateInfo>(sk, true))
-			{
-				while (stack.Count > 0)
-				{
-					using (var xi = stack.Shift())
-					{
-						var cert = xi.Certificate;
-						if (cert != null)
-						{
-							Add(cert);
-						}
-					}
-				}
-			}
-		}
+            using (var stack = new Core.Stack<X509CertificateInfo>(sk, true)) {
+                while (stack.Count > 0) {
+                    using (var xi = stack.Shift()) {
+                        var cert = xi.Certificate;
+                        if (cert != null) {
+                            Add(cert);
+                        }
+                    }
+                }
+            }
+        }
 
-		/// <summary>
-		/// Creates a new chain from the specified PEM-formatted string
-		/// </summary>
-		/// <param name="pem"></param>
-		public X509Chain(string pem)
-			: this(new BIO(pem))
-		{
-		}
-		#endregion
+        /// <summary>
+        /// Creates a new chain from the specified PEM-formatted string
+        /// </summary>
+        /// <param name="pem"></param>
+        public X509Chain(string pem)
+            : this(new BIO(pem))
+        {
+        }
+        #endregion
 
-		#region Methods
-		/// <summary>
-		/// Returns X509_find_by_issuer_and_serial()
-		/// </summary>
-		/// <param name="issuer"></param>
-		/// <param name="serial"></param>
-		/// <returns></returns>
-		public X509Certificate FindByIssuerAndSerial(X509Name issuer, int serial)
-		{
-			using (var asnInt = new Asn1Integer(serial))
-			{
-				var ptr = Native.X509_find_by_issuer_and_serial(this.ptr, issuer.Handle, asnInt.Handle);
+        #region Methods
+        /// <summary>
+        /// Returns X509_find_by_issuer_and_serial()
+        /// </summary>
+        /// <param name="issuer"></param>
+        /// <param name="serial"></param>
+        /// <returns></returns>
+        public X509Certificate FindByIssuerAndSerial(X509Name issuer, int serial)
+        {
+            using (var asnInt = new Asn1Integer(serial)) {
+                var ptr = Native.X509_find_by_issuer_and_serial(this.ptr, issuer.Handle, asnInt.Handle);
 
-				if (ptr == IntPtr.Zero)
-					return null;
-				
-				var cert = new X509Certificate(ptr, true);
-				
-				// Increase the reference count for the native pointer
-				cert.AddRef();
-				
-				return cert;
-			}
-		}
+                if (ptr == IntPtr.Zero)
+                    return null;
 
-		/// <summary>
-		/// Returns X509_find_by_subject()
-		/// </summary>
-		/// <param name="subject"></param>
-		/// <returns></returns>
-		public X509Certificate FindBySubject(X509Name subject)
-		{
-			var ptr = Native.X509_find_by_subject(this.ptr, subject.Handle);
+                var cert = new X509Certificate(ptr, true);
 
-			if (ptr == IntPtr.Zero)
-				return null;
-			
-			var cert = new X509Certificate(ptr, true);
-			
-			// Increase the reference count for the native pointer
-			cert.AddRef();
-			
-			return cert;
-		}
-		#endregion
-	}
+                // Increase the reference count for the native pointer
+                cert.AddRef();
 
-	/// <summary>
-	/// A List for X509Certificate types.
-	/// </summary>
-	public class X509List : List<X509Certificate>
-	{
-		#region Initialization
-		/// <summary>
-		/// Creates an empty X509List
-		/// </summary>
-		public X509List() { }
+                return cert;
+            }
+        }
 
-		/// <summary>
-		/// Calls PEM_x509_INFO_read_bio()
-		/// </summary>
-		/// <param name="bio"></param>
-		public X509List(BIO bio)
-		{
-			var sk = Native.ExpectNonNull(
-				Native.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero));
+        /// <summary>
+        /// Returns X509_find_by_subject()
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns></returns>
+        public X509Certificate FindBySubject(X509Name subject)
+        {
+            var ptr = Native.X509_find_by_subject(this.ptr, subject.Handle);
 
-			using (var stack = new Core.Stack<X509CertificateInfo>(sk, true))
-			{
-				while (stack.Count > 0)
-				{
-					using (var xi = stack.Shift())
-					{
-						if (xi.Certificate != null)
-							Add(xi.Certificate);
-					}
-				}
-			}
-		}
+            if (ptr == IntPtr.Zero)
+                return null;
 
-		/// <summary>
-		/// Populates this list from a PEM-formatted string
-		/// </summary>
-		/// <param name="pem"></param>
-		public X509List(string pem)
-			: this(new BIO(pem))
-		{
-		}
+            var cert = new X509Certificate(ptr, true);
 
-		/// <summary>
-		/// Populates this list from a DER buffer.
-		/// </summary>
-		/// <param name="der"></param>
-		public X509List(byte[] der)
-		{
-			var bio = new BIO(der);
-			
-			while (bio.NumberRead < der.Length)
-			{
-				var x509 = X509Certificate.FromDER(bio);
-				Add(x509);
-			}
-		}
-		#endregion
-	}
+            // Increase the reference count for the native pointer
+            cert.AddRef();
+
+            return cert;
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// A List for X509Certificate types.
+    /// </summary>
+    public class X509List : List<X509Certificate>
+    {
+        #region Initialization
+        /// <summary>
+        /// Creates an empty X509List
+        /// </summary>
+        public X509List() { }
+
+        /// <summary>
+        /// Calls PEM_x509_INFO_read_bio()
+        /// </summary>
+        /// <param name="bio"></param>
+        public X509List(BIO bio)
+        {
+            var sk = Native.ExpectNonNull(
+                Native.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero));
+
+            using (var stack = new Core.Stack<X509CertificateInfo>(sk, true)) {
+                while (stack.Count > 0) {
+                    using (var xi = stack.Shift()) {
+                        if (xi.Certificate != null)
+                            Add(xi.Certificate);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Populates this list from a PEM-formatted string
+        /// </summary>
+        /// <param name="pem"></param>
+        public X509List(string pem)
+            : this(new BIO(pem))
+        {
+        }
+
+        /// <summary>
+        /// Populates this list from a DER buffer.
+        /// </summary>
+        /// <param name="der"></param>
+        public X509List(byte[] der)
+        {
+            var bio = new BIO(der);
+
+            while (bio.NumberRead < der.Length) {
+                var x509 = X509Certificate.FromDER(bio);
+                Add(x509);
+            }
+        }
+        #endregion
+    }
 }

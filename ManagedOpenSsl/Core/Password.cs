@@ -29,83 +29,78 @@ using System.Text;
 
 namespace OpenSSL.Core
 {
-	/// <summary>
-	/// Callback prototype. Must return the password or prompt for one.
-	/// </summary>
-	/// <param name="verify"></param>
-	/// <param name="userdata"></param>
-	/// <returns></returns>
-	public delegate string PasswordHandler(bool verify, object userdata);
+    /// <summary>
+    /// Callback prototype. Must return the password or prompt for one.
+    /// </summary>
+    /// <param name="verify"></param>
+    /// <param name="userdata"></param>
+    /// <returns></returns>
+    public delegate string PasswordHandler(bool verify, object userdata);
 
-	/// <summary>
-	/// Simple password callback that returns the contained password.
-	/// </summary>
-	public class PasswordCallback
-	{
-		private string password;
-		/// <summary>
-		/// Constructs a PasswordCallback
-		/// </summary>
-		/// <param name="password"></param>
-		public PasswordCallback(string password)
-		{
-			this.password = password;
-		}
+    /// <summary>
+    /// Simple password callback that returns the contained password.
+    /// </summary>
+    public class PasswordCallback
+    {
+        private string password;
+        /// <summary>
+        /// Constructs a PasswordCallback
+        /// </summary>
+        /// <param name="password"></param>
+        public PasswordCallback(string password)
+        {
+            this.password = password;
+        }
 
-		/// <summary>
-		/// Suitable callback to be used as a PasswordHandler
-		/// </summary>
-		/// <param name="verify"></param>
-		/// <param name="userdata"></param>
-		/// <returns></returns>
-		public string OnPassword(bool verify, object userdata)
-		{
-			return this.password;
-		}
-	}
+        /// <summary>
+        /// Suitable callback to be used as a PasswordHandler
+        /// </summary>
+        /// <param name="verify"></param>
+        /// <param name="userdata"></param>
+        /// <returns></returns>
+        public string OnPassword(bool verify, object userdata)
+        {
+            return this.password;
+        }
+    }
 
-	internal class PasswordThunk
-	{
-		private PasswordHandler OnPassword;
-		private object arg;
+    internal class PasswordThunk
+    {
+        private PasswordHandler OnPassword;
+        private object arg;
 
-		public Native.pem_password_cb Callback
-		{
-			get
-			{
-				if (OnPassword == null)
-					return null;
+        public Native.pem_password_cb Callback {
+            get {
+                if (OnPassword == null)
+                    return null;
 
-				return OnPasswordThunk;
-			}
-		}
+                return OnPasswordThunk;
+            }
+        }
 
-		public PasswordThunk(PasswordHandler client, object arg)
-		{
-			OnPassword = client;
-			this.arg = arg;
-		}
+        public PasswordThunk(PasswordHandler client, object arg)
+        {
+            OnPassword = client;
+            this.arg = arg;
+        }
 
-		internal int OnPasswordThunk(IntPtr buf, int size, int rwflag, IntPtr userdata)
-		{
-			try
-			{
-				var ret = OnPassword(rwflag != 0, arg);
-				var pass = Encoding.ASCII.GetBytes(ret);
-				var len = pass.Length;
+        internal int OnPasswordThunk(IntPtr buf, int size, int rwflag, IntPtr userdata)
+        {
+            try {
+                var ret = OnPassword(rwflag != 0, arg);
+                var pass = Encoding.ASCII.GetBytes(ret);
+                var len = pass.Length;
 
-				if (len > size)
-					len = size;
+                if (len > size)
+                    len = size;
 
-				Marshal.Copy(pass, 0, buf, len);
+                Marshal.Copy(pass, 0, buf, len);
 
-				return len;
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-				return -1;
-			}
-		}
-	}
+                return len;
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+    }
 }

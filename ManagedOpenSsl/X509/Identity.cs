@@ -27,90 +27,87 @@ using OpenSSL.Crypto;
 
 namespace OpenSSL.X509
 {
-	/// <summary>
-	/// Simple encapsulation of a local identity.
-	/// This includes the private key and the X509Certificate.
-	/// </summary>
-	public class Identity
-	{
-		private CryptoKey key;
-		private X509Certificate cert;
+    /// <summary>
+    /// Simple encapsulation of a local identity.
+    /// This includes the private key and the X509Certificate.
+    /// </summary>
+    public class Identity
+    {
+        private CryptoKey key;
+        private X509Certificate cert;
 
-		/// <summary>
-		/// Construct an Identity with a private key
-		/// </summary>
-		/// <param name="key"></param>
-		public Identity(CryptoKey key)
-		{
-			this.key = key;
-		}
+        /// <summary>
+        /// Construct an Identity with a private key
+        /// </summary>
+        /// <param name="key"></param>
+        public Identity(CryptoKey key)
+        {
+            this.key = key;
+        }
 
-		#region Properties
+        #region Properties
 
-		/// <summary>
-		/// Returns the embedded public key of the X509Certificate
-		/// </summary>
-		public CryptoKey PublicKey
-		{
-			get { return cert.PublicKey; }
-		}
+        /// <summary>
+        /// Returns the embedded public key of the X509Certificate
+        /// </summary>
+        public CryptoKey PublicKey {
+            get { return cert.PublicKey; }
+        }
 
-		/// <summary>
-		/// Returns the private key
-		/// </summary>
-		public CryptoKey PrivateKey
-		{
-			get { return key; }
-		}
+        /// <summary>
+        /// Returns the private key
+        /// </summary>
+        public CryptoKey PrivateKey {
+            get { return key; }
+        }
 
-		/// <summary>
-		/// Returns the X509Certificate
-		/// </summary>
-		public X509Certificate Certificate
-		{
-			get { return cert; }
-		}
-		#endregion
+        /// <summary>
+        /// Returns the X509Certificate
+        /// </summary>
+        public X509Certificate Certificate {
+            get { return cert; }
+        }
+        #endregion
 
-		#region Methods
-		/// <summary>
-		/// Create a X509Request for this identity, using the specified name.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		public X509Request CreateRequest(string name)
-		{
-			return CreateRequest(name, MessageDigest.DSS1);
-		}
+        #region Methods
+        /// <summary>
+        /// Create a X509Request for this identity, using the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public X509Request CreateRequest(string name)
+        {
+            return CreateRequest(name, MessageDigest.DSS1);
+        }
 
-		/// <summary>
-		/// Create a X509Request for this identity, using the specified name and digest.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="digest"></param>
-		/// <returns></returns>
-		public X509Request CreateRequest(string name, MessageDigest digest)
-		{
-			var subject = new X509Name(name);
-			var request = new X509Request(2, subject, key);
+        /// <summary>
+        /// Create a X509Request for this identity, using the specified name and digest.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="digest"></param>
+        /// <returns></returns>
+        public X509Request CreateRequest(string name, MessageDigest digest)
+        {
+            var subject = new X509Name(name);
+            var request = new X509Request(2, subject, key);
 
-			request.Sign(key, digest);
+            request.Sign(key, digest);
 
-			return request;
-		}
+            return request;
+        }
 
-		/// <summary>
-		/// Verify that the specified chain can be trusted.
-		/// </summary>
-		/// <param name="chain"></param>
-		/// <param name="error"></param>
-		/// <returns></returns>
-		public bool VerifyResponse(X509Chain chain, out string error)
-		{
-			cert = chain[0];
-			var store = new X509Store(chain);
-			return store.Verify(cert, out error);
-		}
-		#endregion
-	}
+        /// <summary>
+        /// Verify that the specified chain can be trusted.
+        /// </summary>
+        /// <param name="chain"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        public bool VerifyResponse(X509Chain chain, out string error)
+        {
+            cert = chain[0];
+            var store = new X509Store(chain);
+            return store.Verify(cert, out error);
+        }
+        #endregion
+    }
 }

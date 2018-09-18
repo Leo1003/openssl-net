@@ -25,131 +25,122 @@
 
 using OpenSSL.Core;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Collections.Generic;
 
 namespace OpenSSL.SSL
 {
-	/// <summary>
-	/// Wraps a SSL_CIPHER
-	/// </summary>
-	public class SslCipher : BaseReference, IStackable
-	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="OpenSSL.SSL.SslCipher"/> class.
-		/// </summary>
-		public SslCipher() :
-			this(IntPtr.Zero, false)
-		{
-		}
+    /// <summary>
+    /// Wraps a SSL_CIPHER
+    /// </summary>
+    public class SslCipher : BaseReference, IStackable
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenSSL.SSL.SslCipher"/> class.
+        /// </summary>
+        public SslCipher() :
+            this(IntPtr.Zero, false)
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="OpenSSL.SSL.SslCipher"/> class.
-		/// </summary>
-		/// <param name="ptr">Ptr.</param>
-		/// <param name="owner">If set to <c>true</c> owner.</param>
-		public SslCipher(IntPtr ptr, bool owner) :
-			base(ptr, owner)
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenSSL.SSL.SslCipher"/> class.
+        /// </summary>
+        /// <param name="ptr">Ptr.</param>
+        /// <param name="owner">If set to <c>true</c> owner.</param>
+        public SslCipher(IntPtr ptr, bool owner) :
+            base(ptr, owner)
+        {
+        }
 
-		internal SslCipher(IStack stack, IntPtr ptr) :
-			base(ptr, true)
-		{
-		}
+        internal SslCipher(IStack stack, IntPtr ptr) :
+            base(ptr, true)
+        {
+        }
 
-		/// <summary>
-		/// see https://www.openssl.org/docs/apps/ciphers.html
-		/// for details about OpenSSL cipher string
-		/// </summary>
-		/// <returns>The string.</returns>
-		/// <param name="sslProtocols">SSL protocols.</param>
-		/// <param name="sslStrength">SSL strength.</param>
-		public static string MakeString(SslProtocols sslProtocols, SslStrength sslStrength)
-		{
-			var parts = new List<string>();
+        /// <summary>
+        /// see https://www.openssl.org/docs/apps/ciphers.html
+        /// for details about OpenSSL cipher string
+        /// </summary>
+        /// <returns>The string.</returns>
+        /// <param name="sslProtocols">SSL protocols.</param>
+        /// <param name="sslStrength">SSL strength.</param>
+        public static string MakeString(SslProtocols sslProtocols, SslStrength sslStrength)
+        {
+            var parts = new List<string>();
 
-			if (EnumExtensions.HasFlag(sslStrength, SslStrength.High))
-			{
-				parts.Add("HIGH");
-			}
+            if (EnumExtensions.HasFlag(sslStrength, SslStrength.High)) {
+                parts.Add("HIGH");
+            }
 
-			if (EnumExtensions.HasFlag(sslStrength, SslStrength.Medium))
-			{
-				parts.Add("MEDIUM");
-			}
+            if (EnumExtensions.HasFlag(sslStrength, SslStrength.Medium)) {
+                parts.Add("MEDIUM");
+            }
 
-			if (EnumExtensions.HasFlag(sslStrength, SslStrength.Low))
-			{
-				parts.Add("LOW");
-			}
+            if (EnumExtensions.HasFlag(sslStrength, SslStrength.Low)) {
+                parts.Add("LOW");
+            }
 
-			if ((sslProtocols == SslProtocols.Default) ||
-				(sslProtocols == SslProtocols.Tls) ||
-				(sslProtocols == SslProtocols.Ssl3))
-			{
-				parts.Add("!SSLv2");
-			}
+            if ((sslProtocols == SslProtocols.Default) ||
+                (sslProtocols == SslProtocols.Tls) ||
+                (sslProtocols == SslProtocols.Ssl3)) {
+                parts.Add("!SSLv2");
+            }
 
-			parts.Add("!ADH");
-			parts.Add("!aNULL");
-			parts.Add("!eNULL");
-			parts.Add("@STRENGTH");
+            parts.Add("!ADH");
+            parts.Add("!aNULL");
+            parts.Add("!eNULL");
+            parts.Add("@STRENGTH");
 
-			return string.Join(":", parts.ToArray());
-		}
+            return string.Join(":", parts.ToArray());
+        }
 
-		/// <summary>
-		/// Returns SSL_CIPHER_get_name()
-		/// </summary>
-		public string Name
-		{
-			get { return Native.StaticString(Native.SSL_CIPHER_get_name(Handle)); }
-		}
+        /// <summary>
+        /// Returns SSL_CIPHER_get_name()
+        /// </summary>
+        public string Name {
+            get { return Native.StaticString(Native.SSL_CIPHER_get_name(Handle)); }
+        }
 
-		/// <summary>
-		/// Returns SSL_CIPHER_description()
-		/// </summary>
-		public string Description
-		{
-			get { return Native.SSL_CIPHER_description(Handle, null, 0); }
-		}
+        /// <summary>
+        /// Returns SSL_CIPHER_description()
+        /// </summary>
+        public string Description {
+            get { return Native.SSL_CIPHER_description(Handle, null, 0); }
+        }
 
-		/// <summary>
-		/// Returns SSL_CIPHER_get_version()
-		/// </summary>
-		/// <value>The version.</value>
-		public string Version
-		{
-			get { return Native.StaticString(Native.SSL_CIPHER_get_version(Handle)); }
-		}
+        /// <summary>
+        /// Returns SSL_CIPHER_get_version()
+        /// </summary>
+        /// <value>The version.</value>
+        public string Version {
+            get { return Native.StaticString(Native.SSL_CIPHER_get_version(Handle)); }
+        }
 
-		/// <summary>
-		/// Returns SSL_CIPHER_get_bits()
-		/// </summary>
-		public int Bits
-		{
-			get
-			{
-				var alg_bits = 0;
-				return Native.SSL_CIPHER_get_bits(Handle, out alg_bits);
-			}
-		}
+        /// <summary>
+        /// Returns SSL_CIPHER_get_bits()
+        /// </summary>
+        public int Bits {
+            get {
+                var alg_bits = 0;
+                return Native.SSL_CIPHER_get_bits(Handle, out alg_bits);
+            }
+        }
 
-		internal override void AddRef()
-		{
-			// SSL_CIPHERs come from a static list in ssl_ciph.c
-			// nothing to do here
-		}
+        internal override void AddRef()
+        {
+            // SSL_CIPHERs come from a static list in ssl_ciph.c
+            // nothing to do here
+        }
 
-		/// <summary>
-		/// This method must be implemented in derived classes.
-		/// </summary>
-		protected override void OnDispose()
-		{
-			// SSL_CIPHERs come from a static list in ssl_ciph.c
-			// nothing to do here
-		}
-	}
+        /// <summary>
+        /// This method must be implemented in derived classes.
+        /// </summary>
+        protected override void OnDispose()
+        {
+            // SSL_CIPHERs come from a static list in ssl_ciph.c
+            // nothing to do here
+        }
+    }
 }

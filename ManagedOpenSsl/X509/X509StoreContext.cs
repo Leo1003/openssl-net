@@ -29,118 +29,112 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.X509
 {
-	/// <summary>
-	/// Wraps the X509_STORE_CTX object
-	/// </summary>
-	public class X509StoreContext : Base
-	{
-		#region Initialization
+    /// <summary>
+    /// Wraps the X509_STORE_CTX object
+    /// </summary>
+    public class X509StoreContext : Base
+    {
+        #region Initialization
 
-		/// <summary>
-		/// Calls X509_STORE_CTX_new()
-		/// </summary>
-		public X509StoreContext() : base(Native.ExpectNonNull(Native.X509_STORE_CTX_new()), true)
-		{
-		}
+        /// <summary>
+        /// Calls X509_STORE_CTX_new()
+        /// </summary>
+        public X509StoreContext() : base(Native.ExpectNonNull(Native.X509_STORE_CTX_new()), true)
+        {
+        }
 
-		internal X509StoreContext(IntPtr ptr, bool isOwner) : base(ptr, isOwner)
-		{
-		}
+        internal X509StoreContext(IntPtr ptr, bool isOwner) : base(ptr, isOwner)
+        {
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		/// <summary>
-		/// Returns X509_STORE_CTX_get_current_cert()
-		/// </summary>
-		public X509Certificate CurrentCert
-		{
-			get
-			{
-				var cert = Native.X509_STORE_CTX_get_current_cert(ptr);
-				return new X509Certificate(cert, false);
-			}
-		}
+        /// <summary>
+        /// Returns X509_STORE_CTX_get_current_cert()
+        /// </summary>
+        public X509Certificate CurrentCert {
+            get {
+                var cert = Native.X509_STORE_CTX_get_current_cert(ptr);
+                return new X509Certificate(cert, false);
+            }
+        }
 
-		/// <summary>
-		/// Returns X509_STORE_CTX_get_error_depth()
-		/// </summary>
-		public int ErrorDepth
-		{
-			get { return Native.X509_STORE_CTX_get_error_depth(ptr); }
-		}
+        /// <summary>
+        /// Returns X509_STORE_CTX_get_error_depth()
+        /// </summary>
+        public int ErrorDepth {
+            get { return Native.X509_STORE_CTX_get_error_depth(ptr); }
+        }
 
-		/// <summary>
-		/// Getter returns X509_STORE_CTX_get_error(), setter calls X509_STORE_CTX_set_error()
-		/// </summary>
-		public int Error
-		{
-			get { return Native.X509_STORE_CTX_get_error(ptr); }
-			set { Native.X509_STORE_CTX_set_error(ptr, value); }
-		}
+        /// <summary>
+        /// Getter returns X509_STORE_CTX_get_error(), setter calls X509_STORE_CTX_set_error()
+        /// </summary>
+        public int Error {
+            get { return Native.X509_STORE_CTX_get_error(ptr); }
+            set { Native.X509_STORE_CTX_set_error(ptr, value); }
+        }
 
-		/// <summary>
-		/// Returns an X509Store based on this context
-		/// </summary>
-		public X509Store Store
-		{
-			get { return new X509Store(Native.X509_STORE_CTX_get0_store(Handle), false); }
-		}
+        /// <summary>
+        /// Returns an X509Store based on this context
+        /// </summary>
+        public X509Store Store {
+            get { return new X509Store(Native.X509_STORE_CTX_get0_store(Handle), false); }
+        }
 
-		/// <summary>
-		/// Returns X509_verify_cert_error_string()
-		/// </summary>
-		public string ErrorString
-		{
-			get { return Native.PtrToStringAnsi(Native.X509_verify_cert_error_string(Error), false); }
-		}
+        /// <summary>
+        /// Returns X509_verify_cert_error_string()
+        /// </summary>
+        public string ErrorString {
+            get { return Native.PtrToStringAnsi(Native.X509_verify_cert_error_string(Error), false); }
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		/// <summary>
-		/// Calls X509_STORE_CTX_init()
-		/// </summary>
-		/// <param name="store"></param>
-		/// <param name="cert"></param>
-		/// <param name="uchain"></param>
-		public void Init(X509Store store, X509Certificate cert, X509Chain uchain)
-		{
-			Native.ExpectSuccess(Native.X509_STORE_CTX_init(
-				ptr,
-				store.Handle,
-				cert != null ? cert.Handle : IntPtr.Zero,
-				uchain.Handle));
-		}
+        /// <summary>
+        /// Calls X509_STORE_CTX_init()
+        /// </summary>
+        /// <param name="store"></param>
+        /// <param name="cert"></param>
+        /// <param name="uchain"></param>
+        public void Init(X509Store store, X509Certificate cert, X509Chain uchain)
+        {
+            Native.ExpectSuccess(Native.X509_STORE_CTX_init(
+                ptr,
+                store.Handle,
+                cert != null ? cert.Handle : IntPtr.Zero,
+                uchain.Handle));
+        }
 
-		/// <summary>
-		/// Returns X509_verify_cert()
-		/// </summary>
-		/// <returns></returns>
-		public bool Verify()
-		{
-			var ret = Native.X509_verify_cert(ptr);
+        /// <summary>
+        /// Returns X509_verify_cert()
+        /// </summary>
+        /// <returns></returns>
+        public bool Verify()
+        {
+            var ret = Native.X509_verify_cert(ptr);
 
-			if (ret < 0)
-				throw new OpenSslException();
+            if (ret < 0)
+                throw new OpenSslException();
 
-			return ret == 1;
-		}
+            return ret == 1;
+        }
 
-		#endregion
+        #endregion
 
-		#region Overrides
+        #region Overrides
 
-		/// <summary>
-		/// Calls X509_STORE_CTX_free()
-		/// </summary>
-		protected override void OnDispose()
-		{
-			Native.X509_STORE_CTX_free(ptr);
-		}
+        /// <summary>
+        /// Calls X509_STORE_CTX_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.X509_STORE_CTX_free(ptr);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

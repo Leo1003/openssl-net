@@ -29,455 +29,434 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.Crypto
 {
-	/// <summary>
-	/// Wraps the DSA_* functions
-	/// </summary>
-	public class DSA : BaseReference
-	{
-		#region dsa_st
+    /// <summary>
+    /// Wraps the DSA_* functions
+    /// </summary>
+    public class DSA : BaseReference
+    {
+        #region dsa_st
 
-		[StructLayout(LayoutKind.Sequential)]
-		struct dsa_st
-		{
-			public int pad;
-			// version is declared natively as long
-			// http://stackoverflow.com/questions/384502/what-is-the-bit-size-of-long-on-64-bit-windows
-			// this is an attempt to map it in a portable way:
+        [StructLayout(LayoutKind.Sequential)]
+        struct dsa_st
+        {
+            public int pad;
+            // version is declared natively as long
+            // http://stackoverflow.com/questions/384502/what-is-the-bit-size-of-long-on-64-bit-windows
+            // this is an attempt to map it in a portable way:
 #if _WIN64
 			public int version;
 #else
-			public IntPtr version;
+            public IntPtr version;
 #endif
-			public int write_params;
-			public IntPtr p;
-			public IntPtr q;	
-			public IntPtr g;
+            public int write_params;
+            public IntPtr p;
+            public IntPtr q;
+            public IntPtr g;
 
-			public IntPtr pub_key;  
-			public IntPtr priv_key; 
+            public IntPtr pub_key;
+            public IntPtr priv_key;
 
-			public IntPtr kinv;	
-			public IntPtr r;	
+            public IntPtr kinv;
+            public IntPtr r;
 
-			public int flags;
-			public IntPtr method_mont_p;
-			public int references;
-			#region CRYPTO_EX_DATA ex_data;
-			public IntPtr ex_data_sk;
-			public int ex_data_dummy;
-			#endregion
-			public IntPtr meth;
-			public IntPtr engine;
-		}
-		#endregion
+            public int flags;
+            public IntPtr method_mont_p;
+            public int references;
+            #region CRYPTO_EX_DATA ex_data;
+            public IntPtr ex_data_sk;
+            public int ex_data_dummy;
+            #endregion
+            public IntPtr meth;
+            public IntPtr engine;
+        }
+        #endregion
 
-		private const int FlagCacheMont_P = 0x01;
-		private const int FlagNoExpConstTime = 0x02;
-		private int counter = 0;
-		private IntPtr h;
-		private BigNumber.GeneratorThunk thunk = null;
+        private const int FlagCacheMont_P = 0x01;
+        private const int FlagNoExpConstTime = 0x02;
+        private int counter = 0;
+        private IntPtr h;
+        private BigNumber.GeneratorThunk thunk = null;
 
-		#region Initialization
+        #region Initialization
 
-		internal DSA(IntPtr ptr, bool owner) : base(ptr, owner) {}
+        internal DSA(IntPtr ptr, bool owner) : base(ptr, owner) { }
 
-		/// <summary>
-		/// Calls DSA_new() then DSA_generate_parameters_ex()
-		/// </summary>
-		public DSA(bool generateKeys)
-			: base(Native.ExpectNonNull(Native.DSA_new()), true)
-		{
-			Native.ExpectSuccess(Native.DSA_generate_parameters_ex(
-				ptr,
-				512,
-				null, 0,
-				out counter,
-				out h,
-				null)
-			);
+        /// <summary>
+        /// Calls DSA_new() then DSA_generate_parameters_ex()
+        /// </summary>
+        public DSA(bool generateKeys)
+            : base(Native.ExpectNonNull(Native.DSA_new()), true)
+        {
+            Native.ExpectSuccess(Native.DSA_generate_parameters_ex(
+                ptr,
+                512,
+                null, 0,
+                out counter,
+                out h,
+                null)
+            );
 
-			if (generateKeys)
-				GenerateKeys();
-		}
+            if (generateKeys)
+                GenerateKeys();
+        }
 
-		/// <summary>
-		/// Calls DSA_new() then DSA_generate_parameters_ex()
-		/// </summary>
-		/// <param name="bits"></param>
-		/// <param name="callback"></param>
-		/// <param name="arg"></param>
-		public DSA(int bits, BigNumber.GeneratorHandler callback, object arg)
-			: base(Native.ExpectNonNull(Native.DSA_new()), true)
-		{
-			thunk = new BigNumber.GeneratorThunk(callback, arg);
+        /// <summary>
+        /// Calls DSA_new() then DSA_generate_parameters_ex()
+        /// </summary>
+        /// <param name="bits"></param>
+        /// <param name="callback"></param>
+        /// <param name="arg"></param>
+        public DSA(int bits, BigNumber.GeneratorHandler callback, object arg)
+            : base(Native.ExpectNonNull(Native.DSA_new()), true)
+        {
+            thunk = new BigNumber.GeneratorThunk(callback, arg);
 
-			Native.ExpectSuccess(Native.DSA_generate_parameters_ex(
-				ptr,
-				bits,
-				null, 0,
-				out counter,
-				out h,
-				thunk.CallbackStruct)
-			);
-		}
+            Native.ExpectSuccess(Native.DSA_generate_parameters_ex(
+                ptr,
+                bits,
+                null, 0,
+                out counter,
+                out h,
+                thunk.CallbackStruct)
+            );
+        }
 
-		/// <summary>
-		/// Calls DSA_new() then DSA_generate_parameters_ex()
-		/// </summary>
-		/// <param name="bits"></param>
-		/// <param name="seed"></param>
-		/// <param name="counter"></param>
-		/// <param name="callback"></param>
-		/// <param name="arg"></param>
-		public DSA(int bits, byte[] seed, int counter, BigNumber.GeneratorHandler callback, object arg)
-			: base(Native.ExpectNonNull(Native.DSA_new()), true)
-		{
-			this.counter = counter;
-			thunk = new BigNumber.GeneratorThunk(callback, arg);
+        /// <summary>
+        /// Calls DSA_new() then DSA_generate_parameters_ex()
+        /// </summary>
+        /// <param name="bits"></param>
+        /// <param name="seed"></param>
+        /// <param name="counter"></param>
+        /// <param name="callback"></param>
+        /// <param name="arg"></param>
+        public DSA(int bits, byte[] seed, int counter, BigNumber.GeneratorHandler callback, object arg)
+            : base(Native.ExpectNonNull(Native.DSA_new()), true)
+        {
+            this.counter = counter;
+            thunk = new BigNumber.GeneratorThunk(callback, arg);
 
-			Native.ExpectSuccess(Native.DSA_generate_parameters_ex(
-				ptr,
-				bits,
-				seed, seed.Length,
-				out this.counter,
-				out h,
-				thunk.CallbackStruct)
-			);
-		}
+            Native.ExpectSuccess(Native.DSA_generate_parameters_ex(
+                ptr,
+                bits,
+                seed, seed.Length,
+                out this.counter,
+                out h,
+                thunk.CallbackStruct)
+            );
+        }
 
-		/// <summary>
-		/// Returns PEM_read_bio_DSA_PUBKEY()
-		/// </summary>
-		/// <param name="pem"></param>
-		/// <returns></returns>
-		public static DSA FromPublicKey(string pem)
-		{
-			return FromPublicKey(new BIO(pem));
-		}
+        /// <summary>
+        /// Returns PEM_read_bio_DSA_PUBKEY()
+        /// </summary>
+        /// <param name="pem"></param>
+        /// <returns></returns>
+        public static DSA FromPublicKey(string pem)
+        {
+            return FromPublicKey(new BIO(pem));
+        }
 
-		/// <summary>
-		/// Returns PEM_read_bio_DSA_PUBKEY()
-		/// </summary>
-		/// <param name="bio"></param>
-		/// <returns></returns>
-		public static DSA FromPublicKey(BIO bio)
-		{
-			return new DSA(Native.ExpectNonNull(Native.PEM_read_bio_DSA_PUBKEY(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)), true);
-		}
+        /// <summary>
+        /// Returns PEM_read_bio_DSA_PUBKEY()
+        /// </summary>
+        /// <param name="bio"></param>
+        /// <returns></returns>
+        public static DSA FromPublicKey(BIO bio)
+        {
+            return new DSA(Native.ExpectNonNull(Native.PEM_read_bio_DSA_PUBKEY(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)), true);
+        }
 
-		/// <summary>
-		/// Returns PEM_read_bio_DSAPrivateKey()
-		/// </summary>
-		/// <param name="pem"></param>
-		/// <returns></returns>
-		public static DSA FromPrivateKey(string pem)
-		{
-			return FromPrivateKey(new BIO(pem));
-		}
-		
-		/// <summary>
-		/// Returns PEM_read_bio_DSAPrivateKey()
-		/// </summary>
-		/// <param name="bio"></param>
-		/// <returns></returns>
-		public static DSA FromPrivateKey(BIO bio)
-		{
-			return new DSA(Native.ExpectNonNull(Native.PEM_read_bio_DSAPrivateKey(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)), true);
-		}
+        /// <summary>
+        /// Returns PEM_read_bio_DSAPrivateKey()
+        /// </summary>
+        /// <param name="pem"></param>
+        /// <returns></returns>
+        public static DSA FromPrivateKey(string pem)
+        {
+            return FromPrivateKey(new BIO(pem));
+        }
 
-		#endregion
+        /// <summary>
+        /// Returns PEM_read_bio_DSAPrivateKey()
+        /// </summary>
+        /// <param name="bio"></param>
+        /// <returns></returns>
+        public static DSA FromPrivateKey(BIO bio)
+        {
+            return new DSA(Native.ExpectNonNull(Native.PEM_read_bio_DSAPrivateKey(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)), true);
+        }
 
-		#region Properties
-		private dsa_st Raw
-		{
-			get { return (dsa_st)Marshal.PtrToStructure(ptr, typeof(dsa_st)); }
-			set { Marshal.StructureToPtr(value, ptr, false); }
-		}
+        #endregion
 
-		/// <summary>
-		/// Returns the p field
-		/// </summary>
-		public BigNumber P
-		{
-			get { return new BigNumber(Raw.p, false); }
-		}
+        #region Properties
+        private dsa_st Raw {
+            get { return (dsa_st)Marshal.PtrToStructure(ptr, typeof(dsa_st)); }
+            set { Marshal.StructureToPtr(value, ptr, false); }
+        }
 
-		/// <summary>
-		/// Returns the q field
-		/// </summary>
-		public BigNumber Q
-		{
-			get { return new BigNumber(Raw.q, false); }
-		}
+        /// <summary>
+        /// Returns the p field
+        /// </summary>
+        public BigNumber P {
+            get { return new BigNumber(Raw.p, false); }
+        }
 
-		/// <summary>
-		/// Returns the g field
-		/// </summary>
-		public BigNumber G
-		{
-			get { return new BigNumber(Raw.g, false); }
-		}
+        /// <summary>
+        /// Returns the q field
+        /// </summary>
+        public BigNumber Q {
+            get { return new BigNumber(Raw.q, false); }
+        }
 
-		/// <summary>
-		/// Returns DSA_size()
-		/// </summary>
-		public int Size
-		{
-			get { return Native.ExpectSuccess(Native.DSA_size(ptr)); }
-		}
+        /// <summary>
+        /// Returns the g field
+        /// </summary>
+        public BigNumber G {
+            get { return new BigNumber(Raw.g, false); }
+        }
 
-		/// <summary>
-		/// Returns the pub_key field
-		/// </summary>
-		public BigNumber PublicKey
-		{
-			get { return new BigNumber(this.Raw.pub_key, false); }
-			set
-			{
-				dsa_st raw = this.Raw;
-				raw.pub_key = Native.BN_dup(value.Handle);
-				this.Raw = raw;
-			}
-		}
+        /// <summary>
+        /// Returns DSA_size()
+        /// </summary>
+        public int Size {
+            get { return Native.ExpectSuccess(Native.DSA_size(ptr)); }
+        }
 
-		/// <summary>
-		/// Returns the priv_key field
-		/// </summary>
-		public BigNumber PrivateKey
-		{
-			get 
-			{
-				var pKey = Raw.priv_key;
-				if (pKey == IntPtr.Zero)
-					return null;
+        /// <summary>
+        /// Returns the pub_key field
+        /// </summary>
+        public BigNumber PublicKey {
+            get { return new BigNumber(this.Raw.pub_key, false); }
+            set {
+                dsa_st raw = this.Raw;
+                raw.pub_key = Native.BN_dup(value.Handle);
+                this.Raw = raw;
+            }
+        }
 
-				return new BigNumber(pKey, false); 
-			}
-			set
-			{
-				var raw = Raw;
-				raw.priv_key = Native.BN_dup(value.Handle);
-				Raw = raw;
-			}
-		}
+        /// <summary>
+        /// Returns the priv_key field
+        /// </summary>
+        public BigNumber PrivateKey {
+            get {
+                var pKey = Raw.priv_key;
+                if (pKey == IntPtr.Zero)
+                    return null;
 
-		/// <summary>
-		/// Returns the pub_key field as a PEM string
-		/// </summary>
-		public string PublicKeyAsPEM
-		{
-			get
-			{
-				using (var bio = BIO.MemoryBuffer())
-				{
-					WritePublicKey(bio);
-					return bio.ReadString();
-				}
-			}
-		}
+                return new BigNumber(pKey, false);
+            }
+            set {
+                var raw = Raw;
+                raw.priv_key = Native.BN_dup(value.Handle);
+                Raw = raw;
+            }
+        }
 
-		/// <summary>
-		/// Returns the priv_key field as a PEM string
-		/// </summary>
-		public string PrivateKeyAsPEM
-		{
-			get
-			{
-				using (var bio = BIO.MemoryBuffer())
-				{
-					WritePrivateKey(bio, null, null, null);
+        /// <summary>
+        /// Returns the pub_key field as a PEM string
+        /// </summary>
+        public string PublicKeyAsPEM {
+            get {
+                using (var bio = BIO.MemoryBuffer()) {
+                    WritePublicKey(bio);
+                    return bio.ReadString();
+                }
+            }
+        }
 
-					return bio.ReadString();
-				}
-			}
-		}
+        /// <summary>
+        /// Returns the priv_key field as a PEM string
+        /// </summary>
+        public string PrivateKeyAsPEM {
+            get {
+                using (var bio = BIO.MemoryBuffer()) {
+                    WritePrivateKey(bio, null, null, null);
 
-		/// <summary>
-		/// Returns the counter
-		/// </summary>
-		public int Counter
-		{
-			get { return counter; }
-		}
+                    return bio.ReadString();
+                }
+            }
+        }
 
-		/// <summary>
-		/// Returns the h value
-		/// </summary>
-		public IntPtr H
-		{
-			get { return h; }
-		}
+        /// <summary>
+        /// Returns the counter
+        /// </summary>
+        public int Counter {
+            get { return counter; }
+        }
 
-		/// <summary>
-		/// Accessor for the FlagNoExpConstTime flag
-		/// </summary>
-		public bool ConstantTime
-		{
-			get { return (Raw.flags & FlagNoExpConstTime) != 0; }
-			set
-			{
-				var raw = Raw;
+        /// <summary>
+        /// Returns the h value
+        /// </summary>
+        public IntPtr H {
+            get { return h; }
+        }
 
-				if (value)
-					raw.flags |= FlagNoExpConstTime;
-				else
-					raw.flags &= ~FlagNoExpConstTime;
+        /// <summary>
+        /// Accessor for the FlagNoExpConstTime flag
+        /// </summary>
+        public bool ConstantTime {
+            get { return (Raw.flags & FlagNoExpConstTime) != 0; }
+            set {
+                var raw = Raw;
 
-				Raw = raw;
-			}
-		}
-		#endregion
+                if (value)
+                    raw.flags |= FlagNoExpConstTime;
+                else
+                    raw.flags &= ~FlagNoExpConstTime;
 
-		#region Methods
-		/// <summary>
-		/// Calls DSA_generate_key()
-		/// </summary>
-		public void GenerateKeys()
-		{
-			Native.ExpectSuccess(Native.DSA_generate_key(ptr));
-		}
+                Raw = raw;
+            }
+        }
+        #endregion
 
-		/// <summary>
-		/// Returns DSA_sign()
-		/// </summary>
-		/// <param name="msg"></param>
-		/// <returns></returns>
-		public byte[] Sign(byte[] msg)
-		{
-			var sig = new byte[Size];
-			uint siglen;
-			Native.ExpectSuccess(Native.DSA_sign(0, msg, msg.Length, sig, out siglen, ptr));
+        #region Methods
+        /// <summary>
+        /// Calls DSA_generate_key()
+        /// </summary>
+        public void GenerateKeys()
+        {
+            Native.ExpectSuccess(Native.DSA_generate_key(ptr));
+        }
 
-			if (sig.Length != siglen)
-			{
-				var ret = new byte[siglen];
-				Buffer.BlockCopy(sig, 0, ret, 0, (int)siglen);
-				return ret;
-			}
+        /// <summary>
+        /// Returns DSA_sign()
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public byte[] Sign(byte[] msg)
+        {
+            var sig = new byte[Size];
+            uint siglen;
+            Native.ExpectSuccess(Native.DSA_sign(0, msg, msg.Length, sig, out siglen, ptr));
 
-			return sig;
-		}
+            if (sig.Length != siglen) {
+                var ret = new byte[siglen];
+                Buffer.BlockCopy(sig, 0, ret, 0, (int)siglen);
+                return ret;
+            }
 
-		/// <summary>
-		/// Returns DSA_verify()
-		/// </summary>
-		/// <param name="msg"></param>
-		/// <param name="sig"></param>
-		/// <returns></returns>
-		public bool Verify(byte[] msg, byte[] sig)
-		{
-			return Native.ExpectSuccess(
-				Native.DSA_verify(0, msg, msg.Length, sig, sig.Length, ptr)
-			) == 1;
-		}
-		
-		/// <summary>
-		/// Calls PEM_write_bio_DSA_PUBKEY()
-		/// </summary>
-		/// <param name="bio"></param>
-		public void WritePublicKey(BIO bio)
-		{
-			Native.ExpectSuccess(Native.PEM_write_bio_DSA_PUBKEY(bio.Handle, ptr));
-		}
+            return sig;
+        }
 
-		/// <summary>
-		/// Calls PEM_write_bio_DSAPrivateKey()
-		/// </summary>
-		/// <param name="bio"></param>
-		/// <param name="enc"></param>
-		/// <param name="passwd"></param>
-		/// <param name="arg"></param>
-		public void WritePrivateKey(BIO bio, Cipher enc, PasswordHandler passwd, object arg)
-		{
-			var thunk = new PasswordThunk(passwd, arg);
+        /// <summary>
+        /// Returns DSA_verify()
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="sig"></param>
+        /// <returns></returns>
+        public bool Verify(byte[] msg, byte[] sig)
+        {
+            return Native.ExpectSuccess(
+                Native.DSA_verify(0, msg, msg.Length, sig, sig.Length, ptr)
+            ) == 1;
+        }
 
-			Native.ExpectSuccess(Native.PEM_write_bio_DSAPrivateKey(
-				bio.Handle,
-				ptr,
-				enc == null ? IntPtr.Zero : enc.Handle,
-				null,
-				0,
-				thunk.Callback,
-				IntPtr.Zero));
-		}
+        /// <summary>
+        /// Calls PEM_write_bio_DSA_PUBKEY()
+        /// </summary>
+        /// <param name="bio"></param>
+        public void WritePublicKey(BIO bio)
+        {
+            Native.ExpectSuccess(Native.PEM_write_bio_DSA_PUBKEY(bio.Handle, ptr));
+        }
 
-		#endregion
+        /// <summary>
+        /// Calls PEM_write_bio_DSAPrivateKey()
+        /// </summary>
+        /// <param name="bio"></param>
+        /// <param name="enc"></param>
+        /// <param name="passwd"></param>
+        /// <param name="arg"></param>
+        public void WritePrivateKey(BIO bio, Cipher enc, PasswordHandler passwd, object arg)
+        {
+            var thunk = new PasswordThunk(passwd, arg);
 
-		#region Overrides
+            Native.ExpectSuccess(Native.PEM_write_bio_DSAPrivateKey(
+                bio.Handle,
+                ptr,
+                enc == null ? IntPtr.Zero : enc.Handle,
+                null,
+                0,
+                thunk.Callback,
+                IntPtr.Zero));
+        }
 
-		/// <summary>
-		/// Calls DSA_print()
-		/// </summary>
-		/// <param name="bio"></param>
-		public override void Print(BIO bio)
-		{
-			Native.ExpectSuccess(Native.DSA_print(bio.Handle, ptr, 0));
-		}
+        #endregion
 
-		/// <summary>
-		/// Calls DSA_free()
-		/// </summary>
-		protected override void OnDispose() 
-		{
-			Native.DSA_free(ptr);
-		}
+        #region Overrides
 
-		/// <summary>
-		/// If both objects have a private key, those are compared. 
-		/// Otherwise just the params and public keys are compared.
-		/// </summary>
-		/// <param name="obj"></param>
-		/// <returns></returns>
-		public override bool Equals(object obj)
-		{
-			var rhs = obj as DSA;
-			if (rhs == null)
-				return false;
+        /// <summary>
+        /// Calls DSA_print()
+        /// </summary>
+        /// <param name="bio"></param>
+        public override void Print(BIO bio)
+        {
+            Native.ExpectSuccess(Native.DSA_print(bio.Handle, ptr, 0));
+        }
 
-			var paramsEqual = (
-				P == rhs.P &&
-				Q == rhs.Q &&
-				G == rhs.G
-			);
+        /// <summary>
+        /// Calls DSA_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.DSA_free(ptr);
+        }
 
-			if (!paramsEqual)
-				return false;
+        /// <summary>
+        /// If both objects have a private key, those are compared.
+        /// Otherwise just the params and public keys are compared.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            var rhs = obj as DSA;
+            if (rhs == null)
+                return false;
 
-			if (PublicKey != rhs.PublicKey)
-				return false;
+            var paramsEqual = (
+                P == rhs.P &&
+                Q == rhs.Q &&
+                G == rhs.G
+            );
 
-			var lhsPrivateKey = PrivateKey;
-			var rhsPrivateKey = rhs.PrivateKey;
+            if (!paramsEqual)
+                return false;
 
-			if (lhsPrivateKey == null || rhsPrivateKey == null)
-				return true;
+            if (PublicKey != rhs.PublicKey)
+                return false;
 
-			return lhsPrivateKey == rhsPrivateKey;
-		}
+            var lhsPrivateKey = PrivateKey;
+            var rhsPrivateKey = rhs.PrivateKey;
 
-		/// <summary>
-		/// Xor of the params, public key, and optionally the private key
-		/// </summary>
-		/// <returns></returns>
-		public override int GetHashCode()
-		{
-			var code = 
-				P.GetHashCode() ^ 
-				Q.GetHashCode() ^ 
-				G.GetHashCode() ^ 
-				PublicKey.GetHashCode();
-			
-			if (PrivateKey != null)
-				code ^= PrivateKey.GetHashCode();
-			
-			return code;
-		}
+            if (lhsPrivateKey == null || rhsPrivateKey == null)
+                return true;
 
-		internal override void AddRef()
-		{
-			Native.DSA_up_ref(ptr);
-		}
+            return lhsPrivateKey == rhsPrivateKey;
+        }
 
-		#endregion
-	}
+        /// <summary>
+        /// Xor of the params, public key, and optionally the private key
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            var code =
+                P.GetHashCode() ^
+                Q.GetHashCode() ^
+                G.GetHashCode() ^
+                PublicKey.GetHashCode();
+
+            if (PrivateKey != null)
+                code ^= PrivateKey.GetHashCode();
+
+            return code;
+        }
+
+        internal override void AddRef()
+        {
+            Native.DSA_up_ref(ptr);
+        }
+
+        #endregion
+    }
 }

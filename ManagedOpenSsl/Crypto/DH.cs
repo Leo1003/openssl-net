@@ -29,428 +29,412 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.Crypto
 {
-	/// <summary>
-	/// Encapsulates the native openssl Diffie-Hellman functions (DH_*)
-	/// </summary>
-	public class DH : BaseReference
-	{
-		/// <summary>
-		/// Constant generator value of 2.
-		/// </summary>
-		public const int Generator2 = 2;
+    /// <summary>
+    /// Encapsulates the native openssl Diffie-Hellman functions (DH_*)
+    /// </summary>
+    public class DH : BaseReference
+    {
+        /// <summary>
+        /// Constant generator value of 2.
+        /// </summary>
+        public const int Generator2 = 2;
 
-		/// <summary>
-		/// Constant generator value of 5.
-		/// </summary>
-		public const int Generator5 = 5;
-		
-		private const int FlagCacheMont_P = 0x01;
-		private const int FlagNoExpConstTime = 0x02;
+        /// <summary>
+        /// Constant generator value of 5.
+        /// </summary>
+        public const int Generator5 = 5;
 
-		/// <summary>
-		/// Flags for the return value of DH_check().
-		/// </summary>
-		[Flags]
-		public enum CheckCode
-		{
-			/// <summary>
-			/// 
-			/// </summary>
-			CheckP_NotPrime = 1,
+        private const int FlagCacheMont_P = 0x01;
+        private const int FlagNoExpConstTime = 0x02;
 
-			/// <summary>
-			/// 
-			/// </summary>
-			CheckP_NotSafePrime = 2,
+        /// <summary>
+        /// Flags for the return value of DH_check().
+        /// </summary>
+        [Flags]
+        public enum CheckCode
+        {
+            /// <summary>
+            ///
+            /// </summary>
+            CheckP_NotPrime = 1,
 
-			/// <summary>
-			/// 
-			/// </summary>
-			UnableToCheckGenerator = 4,
+            /// <summary>
+            ///
+            /// </summary>
+            CheckP_NotSafePrime = 2,
 
-			/// <summary>
-			/// 
-			/// </summary>
-			NotSuitableGenerator = 8,
-		}
+            /// <summary>
+            ///
+            /// </summary>
+            UnableToCheckGenerator = 4,
 
-		private BigNumber.GeneratorThunk thunk = null;
+            /// <summary>
+            ///
+            /// </summary>
+            NotSuitableGenerator = 8,
+        }
 
-		#region dh_st
+        private BigNumber.GeneratorThunk thunk = null;
 
-		[StructLayout(LayoutKind.Sequential)]
-		struct dh_st
-		{
-			public int pad;
-			public int version;
-			public IntPtr p;
-			public IntPtr g;
-			public int length;
-			public IntPtr pub_key;
-			public IntPtr priv_key;
+        #region dh_st
 
-			public int flags;
-			public IntPtr method_mont_p;
-			public IntPtr q;
-			public IntPtr j;
-			public IntPtr seed;
-			public int seedlen;
-			public IntPtr counter;
+        [StructLayout(LayoutKind.Sequential)]
+        struct dh_st
+        {
+            public int pad;
+            public int version;
+            public IntPtr p;
+            public IntPtr g;
+            public int length;
+            public IntPtr pub_key;
+            public IntPtr priv_key;
 
-			public int references;
-			#region CRYPTO_EX_DATA ex_data;
-			public IntPtr ex_data_sk;
-			public int ex_data_dummy;
-			#endregion
-			public IntPtr meth;
-			public IntPtr engine;
-		}
-		#endregion
+            public int flags;
+            public IntPtr method_mont_p;
+            public IntPtr q;
+            public IntPtr j;
+            public IntPtr seed;
+            public int seedlen;
+            public IntPtr counter;
 
-		#region Initialization
-		internal DH(IntPtr ptr, bool owner) : base(ptr, owner) { }
-		/// <summary>
-		/// Calls DH_generate_parameters()
-		/// </summary>
-		/// <param name="primeLen"></param>
-		/// <param name="generator"></param>
-		public DH(int primeLen, int generator)
-			: base(Native.ExpectNonNull(Native.DH_generate_parameters(primeLen, generator, IntPtr.Zero, IntPtr.Zero)), true)
-		{
-		}
+            public int references;
+            #region CRYPTO_EX_DATA ex_data;
+            public IntPtr ex_data_sk;
+            public int ex_data_dummy;
+            #endregion
+            public IntPtr meth;
+            public IntPtr engine;
+        }
+        #endregion
 
-		/// <summary>
-		/// Calls DH_generate_parameters_ex()
-		/// </summary>
-		/// <param name="primeLen"></param>
-		/// <param name="generator"></param>
-		/// <param name="callback"></param>
-		/// <param name="arg"></param>
-		public DH(int primeLen, int generator, BigNumber.GeneratorHandler callback, object arg)
-			: base(Native.ExpectNonNull(Native.DH_new()), true)
-		{
-			thunk = new BigNumber.GeneratorThunk(callback, arg);
-			Native.ExpectSuccess(Native.DH_generate_parameters_ex(
-				ptr,
-				primeLen,
-				generator,
-				thunk.CallbackStruct)
-			);
-		}
+        #region Initialization
+        internal DH(IntPtr ptr, bool owner) : base(ptr, owner) { }
+        /// <summary>
+        /// Calls DH_generate_parameters()
+        /// </summary>
+        /// <param name="primeLen"></param>
+        /// <param name="generator"></param>
+        public DH(int primeLen, int generator)
+            : base(Native.ExpectNonNull(Native.DH_generate_parameters(primeLen, generator, IntPtr.Zero, IntPtr.Zero)), true)
+        {
+        }
 
-		/// <summary>
-		/// Calls DH_new().
-		/// </summary>
-		public DH() 
-			: base(Native.ExpectNonNull(Native.DH_new()), true) 
-		{
-			var raw = Raw;
-			raw.p = Native.BN_dup(BigNumber.One.Handle);
-			raw.g = Native.BN_dup(BigNumber.One.Handle);
-			Raw = raw;
-		}
+        /// <summary>
+        /// Calls DH_generate_parameters_ex()
+        /// </summary>
+        /// <param name="primeLen"></param>
+        /// <param name="generator"></param>
+        /// <param name="callback"></param>
+        /// <param name="arg"></param>
+        public DH(int primeLen, int generator, BigNumber.GeneratorHandler callback, object arg)
+            : base(Native.ExpectNonNull(Native.DH_new()), true)
+        {
+            thunk = new BigNumber.GeneratorThunk(callback, arg);
+            Native.ExpectSuccess(Native.DH_generate_parameters_ex(
+                ptr,
+                primeLen,
+                generator,
+                thunk.CallbackStruct)
+            );
+        }
 
-		/// <summary>
-		/// Calls DH_new().
-		/// </summary>
-		/// <param name="p"></param>
-		/// <param name="g"></param>
-		public DH(BigNumber p, BigNumber g)
-				: base(Native.ExpectNonNull(Native.DH_new()), true)
-		{
-			var raw = Raw;
-			raw.p = Native.BN_dup(p.Handle);
-			raw.g = Native.BN_dup(g.Handle);
-			Raw = raw;
-		}
+        /// <summary>
+        /// Calls DH_new().
+        /// </summary>
+        public DH()
+            : base(Native.ExpectNonNull(Native.DH_new()), true)
+        {
+            var raw = Raw;
+            raw.p = Native.BN_dup(BigNumber.One.Handle);
+            raw.g = Native.BN_dup(BigNumber.One.Handle);
+            Raw = raw;
+        }
 
-		/// <summary>
-		/// Calls DH_new().
-		/// </summary>
-		/// <param name="p"></param>
-		/// <param name="g"></param>
-		/// <param name="pub_key"></param>
-		/// <param name="priv_key"></param>
-		public DH(BigNumber p, BigNumber g, BigNumber pub_key, BigNumber priv_key)
-			: base(Native.ExpectNonNull(Native.DH_new()), true)
-		{
-			var raw = Raw;
-			raw.p = Native.BN_dup(p.Handle);
-			raw.g = Native.BN_dup(g.Handle);
-			raw.pub_key = Native.BN_dup(pub_key.Handle);
-			raw.priv_key = Native.BN_dup(priv_key.Handle);
-			Raw = raw;
-		}
+        /// <summary>
+        /// Calls DH_new().
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="g"></param>
+        public DH(BigNumber p, BigNumber g)
+                : base(Native.ExpectNonNull(Native.DH_new()), true)
+        {
+            var raw = Raw;
+            raw.p = Native.BN_dup(p.Handle);
+            raw.g = Native.BN_dup(g.Handle);
+            Raw = raw;
+        }
 
-		/// <summary>
-		/// Factory method that calls FromParametersPEM() to deserialize
-		/// a DH object from a PEM-formatted string.
-		/// </summary>
-		/// <param name="pem"></param>
-		/// <returns></returns>
-		public static DH FromParameters(string pem)
-		{
-			return FromParametersPEM(new BIO(pem));
-		}
+        /// <summary>
+        /// Calls DH_new().
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="g"></param>
+        /// <param name="pub_key"></param>
+        /// <param name="priv_key"></param>
+        public DH(BigNumber p, BigNumber g, BigNumber pub_key, BigNumber priv_key)
+            : base(Native.ExpectNonNull(Native.DH_new()), true)
+        {
+            var raw = Raw;
+            raw.p = Native.BN_dup(p.Handle);
+            raw.g = Native.BN_dup(g.Handle);
+            raw.pub_key = Native.BN_dup(pub_key.Handle);
+            raw.priv_key = Native.BN_dup(priv_key.Handle);
+            Raw = raw;
+        }
 
-		/// <summary>
-		/// Factory method that calls PEM_read_bio_DHparams() to deserialize 
-		/// a DH object from a PEM-formatted string using the BIO interface.
-		/// </summary>
-		/// <param name="bio"></param>
-		/// <returns></returns>
-		public static DH FromParametersPEM(BIO bio)
-		{
-			var ptr = Native.ExpectNonNull(Native.PEM_read_bio_DHparams(
-				bio.Handle, IntPtr.Zero, null, IntPtr.Zero));
-			return new DH(ptr, true);
-		}
+        /// <summary>
+        /// Factory method that calls FromParametersPEM() to deserialize
+        /// a DH object from a PEM-formatted string.
+        /// </summary>
+        /// <param name="pem"></param>
+        /// <returns></returns>
+        public static DH FromParameters(string pem)
+        {
+            return FromParametersPEM(new BIO(pem));
+        }
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate IntPtr DH_new_delegate();
+        /// <summary>
+        /// Factory method that calls PEM_read_bio_DHparams() to deserialize
+        /// a DH object from a PEM-formatted string using the BIO interface.
+        /// </summary>
+        /// <param name="bio"></param>
+        /// <returns></returns>
+        public static DH FromParametersPEM(BIO bio)
+        {
+            var ptr = Native.ExpectNonNull(Native.PEM_read_bio_DHparams(
+                bio.Handle, IntPtr.Zero, null, IntPtr.Zero));
+            return new DH(ptr, true);
+        }
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate IntPtr d2i_DHparams_delegate(out IntPtr a, IntPtr pp, int length);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr DH_new_delegate();
 
-		private static IntPtr Managed_DH_new()
-		{
-			return Native.DH_new();
-		}
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr d2i_DHparams_delegate(out IntPtr a, IntPtr pp, int length);
 
-		private static IntPtr Managed_d2i_DHparams(out IntPtr a, IntPtr pp, int length)
-		{
-			return Native.d2i_DHparams(out a, pp, length);
-		}
-		/// <summary>
-		/// Factory method that calls XXX() to deserialize
-		/// a DH object from a DER-formatted buffer using the BIO interface.
-		/// </summary>
-		/// <param name="bio"></param>
-		/// <returns></returns>
-		public static DH FromParametersDER(BIO bio)
-		{
-			var dh_new = new DH_new_delegate(Managed_DH_new);
-			var d2i_DHparams = new d2i_DHparams_delegate(Managed_d2i_DHparams);
-			var dh_new_ptr = Marshal.GetFunctionPointerForDelegate(dh_new);
-			var d2i_DHparams_ptr = Marshal.GetFunctionPointerForDelegate(d2i_DHparams);
-			var ptr = Native.ExpectNonNull(Native.ASN1_d2i_bio(dh_new_ptr, d2i_DHparams_ptr, bio.Handle, IntPtr.Zero));
-			var dh = new DH(ptr, true);
-			
-			return dh;
-		}
-		#endregion
+        private static IntPtr Managed_DH_new()
+        {
+            return Native.DH_new();
+        }
 
-		#region Methods
-		/// <summary>
-		/// Calls DH_generate_key().
-		/// </summary>
-		public void GenerateKeys()
-		{
-			Native.ExpectSuccess(Native.DH_generate_key(ptr));
-		}
+        private static IntPtr Managed_d2i_DHparams(out IntPtr a, IntPtr pp, int length)
+        {
+            return Native.d2i_DHparams(out a, pp, length);
+        }
+        /// <summary>
+        /// Factory method that calls XXX() to deserialize
+        /// a DH object from a DER-formatted buffer using the BIO interface.
+        /// </summary>
+        /// <param name="bio"></param>
+        /// <returns></returns>
+        public static DH FromParametersDER(BIO bio)
+        {
+            var dh_new = new DH_new_delegate(Managed_DH_new);
+            var d2i_DHparams = new d2i_DHparams_delegate(Managed_d2i_DHparams);
+            var dh_new_ptr = Marshal.GetFunctionPointerForDelegate(dh_new);
+            var d2i_DHparams_ptr = Marshal.GetFunctionPointerForDelegate(d2i_DHparams);
+            var ptr = Native.ExpectNonNull(Native.ASN1_d2i_bio(dh_new_ptr, d2i_DHparams_ptr, bio.Handle, IntPtr.Zero));
+            var dh = new DH(ptr, true);
 
-		/// <summary>
-		/// Calls DH_compute_key().
-		/// </summary>
-		/// <param name="pubkey"></param>
-		/// <returns></returns>
-		public byte[] ComputeKey(BigNumber pubkey)
-		{
-			var len = Native.DH_size(ptr);
-			var key = new byte[len];
-			Native.DH_compute_key(key, pubkey.Handle, ptr);
+            return dh;
+        }
+        #endregion
 
-			return key;
-		}
+        #region Methods
+        /// <summary>
+        /// Calls DH_generate_key().
+        /// </summary>
+        public void GenerateKeys()
+        {
+            Native.ExpectSuccess(Native.DH_generate_key(ptr));
+        }
 
-		/// <summary>
-		/// Calls PEM_write_bio_DHparams().
-		/// </summary>
-		/// <param name="bio"></param>
-		public void WriteParametersPEM(BIO bio)
-		{
-			Native.ExpectSuccess(Native.PEM_write_bio_DHparams(bio.Handle, ptr));
-		}
+        /// <summary>
+        /// Calls DH_compute_key().
+        /// </summary>
+        /// <param name="pubkey"></param>
+        /// <returns></returns>
+        public byte[] ComputeKey(BigNumber pubkey)
+        {
+            var len = Native.DH_size(ptr);
+            var key = new byte[len];
+            Native.DH_compute_key(key, pubkey.Handle, ptr);
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate int i2d_DHparams_delegate(IntPtr a, IntPtr pp);
+            return key;
+        }
 
-		private int Managed_i2d_DHparams(IntPtr a, IntPtr pp)
-		{
-			return Native.i2d_DHparams(a, pp);
-		}
+        /// <summary>
+        /// Calls PEM_write_bio_DHparams().
+        /// </summary>
+        /// <param name="bio"></param>
+        public void WriteParametersPEM(BIO bio)
+        {
+            Native.ExpectSuccess(Native.PEM_write_bio_DHparams(bio.Handle, ptr));
+        }
 
-		/// <summary>
-		/// Calls ASN1_i2d_bio() with the i2d = i2d_DHparams().
-		/// </summary>
-		/// <param name="bio"></param>
-		public void WriteParametersDER(BIO bio)
-		{
-			var i2d_DHparams = new i2d_DHparams_delegate(Managed_i2d_DHparams);
-			var i2d_DHparams_ptr = Marshal.GetFunctionPointerForDelegate(i2d_DHparams);
-			
-			Native.ExpectSuccess(Native.ASN1_i2d_bio(i2d_DHparams_ptr, bio.Handle, ptr));
-			//!!
-			/*
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate int i2d_DHparams_delegate(IntPtr a, IntPtr pp);
+
+        private int Managed_i2d_DHparams(IntPtr a, IntPtr pp)
+        {
+            return Native.i2d_DHparams(a, pp);
+        }
+
+        /// <summary>
+        /// Calls ASN1_i2d_bio() with the i2d = i2d_DHparams().
+        /// </summary>
+        /// <param name="bio"></param>
+        public void WriteParametersDER(BIO bio)
+        {
+            var i2d_DHparams = new i2d_DHparams_delegate(Managed_i2d_DHparams);
+            var i2d_DHparams_ptr = Marshal.GetFunctionPointerForDelegate(i2d_DHparams);
+
+            Native.ExpectSuccess(Native.ASN1_i2d_bio(i2d_DHparams_ptr, bio.Handle, ptr));
+            //!!
+            /*
 			IntPtr hModule = Native.LoadLibrary(Native.DLLNAME);
 			IntPtr i2d = Native.GetProcAddress(hModule, "i2d_DHparams");
 			Native.FreeLibrary(hModule);
-			
+
 			Native.ExpectSuccess(Native.ASN1_i2d_bio(i2d, bio.Handle, this.ptr));
 			*/
-		}
+        }
 
-		/// <summary>
-		/// Calls DHparams_print().
-		/// </summary>
-		/// <param name="bio"></param>
-		public override void Print(BIO bio)
-		{
-			Native.ExpectSuccess(Native.DHparams_print(bio.Handle, ptr));
-		}
+        /// <summary>
+        /// Calls DHparams_print().
+        /// </summary>
+        /// <param name="bio"></param>
+        public override void Print(BIO bio)
+        {
+            Native.ExpectSuccess(Native.DHparams_print(bio.Handle, ptr));
+        }
 
-		/// <summary>
-		/// Calls DH_check().
-		/// </summary>
-		/// <returns></returns>
-		public CheckCode Check()
-		{
-			var codes = 0;
-			Native.ExpectSuccess(Native.DH_check(ptr, out codes));
+        /// <summary>
+        /// Calls DH_check().
+        /// </summary>
+        /// <returns></returns>
+        public CheckCode Check()
+        {
+            var codes = 0;
+            Native.ExpectSuccess(Native.DH_check(ptr, out codes));
 
-			return (CheckCode)codes;
-		}
-		#endregion
+            return (CheckCode)codes;
+        }
+        #endregion
 
-		#region Properties
-		private dh_st Raw
-		{
-			get { return (dh_st)Marshal.PtrToStructure(ptr, typeof(dh_st)); }
-			set { Marshal.StructureToPtr(value, ptr, false); }
-		}
+        #region Properties
+        private dh_st Raw {
+            get { return (dh_st)Marshal.PtrToStructure(ptr, typeof(dh_st)); }
+            set { Marshal.StructureToPtr(value, ptr, false); }
+        }
 
-		/// <summary>
-		/// Accessor for the p value.
-		/// </summary>
-		public BigNumber P
-		{
-			get { return new BigNumber(Raw.p, false); }
-			set 
-			{
-				var raw = Raw;
-				raw.p = Native.BN_dup(value.Handle);
-				Raw = raw;
-			}
-		}
+        /// <summary>
+        /// Accessor for the p value.
+        /// </summary>
+        public BigNumber P {
+            get { return new BigNumber(Raw.p, false); }
+            set {
+                var raw = Raw;
+                raw.p = Native.BN_dup(value.Handle);
+                Raw = raw;
+            }
+        }
 
-		/// <summary>
-		/// Accessor for the g value.
-		/// </summary>
-		public BigNumber G
-		{
-			get { return new BigNumber(Raw.g, false); }
-			set 
-			{
-				var raw = Raw;
-				raw.g = Native.BN_dup(value.Handle);
-				Raw = raw;
-			}
-		}
+        /// <summary>
+        /// Accessor for the g value.
+        /// </summary>
+        public BigNumber G {
+            get { return new BigNumber(Raw.g, false); }
+            set {
+                var raw = Raw;
+                raw.g = Native.BN_dup(value.Handle);
+                Raw = raw;
+            }
+        }
 
-		/// <summary>
-		/// Accessor for the pub_key value.
-		/// </summary>
-		public BigNumber PublicKey
-		{
-			get { return new BigNumber(Raw.pub_key, false); }
-			set
-			{
-				var raw = Raw;
-				raw.pub_key = Native.BN_dup(value.Handle);
-				Raw = raw;
-			}
-		}
+        /// <summary>
+        /// Accessor for the pub_key value.
+        /// </summary>
+        public BigNumber PublicKey {
+            get { return new BigNumber(Raw.pub_key, false); }
+            set {
+                var raw = Raw;
+                raw.pub_key = Native.BN_dup(value.Handle);
+                Raw = raw;
+            }
+        }
 
-		/// <summary>
-		/// Accessor for the priv_key value.
-		/// </summary>
-		public BigNumber PrivateKey
-		{
-			get { return new BigNumber(Raw.priv_key, false); } 
-			set
-			{
-				var raw = Raw;
-				raw.priv_key = Native.BN_dup(value.Handle);
-				Raw = raw;
-			}
-		}
+        /// <summary>
+        /// Accessor for the priv_key value.
+        /// </summary>
+        public BigNumber PrivateKey {
+            get { return new BigNumber(Raw.priv_key, false); }
+            set {
+                var raw = Raw;
+                raw.priv_key = Native.BN_dup(value.Handle);
+                Raw = raw;
+            }
+        }
 
-		/// <summary>
-		/// Creates a BIO.MemoryBuffer(), calls WriteParametersPEM() into this buffer, 
-		/// then returns the buffer as a string.
-		/// </summary>
-		public string PEM
-		{
-			get
-			{
-				using (var bio = BIO.MemoryBuffer())
-				{
-					WriteParametersPEM(bio);
-					return bio.ReadString();
-				}
-			}
-		}
+        /// <summary>
+        /// Creates a BIO.MemoryBuffer(), calls WriteParametersPEM() into this buffer,
+        /// then returns the buffer as a string.
+        /// </summary>
+        public string PEM {
+            get {
+                using (var bio = BIO.MemoryBuffer()) {
+                    WriteParametersPEM(bio);
+                    return bio.ReadString();
+                }
+            }
+        }
 
-		/// <summary>
-		/// Creates a BIO.MemoryBuffer(), calls WriteParametersDER() into this buffer, 
-		/// then returns the buffer.
-		/// </summary>
-		public byte[] DER
-		{
-			get
-			{
-				using (var bio = BIO.MemoryBuffer())
-				{
-					WriteParametersDER(bio);
-					return bio.ReadBytes((int)bio.NumberWritten).Array;
-				}
-			}
-		}
+        /// <summary>
+        /// Creates a BIO.MemoryBuffer(), calls WriteParametersDER() into this buffer,
+        /// then returns the buffer.
+        /// </summary>
+        public byte[] DER {
+            get {
+                using (var bio = BIO.MemoryBuffer()) {
+                    WriteParametersDER(bio);
+                    return bio.ReadBytes((int)bio.NumberWritten).Array;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Sets or clears the FlagNoExpConstTime bit in the flags field.
-		/// </summary>
-		public bool NoExpConstantTime
-		{
-			get { return (Raw.flags & FlagNoExpConstTime) != 0; }
-			set
-			{
-				var raw = Raw;
-				if (value)
-					raw.flags |= FlagNoExpConstTime;
-				else
-					raw.flags &= ~FlagNoExpConstTime;
+        /// <summary>
+        /// Sets or clears the FlagNoExpConstTime bit in the flags field.
+        /// </summary>
+        public bool NoExpConstantTime {
+            get { return (Raw.flags & FlagNoExpConstTime) != 0; }
+            set {
+                var raw = Raw;
+                if (value)
+                    raw.flags |= FlagNoExpConstTime;
+                else
+                    raw.flags &= ~FlagNoExpConstTime;
 
-				Raw = raw;
-			}
-		}
+                Raw = raw;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		internal override void AddRef()
-		{
-			Native.DH_up_ref(ptr);
-		}
+        internal override void AddRef()
+        {
+            Native.DH_up_ref(ptr);
+        }
 
-		#region IDisposable Members
+        #region IDisposable Members
 
-		/// <summary>
-		/// Calls DH_free().
-		/// </summary>
-		protected override void OnDispose() {
-			Native.DH_free(ptr);
-		}
+        /// <summary>
+        /// Calls DH_free().
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.DH_free(ptr);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

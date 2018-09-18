@@ -29,141 +29,148 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.Crypto
 {
-	/// <summary>
-	/// Wraps HMAC
-	/// </summary>
-	public class HMAC : Base
-	{
-		#region Raw Structures
-		[StructLayout(LayoutKind.Sequential)]
-		struct HMAC_CTX
-		{
-			public IntPtr md;          //const EVP_MD *md;
-			public EVP_MD_CTX md_ctx;
-			public EVP_MD_CTX i_ctx;
-			public EVP_MD_CTX o_ctx;
-			public uint key_length;    //unsigned int key_length;
+    /// <summary>
+    /// Wraps HMAC
+    /// </summary>
+    public class HMAC : Base
+    {
+        #region Raw Structures
+        [StructLayout(LayoutKind.Sequential)]
+        struct HMAC_CTX
+        {
+            public IntPtr md;          //const EVP_MD *md;
+            public EVP_MD_CTX md_ctx;
+            public EVP_MD_CTX i_ctx;
+            public EVP_MD_CTX o_ctx;
+            public uint key_length;    //unsigned int key_length;
 
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.HMAC_MAX_MD_CBLOCK)]
-			public byte[] key;
-		}
-		#endregion
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.HMAC_MAX_MD_CBLOCK)]
+            public byte[] key;
+        }
+        #endregion
 
-		#region Initialization
-		/// <summary>
-		/// Calls OPENSSL_malloc() and then HMAC_CTX_init()
-		/// </summary>
-		public HMAC()
-			: base(IntPtr.Zero, true) {
-			// Allocate the context
-			ptr = Native.OPENSSL_malloc(Marshal.SizeOf(typeof(HMAC_CTX)));
+        #region Initialization
+        /// <summary>
+        /// Calls OPENSSL_malloc() and then HMAC_CTX_init()
+        /// </summary>
+        public HMAC()
+            : base(IntPtr.Zero, true)
+        {
+            // Allocate the context
+            ptr = Native.OPENSSL_malloc(Marshal.SizeOf(typeof(HMAC_CTX)));
 
-			// Initialize the context
-			Native.HMAC_CTX_init(ptr);
-		}
-		#endregion
+            // Initialize the context
+            Native.HMAC_CTX_init(ptr);
+        }
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		/// <summary>
-		/// Calls HMAC()
-		/// </summary>
-		/// <param name="digest"></param>
-		/// <param name="key"></param>
-		/// <param name="data"></param>
-		/// <returns></returns>
-		public static byte[] Digest(MessageDigest digest, byte[] key, byte[] data) {
-			var hash_value = new byte[digest.Size];
-			uint hash_value_length = Native.EVP_MAX_MD_SIZE;
-			Native.HMAC(digest.Handle, key, key.Length, data, data.Length, hash_value, ref hash_value_length);
-			
-			return hash_value;
-		}
+        /// <summary>
+        /// Calls HMAC()
+        /// </summary>
+        /// <param name="digest"></param>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static byte[] Digest(MessageDigest digest, byte[] key, byte[] data)
+        {
+            var hash_value = new byte[digest.Size];
+            uint hash_value_length = Native.EVP_MAX_MD_SIZE;
+            Native.HMAC(digest.Handle, key, key.Length, data, data.Length, hash_value, ref hash_value_length);
 
-		/// <summary>
-		/// Calls HMAC_Init_ex()
-		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="digest"></param>
-		public void Init(byte[] key, MessageDigest digest) {
-			Native.HMAC_Init_ex(ptr, key, key.Length, digest.Handle, IntPtr.Zero);
-			digest_size = digest.Size;
-			initialized = true;
-		}
+            return hash_value;
+        }
 
-		/// <summary>
-		/// Calls HMAC_Update()
-		/// </summary>
-		/// <param name="data"></param>
-		public void Update(byte[] data) {
-			if (!initialized) {
-				throw new Exception("Failed to call Initialize before calling Update");
-			}
+        /// <summary>
+        /// Calls HMAC_Init_ex()
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="digest"></param>
+        public void Init(byte[] key, MessageDigest digest)
+        {
+            Native.HMAC_Init_ex(ptr, key, key.Length, digest.Handle, IntPtr.Zero);
+            digest_size = digest.Size;
+            initialized = true;
+        }
 
-			Native.HMAC_Update(ptr, data, data.Length);
-		}
+        /// <summary>
+        /// Calls HMAC_Update()
+        /// </summary>
+        /// <param name="data"></param>
+        public void Update(byte[] data)
+        {
+            if (!initialized) {
+                throw new Exception("Failed to call Initialize before calling Update");
+            }
 
-		/// <summary>
-		/// Calls HMAC_Update()
-		/// </summary>
-		/// <param name="data"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		public void Update(byte[] data, int offset, int count) {
-			if (!initialized) {
-				throw new Exception("Failed to call Initialize before calling Update");
-			}
-			if (data == null) {
-				throw new ArgumentNullException("data");
-			}
-			if (count <= 0) {
-				throw new ArgumentException("count must be greater than 0");
-			}
-			if (offset < 0) {
-				throw new ArgumentException("offset must be 0 or greater");
-			}
-			if (data.Length < (count - offset)) {
-				throw new ArgumentException("invalid length specified.  Count is greater than buffer length.");
-			}
+            Native.HMAC_Update(ptr, data, data.Length);
+        }
 
-			var seg = new ArraySegment<byte>(data, offset, count);
-			Native.HMAC_Update(ptr, seg.Array, seg.Count);
-		}
+        /// <summary>
+        /// Calls HMAC_Update()
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        public void Update(byte[] data, int offset, int count)
+        {
+            if (!initialized) {
+                throw new Exception("Failed to call Initialize before calling Update");
+            }
+            if (data == null) {
+                throw new ArgumentNullException("data");
+            }
+            if (count <= 0) {
+                throw new ArgumentException("count must be greater than 0");
+            }
+            if (offset < 0) {
+                throw new ArgumentException("offset must be 0 or greater");
+            }
+            if (data.Length < (count - offset)) {
+                throw new ArgumentException("invalid length specified.  Count is greater than buffer length.");
+            }
 
-		/// <summary>
-		/// Calls HMAC_Final()
-		/// </summary>
-		/// <returns></returns>
-		public byte[] DigestFinal() {
-			if (!initialized) {
-				throw new Exception("Failed to call Initialize before calling DigestFinal");
-			}
+            var seg = new ArraySegment<byte>(data, offset, count);
+            Native.HMAC_Update(ptr, seg.Array, seg.Count);
+        }
 
-			var hash_value = new byte[digest_size];
-			uint hash_value_length = Native.EVP_MAX_MD_SIZE;
+        /// <summary>
+        /// Calls HMAC_Final()
+        /// </summary>
+        /// <returns></returns>
+        public byte[] DigestFinal()
+        {
+            if (!initialized) {
+                throw new Exception("Failed to call Initialize before calling DigestFinal");
+            }
 
-			Native.HMAC_Final(ptr, hash_value, ref hash_value_length);
-			return hash_value;
-		}
+            var hash_value = new byte[digest_size];
+            uint hash_value_length = Native.EVP_MAX_MD_SIZE;
 
-		#endregion
+            Native.HMAC_Final(ptr, hash_value, ref hash_value_length);
+            return hash_value;
+        }
 
-		#region Overrides
-		/// <summary>
-		/// Calls HMAC_CTX_cleanup() and then OPENSSL_free()
-		/// </summary>
-		protected override void OnDispose() {
-			// Clean up the context
-			Native.HMAC_CTX_cleanup(ptr);
+        #endregion
 
-			// Free the structure allocation
-			Native.OPENSSL_free(ptr);
-		}
-		#endregion
+        #region Overrides
+        /// <summary>
+        /// Calls HMAC_CTX_cleanup() and then OPENSSL_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            // Clean up the context
+            Native.HMAC_CTX_cleanup(ptr);
 
-		#region Fields
-		private bool initialized = false;
-		private int digest_size = 0;
-		#endregion
-	}
+            // Free the structure allocation
+            Native.OPENSSL_free(ptr);
+        }
+        #endregion
+
+        #region Fields
+        private bool initialized = false;
+        private int digest_size = 0;
+        #endregion
+    }
 }

@@ -28,99 +28,94 @@ using System.Collections.Generic;
 
 namespace OpenSSL.CLI
 {
-	class Option
-	{
-		private string name;
-		private object value;
+    class Option
+    {
+        private string name;
+        private object value;
 
-		public string Name
-		{
-			get { return name; }
-		}
+        public string Name {
+            get { return name; }
+        }
 
-		public object Value
-		{
-			get { return value; }
-			set { this.value = value; }
-		}
+        public object Value {
+            get { return value; }
+            set { this.value = value; }
+        }
 
-		public Option(string name, object value)
-		{
-			this.name = name;
-			this.value = value;
-		}
-	}
+        public Option(string name, object value)
+        {
+            this.name = name;
+            this.value = value;
+        }
+    }
 
-	class OptionParser
-	{
-		Dictionary<string, Option> optionsByKeyword = new Dictionary<string,Option>();
-		Dictionary<string, Option> optionsByName = new Dictionary<string, Option>();
-		List<string> args = new List<string>();
+    class OptionParser
+    {
+        Dictionary<string, Option> optionsByKeyword = new Dictionary<string, Option>();
+        Dictionary<string, Option> optionsByName = new Dictionary<string, Option>();
+        List<string> args = new List<string>();
 
-		public OptionParser() { }
+        public OptionParser() { }
 
-		public void AddOption(string keyword, Option option)
-		{
-			optionsByKeyword.Add(keyword, option);
-			optionsByName.Add(option.Name, option);
-		}
+        public void AddOption(string keyword, Option option)
+        {
+            optionsByKeyword.Add(keyword, option);
+            optionsByName.Add(option.Name, option);
+        }
 
-		public void AddMultiOption(string[] keywords, Option option) {
-			optionsByName.Add(option.Name, option);
+        public void AddMultiOption(string[] keywords, Option option)
+        {
+            optionsByName.Add(option.Name, option);
 
-			foreach (var keyword in keywords) {
-				optionsByKeyword.Add(keyword, option);
-			}
-		}
+            foreach (var keyword in keywords) {
+                optionsByKeyword.Add(keyword, option);
+            }
+        }
 
-		public void ParseArguments(string[] args)
-		{
-			for (var i = 1; i < args.Length; i++)
-			{
-				if (!args[i].StartsWith("-"))
-				{
-					this.args.Add(args[i]);
-					continue;
-				}
+        public void ParseArguments(string[] args)
+        {
+            for (var i = 1; i < args.Length; i++) {
+                if (!args[i].StartsWith("-")) {
+                    this.args.Add(args[i]);
+                    continue;
+                }
 
-				if (!optionsByKeyword.ContainsKey(args[i]))
-					throw new ArgumentOutOfRangeException(args[i], "Option not defined");
+                if (!optionsByKeyword.ContainsKey(args[i]))
+                    throw new ArgumentOutOfRangeException(args[i], "Option not defined");
 
-				var option = this.optionsByKeyword[args[i]];
+                var option = this.optionsByKeyword[args[i]];
 
-				if (option.Value.GetType() == typeof(bool))
-					option.Value = true;
-				else if (option.Value.GetType() == typeof(string))
-					option.Value = args[++i];
-			}
-		}
+                if (option.Value.GetType() == typeof(bool))
+                    option.Value = true;
+                else if (option.Value.GetType() == typeof(string))
+                    option.Value = args[++i];
+            }
+        }
 
-		public List<string> Arguments
-		{
-			get { return args; }
-		}
+        public List<string> Arguments {
+            get { return args; }
+        }
 
-		public object this[string name]
-		{
-			get { return optionsByName[name].Value; }
-		}
+        public object this[string name] {
+            get { return optionsByName[name].Value; }
+        }
 
-		public string GetString(string name)
-		{
-			return (string)optionsByName[name].Value; 
-		}
+        public string GetString(string name)
+        {
+            return (string)optionsByName[name].Value;
+        }
 
-		public bool IsSet(string name)
-		{
-			Option option;
-			if (optionsByName.TryGetValue(name, out option)) {
-				if (option.Value.GetType() == typeof(bool))
-					return (bool)option.Value;
-				else if(option.Value.ToString().Length > 0)
-					return true;
-			}
+        public bool IsSet(string name)
+        {
+            Option option;
+            if (optionsByName.TryGetValue(name, out option)) {
+                if (option.Value.GetType() == typeof(bool))
+                    return (bool)option.Value;
+                else if (option.Value.ToString().Length > 0)
+                    return true;
+            }
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 }

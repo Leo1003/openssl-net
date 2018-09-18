@@ -29,21 +29,21 @@ using System.IO;
 
 namespace OpenSSL.CLI
 {
-	class CmdGenDH : ICommand
-	{
-		OptionParser options = new OptionParser();
-		public CmdGenDH()
-		{
-			options.AddOption("-out", new Option("out", ""));
-			options.AddOption("-2", new Option("2", false));
-			options.AddOption("-5", new Option("5", false));
-			options.AddOption("-rand", new Option("rand", ""));
-			options.AddOption("-engine", new Option("engine", ""));
-		}
+    class CmdGenDH : ICommand
+    {
+        OptionParser options = new OptionParser();
+        public CmdGenDH()
+        {
+            options.AddOption("-out", new Option("out", ""));
+            options.AddOption("-2", new Option("2", false));
+            options.AddOption("-5", new Option("5", false));
+            options.AddOption("-rand", new Option("rand", ""));
+            options.AddOption("-engine", new Option("engine", ""));
+        }
 
-		void Usage()
-		{
-			string str =
+        void Usage()
+        {
+            string str =
 @"usage: gendh [args] [numbits]
  -out file - output the key to 'file
  -2        - use 2 as the generator value
@@ -53,50 +53,44 @@ namespace OpenSSL.CLI
            - load the file (or the files in the directory) into
              the random number generator";
 
-			Console.Error.WriteLine(str);
-		}
+            Console.Error.WriteLine(str);
+        }
 
-		#region ICommand Members
+        #region ICommand Members
 
-		public void Execute(string[] args)
-		{
-			try
-			{
-				options.ParseArguments(args);
-			}
-			catch (Exception)
-			{
-				Usage();
-				return;
-			}
+        public void Execute(string[] args)
+        {
+            try {
+                options.ParseArguments(args);
+            } catch (Exception) {
+                Usage();
+                return;
+            }
 
-			var g = DH.Generator2;
-			if (options.IsSet("2"))
-				g = DH.Generator2;
+            var g = DH.Generator2;
+            if (options.IsSet("2"))
+                g = DH.Generator2;
 
-			if (options.IsSet("5"))
-				g = DH.Generator5;
+            if (options.IsSet("5"))
+                g = DH.Generator5;
 
-			var bits = 512;
-			if (options.Arguments.Count == 1)
-				bits = Convert.ToInt32(options.Arguments[0]);
+            var bits = 512;
+            if (options.Arguments.Count == 1)
+                bits = Convert.ToInt32(options.Arguments[0]);
 
-			Console.Error.WriteLine("Generating DH parameters, {0} bit long safe prime, generator {1}", bits, g);
-			Console.Error.WriteLine("This is going to take a long time");
+            Console.Error.WriteLine("Generating DH parameters, {0} bit long safe prime, generator {1}", bits, g);
+            Console.Error.WriteLine("This is going to take a long time");
 
-			var dh = new DH(bits, g, Program.OnGenerator, null);
+            var dh = new DH(bits, g, Program.OnGenerator, null);
 
-			var outfile = options["out"] as string;
-			if (string.IsNullOrEmpty(outfile))
-			{
-				Console.WriteLine(dh.PEM);
-			}
-			else
-			{
-				File.WriteAllText(outfile, dh.PEM);
-			}
-		}
+            var outfile = options["out"] as string;
+            if (string.IsNullOrEmpty(outfile)) {
+                Console.WriteLine(dh.PEM);
+            } else {
+                File.WriteAllText(outfile, dh.PEM);
+            }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

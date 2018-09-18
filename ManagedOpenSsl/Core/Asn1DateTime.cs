@@ -28,72 +28,68 @@ using System.Globalization;
 
 namespace OpenSSL.Core
 {
-	class Asn1DateTime : Base
-	{
-		internal Asn1DateTime(IntPtr ptr, bool takeOwnership)
-			: base(ptr, takeOwnership)
-		{ }
+    class Asn1DateTime : Base
+    {
+        internal Asn1DateTime(IntPtr ptr, bool takeOwnership)
+            : base(ptr, takeOwnership)
+        { }
 
-		public Asn1DateTime()
-			: base(Native.ASN1_TIME_new(), true)
-		{ }
+        public Asn1DateTime()
+            : base(Native.ASN1_TIME_new(), true)
+        { }
 
-		public Asn1DateTime(DateTime dateTime)
-			: this()
-		{
-			this.DateTime = dateTime;
-		}
+        public Asn1DateTime(DateTime dateTime)
+            : this()
+        {
+            this.DateTime = dateTime;
+        }
 
-		protected override void OnDispose()
-		{
-			Native.ASN1_TIME_free(ptr);
-		}
+        protected override void OnDispose()
+        {
+            Native.ASN1_TIME_free(ptr);
+        }
 
-		public DateTime DateTime
-		{
-			get
-			{
-				return ToDateTime(ptr);
-			}
-			set
-			{
-				var time_t = DateTimeToTimeT(value.ToUniversalTime());
-				Native.ASN1_TIME_set(ptr, time_t);
-			}
-		}
+        public DateTime DateTime {
+            get {
+                return ToDateTime(ptr);
+            }
+            set {
+                var time_t = DateTimeToTimeT(value.ToUniversalTime());
+                Native.ASN1_TIME_set(ptr, time_t);
+            }
+        }
 
-		public static DateTime ToDateTime(IntPtr ptr)
-		{
-			return AsnTimeToDateTime(ptr).ToLocalTime();
-		}
+        public static DateTime ToDateTime(IntPtr ptr)
+        {
+            return AsnTimeToDateTime(ptr).ToLocalTime();
+        }
 
-		private long DateTimeToTimeT(DateTime value)
-		{
-			var dt1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+        private long DateTimeToTimeT(DateTime value)
+        {
+            var dt1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
-			// # of 100 nanoseconds since 1970
-			var ticks = (value.Ticks - dt1970.Ticks) / 10000000L;
-			
-			return ticks;
-		}
+            // # of 100 nanoseconds since 1970
+            var ticks = (value.Ticks - dt1970.Ticks) / 10000000L;
 
-		private static DateTime AsnTimeToDateTime(IntPtr ptr)
-		{
-			string str;
+            return ticks;
+        }
 
-			using (var bio = BIO.MemoryBuffer())
-			{
-				Native.ExpectSuccess(Native.ASN1_UTCTIME_print(bio.Handle, ptr));
-				str = bio.ReadString();
-			}
+        private static DateTime AsnTimeToDateTime(IntPtr ptr)
+        {
+            string str;
 
-			string[] fmts = 
-			{ 
-				"MMM  d HH:mm:ss yyyy G\\MT",
-				"MMM dd HH:mm:ss yyyy G\\MT"
-			};
+            using (var bio = BIO.MemoryBuffer()) {
+                Native.ExpectSuccess(Native.ASN1_UTCTIME_print(bio.Handle, ptr));
+                str = bio.ReadString();
+            }
 
-			return DateTime.ParseExact(str, fmts, new DateTimeFormatInfo(), DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
-		}
-	}
+            string[] fmts =
+            {
+                "MMM  d HH:mm:ss yyyy G\\MT",
+                "MMM dd HH:mm:ss yyyy G\\MT"
+            };
+
+            return DateTime.ParseExact(str, fmts, new DateTimeFormatInfo(), DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+        }
+    }
 }

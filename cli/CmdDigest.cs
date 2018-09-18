@@ -1,18 +1,19 @@
 ﻿using OpenSSL.Crypto;
 using System;
 
-namespace OpenSSL.CLI 
+namespace OpenSSL.CLI
 {
-	class CmdDigest : ICommand
-	{
-		OptionParser options = new OptionParser();
+    class CmdDigest : ICommand
+    {
+        OptionParser options = new OptionParser();
 
-		public CmdDigest() 
-		{
-		}
+        public CmdDigest()
+        {
+        }
 
-		void Usage() {
-			Console.Error.WriteLine(
+        void Usage()
+        {
+            Console.Error.WriteLine(
 @"options are
 -c              to output the digest with separating colons
 -d              to output debug info
@@ -27,28 +28,28 @@ namespace OpenSSL.CLI
 -engine e       use engine e, possibly a hardware device.
 Message Digest Types");
 
-			var types = MessageDigest.AllNamesSorted;
+            var types = MessageDigest.AllNamesSorted;
 
-			for (var i = 0; i < types.Length; i++) {
-				var name = types[i];
-				
-				if (name == name.ToUpper())
-					continue;
+            for (var i = 0; i < types.Length; i++) {
+                var name = types[i];
 
-				Console.Error.Write("-{0}", name.PadRight(26));
-				if (i % 3 == 0)
-					Console.Error.WriteLine();
-			}
-			Console.Error.WriteLine();
-		}
+                if (name == name.ToUpper())
+                    continue;
 
-		#region ICommand Members
+                Console.Error.Write("-{0}", name.PadRight(26));
+                if (i % 3 == 0)
+                    Console.Error.WriteLine();
+            }
+            Console.Error.WriteLine();
+        }
 
-		public void Execute(string[] args) 
-		{
-			Usage();
-		}
+        #region ICommand Members
 
-		#endregion
-	}
+        public void Execute(string[] args)
+        {
+            Usage();
+        }
+
+        #endregion
+    }
 }

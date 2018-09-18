@@ -30,80 +30,76 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.X509
 {
-	internal class X509CertificateInfo : BaseReference, IStackable
-	{
-		#region X509_INFO
-		[StructLayout(LayoutKind.Sequential)]
-		struct X509_INFO
-		{
-			public IntPtr x509;
-			public IntPtr crl;
-			public IntPtr x_pkey;
-			#region EVP_CIPHER_INFO enc_cipher;
-			public IntPtr cipher;
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.EVP_MAX_IV_LENGTH)]
-			public byte[] iv;
-			#endregion
-			public int enc_len;
-			public IntPtr enc_data;
-			public int references;
-		}
-		#endregion
+    internal class X509CertificateInfo : BaseReference, IStackable
+    {
+        #region X509_INFO
+        [StructLayout(LayoutKind.Sequential)]
+        struct X509_INFO
+        {
+            public IntPtr x509;
+            public IntPtr crl;
+            public IntPtr x_pkey;
+            #region EVP_CIPHER_INFO enc_cipher;
+            public IntPtr cipher;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.EVP_MAX_IV_LENGTH)]
+            public byte[] iv;
+            #endregion
+            public int enc_len;
+            public IntPtr enc_data;
+            public int references;
+        }
+        #endregion
 
-		#region Initialization
-		internal X509CertificateInfo(IStack stack, IntPtr ptr)
-			: base(ptr, true)
-		{
-		}
-		#endregion
+        #region Initialization
+        internal X509CertificateInfo(IStack stack, IntPtr ptr)
+            : base(ptr, true)
+        {
+        }
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		public X509Certificate Certificate
-		{
-			get
-			{
-				var ret = new X509Certificate(raw.x509, true);
-				ret.AddRef();
+        public X509Certificate Certificate {
+            get {
+                var ret = new X509Certificate(raw.x509, true);
+                ret.AddRef();
 
-				return ret;
-			}
-		}
+                return ret;
+            }
+        }
 
-		public CryptoKey Key
-		{
-			get
-			{
-				var ret = new CryptoKey(raw.x_pkey, true);
-				ret.AddRef();
+        public CryptoKey Key {
+            get {
+                var ret = new CryptoKey(raw.x_pkey, true);
+                ret.AddRef();
 
-				return ret;
-			}
-		}
+                return ret;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Overrides
+        #region Overrides
 
-		internal override void OnNewHandle(IntPtr ptr)
-		{
-			raw = (X509_INFO)Marshal.PtrToStructure(this.ptr, typeof(X509_INFO));
-		}
+        internal override void OnNewHandle(IntPtr ptr)
+        {
+            raw = (X509_INFO)Marshal.PtrToStructure(this.ptr, typeof(X509_INFO));
+        }
 
-		protected override void OnDispose()
-		{
-			Native.X509_INFO_free(ptr);
-		}
+        protected override void OnDispose()
+        {
+            Native.X509_INFO_free(ptr);
+        }
 
-		internal override void AddRef()
-		{
-			Native.X509_INFO_up_ref(ptr);
-		}
+        internal override void AddRef()
+        {
+            Native.X509_INFO_up_ref(ptr);
+        }
 
-		#endregion
+        #endregion
 
-		#region Fields
-		private X509_INFO raw;
-		#endregion
-	}
+        #region Fields
+        private X509_INFO raw;
+        #endregion
+    }
 }

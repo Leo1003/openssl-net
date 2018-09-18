@@ -32,280 +32,265 @@ using System.Text;
 
 namespace OpenSSL.CLI
 {
-	interface ICommand
-	{
-		void Execute(string[] args);
-	}
+    interface ICommand
+    {
+        void Execute(string[] args);
+    }
 
-	#region NullCommand
-	class NullCommand : ICommand
-	{
-		private string name;
-		public NullCommand(string name)
-		{
-			this.name = name;
-		}
+    #region NullCommand
+    class NullCommand : ICommand
+    {
+        private string name;
+        public NullCommand(string name)
+        {
+            this.name = name;
+        }
 
-		#region ICommand Members
-		public void Execute(string[] args)
-		{
-			Console.Error.WriteLine("{0}: {1}", name, string.Join(" ", args));
-			Console.Error.WriteLine("Not implemented yet!");
-		}
-		#endregion
-	}
-	#endregion
+        #region ICommand Members
+        public void Execute(string[] args)
+        {
+            Console.Error.WriteLine("{0}: {1}", name, string.Join(" ", args));
+            Console.Error.WriteLine("Not implemented yet!");
+        }
+        #endregion
+    }
+    #endregion
 
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			var program = new Program();
-			program.Run(args);
-		}
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var program = new Program();
+            program.Run(args);
+        }
 
-		SortedDictionary<string, ICommand> std_cmds = new SortedDictionary<string, ICommand>();
-		SortedDictionary<string, ICommand> md_cmds = new SortedDictionary<string, ICommand>();
-		SortedDictionary<string, ICommand> cipher_cmds = new SortedDictionary<string, ICommand>();
+        SortedDictionary<string, ICommand> std_cmds = new SortedDictionary<string, ICommand>();
+        SortedDictionary<string, ICommand> md_cmds = new SortedDictionary<string, ICommand>();
+        SortedDictionary<string, ICommand> cipher_cmds = new SortedDictionary<string, ICommand>();
 
-		void AddNullCommand(SortedDictionary<string, ICommand> map, string name)
-		{
-			map.Add(name, new NullCommand(name));
-		}
+        void AddNullCommand(SortedDictionary<string, ICommand> map, string name)
+        {
+            map.Add(name, new NullCommand(name));
+        }
 
-		Program()
-		{
-			var cmdCipher = new CmdCipher();
-			var cmdDigest = new CmdDigest();
+        Program()
+        {
+            var cmdCipher = new CmdCipher();
+            var cmdDigest = new CmdDigest();
 
-			std_cmds.Add("dh", new CmdDH());
-			std_cmds.Add("gendh", new CmdGenDH());
-			std_cmds.Add("rsa", new CmdRSA());
-			std_cmds.Add("genrsa", new CmdGenRSA());
-			std_cmds.Add("version", new CmdVersion());
-			std_cmds.Add("enc", cmdCipher);
-			std_cmds.Add("dgst", cmdDigest);
+            std_cmds.Add("dh", new CmdDH());
+            std_cmds.Add("gendh", new CmdGenDH());
+            std_cmds.Add("rsa", new CmdRSA());
+            std_cmds.Add("genrsa", new CmdGenRSA());
+            std_cmds.Add("version", new CmdVersion());
+            std_cmds.Add("enc", cmdCipher);
+            std_cmds.Add("dgst", cmdDigest);
 
-			#region Standard Commands
-			AddNullCommand(std_cmds, "asn1parse");
-			AddNullCommand(std_cmds, "ca");
-			AddNullCommand(std_cmds, "ciphers");
-			AddNullCommand(std_cmds, "crl");
-			AddNullCommand(std_cmds, "crl2pkcs7");
-			AddNullCommand(std_cmds, "dhparam");
-			AddNullCommand(std_cmds, "dsa");
-			AddNullCommand(std_cmds, "dsaparam");
-			AddNullCommand(std_cmds, "ec");
-			AddNullCommand(std_cmds, "ecparam");
-			AddNullCommand(std_cmds, "engine");
-			AddNullCommand(std_cmds, "errstr");
-			AddNullCommand(std_cmds, "gendsa");
-			AddNullCommand(std_cmds, "nseq");
-			AddNullCommand(std_cmds, "ocsp");
-			AddNullCommand(std_cmds, "passwd");
-			AddNullCommand(std_cmds, "pkcs12");
-			AddNullCommand(std_cmds, "pkcs7");
-			AddNullCommand(std_cmds, "pkcs8");
-			AddNullCommand(std_cmds, "prime");
-			AddNullCommand(std_cmds, "rand");
-			AddNullCommand(std_cmds, "req");
-			AddNullCommand(std_cmds, "rsautl");
-			AddNullCommand(std_cmds, "s_client");
-			AddNullCommand(std_cmds, "s_server");
-			AddNullCommand(std_cmds, "s_time");
-			AddNullCommand(std_cmds, "sess_id");
-			AddNullCommand(std_cmds, "smime");
-			AddNullCommand(std_cmds, "speed");
-			AddNullCommand(std_cmds, "spkac");
-			AddNullCommand(std_cmds, "verify");
-			AddNullCommand(std_cmds, "x509");
-			#endregion
+            #region Standard Commands
+            AddNullCommand(std_cmds, "asn1parse");
+            AddNullCommand(std_cmds, "ca");
+            AddNullCommand(std_cmds, "ciphers");
+            AddNullCommand(std_cmds, "crl");
+            AddNullCommand(std_cmds, "crl2pkcs7");
+            AddNullCommand(std_cmds, "dhparam");
+            AddNullCommand(std_cmds, "dsa");
+            AddNullCommand(std_cmds, "dsaparam");
+            AddNullCommand(std_cmds, "ec");
+            AddNullCommand(std_cmds, "ecparam");
+            AddNullCommand(std_cmds, "engine");
+            AddNullCommand(std_cmds, "errstr");
+            AddNullCommand(std_cmds, "gendsa");
+            AddNullCommand(std_cmds, "nseq");
+            AddNullCommand(std_cmds, "ocsp");
+            AddNullCommand(std_cmds, "passwd");
+            AddNullCommand(std_cmds, "pkcs12");
+            AddNullCommand(std_cmds, "pkcs7");
+            AddNullCommand(std_cmds, "pkcs8");
+            AddNullCommand(std_cmds, "prime");
+            AddNullCommand(std_cmds, "rand");
+            AddNullCommand(std_cmds, "req");
+            AddNullCommand(std_cmds, "rsautl");
+            AddNullCommand(std_cmds, "s_client");
+            AddNullCommand(std_cmds, "s_server");
+            AddNullCommand(std_cmds, "s_time");
+            AddNullCommand(std_cmds, "sess_id");
+            AddNullCommand(std_cmds, "smime");
+            AddNullCommand(std_cmds, "speed");
+            AddNullCommand(std_cmds, "spkac");
+            AddNullCommand(std_cmds, "verify");
+            AddNullCommand(std_cmds, "x509");
+            #endregion
 
-			#region Message Digest commands
-			foreach (var name in MessageDigest.AllNames) 
-			{
-				md_cmds.Add(name, cmdDigest);
-			}
-			#endregion
+            #region Message Digest commands
+            foreach (var name in MessageDigest.AllNames) {
+                md_cmds.Add(name, cmdDigest);
+            }
+            #endregion
 
-			#region Cipher commands
-			foreach (var name in Cipher.AllNames) 
-			{
-				cipher_cmds.Add(name, cmdCipher);
-			}
-			#endregion
-		}
+            #region Cipher commands
+            foreach (var name in Cipher.AllNames) {
+                cipher_cmds.Add(name, cmdCipher);
+            }
+            #endregion
+        }
 
-		ICommand FindCommand(string name)
-		{
-			if (std_cmds.ContainsKey(name))
-				return std_cmds[name];
-			if (md_cmds.ContainsKey(name))
-				return md_cmds[name];
-			if (cipher_cmds.ContainsKey(name))
-				return cipher_cmds[name];
+        ICommand FindCommand(string name)
+        {
+            if (std_cmds.ContainsKey(name))
+                return std_cmds[name];
+            if (md_cmds.ContainsKey(name))
+                return md_cmds[name];
+            if (cipher_cmds.ContainsKey(name))
+                return cipher_cmds[name];
 
-			return null;
-		}
+            return null;
+        }
 
-		void PrintCommands(IEnumerable<string> cmds)
-		{
-			const int COLUMN_WIDTH = 15;
+        void PrintCommands(IEnumerable<string> cmds)
+        {
+            const int COLUMN_WIDTH = 15;
 
-			var col = 0;
-			
-			foreach (var cmd in cmds)
-			{
-				if (cmd == cmd.ToUpper())
-					continue;
+            var col = 0;
 
-				if (cmd.Length > COLUMN_WIDTH) 
-				{
-					if (col > 0) 
-						Console.Error.WriteLine();
-					Console.Error.Write(cmd.PadRight(COLUMN_WIDTH));
-					Console.Error.WriteLine();
-					col = 0;
-				}
-				else 
-				{
-					Console.Error.Write(cmd.PadRight(COLUMN_WIDTH));
-					if (col++ == 4) 
-					{
-						Console.Error.WriteLine();
-						col = 0;
-						continue;
-					}
-				}
-			}
+            foreach (var cmd in cmds) {
+                if (cmd == cmd.ToUpper())
+                    continue;
 
-			Console.Error.WriteLine();
-		}
+                if (cmd.Length > COLUMN_WIDTH) {
+                    if (col > 0)
+                        Console.Error.WriteLine();
+                    Console.Error.Write(cmd.PadRight(COLUMN_WIDTH));
+                    Console.Error.WriteLine();
+                    col = 0;
+                } else {
+                    Console.Error.Write(cmd.PadRight(COLUMN_WIDTH));
+                    if (col++ == 4) {
+                        Console.Error.WriteLine();
+                        col = 0;
+                        continue;
+                    }
+                }
+            }
 
-		void Usage()
-		{
-			Console.Error.WriteLine("Standard commands");
-			PrintCommands(std_cmds.Keys);
-			Console.Error.WriteLine();
-			Console.Error.WriteLine("Message Digest commands");
-			PrintCommands(md_cmds.Keys);
-			Console.Error.WriteLine();
-			Console.Error.WriteLine("Cipher commands");
-			PrintCommands(cipher_cmds.Keys);
-		}
+            Console.Error.WriteLine();
+        }
 
-		void Run(string[] args)
-		{
-			if (args.Length == 0)
-			{
-				Usage();
-				return;
-			}
+        void Usage()
+        {
+            Console.Error.WriteLine("Standard commands");
+            PrintCommands(std_cmds.Keys);
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Message Digest commands");
+            PrintCommands(md_cmds.Keys);
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Cipher commands");
+            PrintCommands(cipher_cmds.Keys);
+        }
 
-			var cmd = FindCommand(args[0]);
-			if (cmd == null)
-			{
-				Usage();
-				return;
-			}
+        void Run(string[] args)
+        {
+            if (args.Length == 0) {
+                Usage();
+                return;
+            }
 
-			cmd.Execute(args);
-		}
+            var cmd = FindCommand(args[0]);
+            if (cmd == null) {
+                Usage();
+                return;
+            }
 
-		public static int OnGenerator(int p, int n, object arg)
-		{
-			var cout = Console.Error;
+            cmd.Execute(args);
+        }
 
-			switch (p)
-			{
-				case 0: cout.Write('.'); break;
-				case 1: cout.Write('+'); break;
-				case 2: cout.Write('*'); break;
-				case 3: cout.WriteLine(); break;
-			}
+        public static int OnGenerator(int p, int n, object arg)
+        {
+            var cout = Console.Error;
 
-			return 1;
-		}
+            switch (p) {
+                case 0: cout.Write('.'); break;
+                case 1: cout.Write('+'); break;
+                case 2: cout.Write('*'); break;
+                case 3: cout.WriteLine(); break;
+            }
 
-		private static string ReadPassword()
-		{
-			Console.TreatControlCAsInput = true;
-			var sb = new StringBuilder();
+            return 1;
+        }
 
-			while (true)
-			{
-				var key = Console.ReadKey(true);
+        private static string ReadPassword()
+        {
+            Console.TreatControlCAsInput = true;
+            var sb = new StringBuilder();
 
-				if (key.Key == ConsoleKey.Enter)
-					break;
+            while (true) {
+                var key = Console.ReadKey(true);
 
-				if (key.Key == ConsoleKey.C && key.Modifiers == ConsoleModifiers.Control)
-				{
-					Console.Error.WriteLine();
-					throw new Exception("Canceled");
-				}
+                if (key.Key == ConsoleKey.Enter)
+                    break;
 
-				sb.Append(key.KeyChar);
-			}
+                if (key.Key == ConsoleKey.C && key.Modifiers == ConsoleModifiers.Control) {
+                    Console.Error.WriteLine();
+                    throw new Exception("Canceled");
+                }
 
-			Console.TreatControlCAsInput = false;
+                sb.Append(key.KeyChar);
+            }
 
-			return sb.ToString();
-		}
+            Console.TreatControlCAsInput = false;
 
-		public static string OnPassword(bool verify, object arg)
-		{
-			var passout = arg as string;
+            return sb.ToString();
+        }
 
-			if (!string.IsNullOrEmpty(passout))
-				return File.ReadAllText(passout);
+        public static string OnPassword(bool verify, object arg)
+        {
+            var passout = arg as string;
 
-			while (true)
-			{
-				Console.Error.Write("Enter pass phrase:");
-				var strPassword = ReadPassword();
-				Console.Error.WriteLine();
+            if (!string.IsNullOrEmpty(passout))
+                return File.ReadAllText(passout);
 
-				if (strPassword.Length == 0)
-					continue;
+            while (true) {
+                Console.Error.Write("Enter pass phrase:");
+                var strPassword = ReadPassword();
+                Console.Error.WriteLine();
 
-				if (!verify)
-					return strPassword;
+                if (strPassword.Length == 0)
+                    continue;
 
-				Console.Error.Write("Verifying - Enter pass phrase:");
-				var strVerify = ReadPassword();
-				Console.Error.WriteLine();
-	
-				if (strPassword == strVerify)
-					return strPassword;
+                if (!verify)
+                    return strPassword;
 
-				Console.Error.WriteLine("Passwords don't match, try again.");
-			}
-		}
+                Console.Error.Write("Verifying - Enter pass phrase:");
+                var strVerify = ReadPassword();
+                Console.Error.WriteLine();
 
-		public static BIO GetInFile(string infile)
-		{
-			BIO bio;
+                if (strPassword == strVerify)
+                    return strPassword;
 
-			if (string.IsNullOrEmpty(infile))
-			{
-				bio = BIO.MemoryBuffer();
-				var cin = Console.OpenStandardInput();
-				var buf = new byte[1024];
-				while (true)
-				{
-					var len = cin.Read(buf, 0, buf.Length);
-					
-					if (len == 0)
-						break;
-					
-					bio.Write(buf, len);
-				}
-				
-				return bio;
-			}
+                Console.Error.WriteLine("Passwords don't match, try again.");
+            }
+        }
 
-			return BIO.File(infile, "r");
-		}
-	}
+        public static BIO GetInFile(string infile)
+        {
+            BIO bio;
+
+            if (string.IsNullOrEmpty(infile)) {
+                bio = BIO.MemoryBuffer();
+                var cin = Console.OpenStandardInput();
+                var buf = new byte[1024];
+                while (true) {
+                    var len = cin.Read(buf, 0, buf.Length);
+
+                    if (len == 0)
+                        break;
+
+                    bio.Write(buf, len);
+                }
+
+                return bio;
+            }
+
+            return BIO.File(infile, "r");
+        }
+    }
 }

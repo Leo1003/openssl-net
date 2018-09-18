@@ -28,96 +28,93 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.Core
 {
-	/// <summary>
-	/// Wraps ASN1_STRING_*
-	/// </summary>
-	public class Asn1String : BaseValue, IComparable<Asn1String>
-	{
-		#region Initialization
-		/// <summary>
-		/// Calls ASN1_STRING_type_new()
-		/// </summary>
-		public Asn1String()
-			: base(Native.ASN1_STRING_type_new(Native.V_ASN1_OCTET_STRING), true)
-		{
-		}
+    /// <summary>
+    /// Wraps ASN1_STRING_*
+    /// </summary>
+    public class Asn1String : BaseValue, IComparable<Asn1String>
+    {
+        #region Initialization
+        /// <summary>
+        /// Calls ASN1_STRING_type_new()
+        /// </summary>
+        public Asn1String()
+            : base(Native.ASN1_STRING_type_new(Native.V_ASN1_OCTET_STRING), true)
+        {
+        }
 
-		/// <summary>
-		/// Wrap existing native pointer
-		/// </summary>
-		/// <param name="ptr"></param>
-		/// <param name="takeOwnership"></param>
-		internal Asn1String(IntPtr ptr, bool takeOwnership)
-			: base(ptr, takeOwnership)
-		{
-		}
+        /// <summary>
+        /// Wrap existing native pointer
+        /// </summary>
+        /// <param name="ptr"></param>
+        /// <param name="takeOwnership"></param>
+        internal Asn1String(IntPtr ptr, bool takeOwnership)
+            : base(ptr, takeOwnership)
+        {
+        }
 
-		/// <summary>
-		/// Calls ASN1_STRING_set()
-		/// </summary>
-		/// <param name="data"></param>
-		public Asn1String(byte[] data)
-			: this()
-		{
-			Native.ExpectSuccess(Native.ASN1_STRING_set(ptr, data, data.Length));
-		}
-		#endregion
+        /// <summary>
+        /// Calls ASN1_STRING_set()
+        /// </summary>
+        /// <param name="data"></param>
+        public Asn1String(byte[] data)
+            : this()
+        {
+            Native.ExpectSuccess(Native.ASN1_STRING_set(ptr, data, data.Length));
+        }
+        #endregion
 
-		#region Properties
-		/// <summary>
-		/// Returns ASN1_STRING_length()
-		/// </summary>
-		public int Length
-		{
-			get { return Native.ASN1_STRING_length(ptr); }
-		}
+        #region Properties
+        /// <summary>
+        /// Returns ASN1_STRING_length()
+        /// </summary>
+        public int Length {
+            get { return Native.ASN1_STRING_length(ptr); }
+        }
 
-		/// <summary>
-		/// Returns ASN1_STRING_data()
-		/// </summary>
-		public byte[] Data
-		{
-			get
-			{
-				var pData = Native.ASN1_STRING_data(ptr);
-				var ret = new byte[Length];
+        /// <summary>
+        /// Returns ASN1_STRING_data()
+        /// </summary>
+        public byte[] Data {
+            get {
+                var pData = Native.ASN1_STRING_data(ptr);
+                var ret = new byte[Length];
 
-				Marshal.Copy(pData, ret, 0, ret.Length);
+                Marshal.Copy(pData, ret, 0, ret.Length);
 
-				return ret;
-			}
-		}
-		#endregion
+                return ret;
+            }
+        }
+        #endregion
 
-		#region Overrides
+        #region Overrides
 
-		internal override IntPtr DuplicateHandle()
-		{
-			return Native.ASN1_STRING_dup(ptr);
-		}
+        internal override IntPtr DuplicateHandle()
+        {
+            return Native.ASN1_STRING_dup(ptr);
+        }
 
-		/// <summary>
-		/// Calls ASN1_STRING_free()
-		/// </summary>
-		protected override void OnDispose()
-		{
-			Native.ASN1_STRING_free(ptr);
-		}
+        /// <summary>
+        /// Calls ASN1_STRING_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.ASN1_STRING_free(ptr);
+        }
 
-		#endregion
+        #endregion
 
-		#region IComparable<Asn1String> Members
+        #region IComparable<Asn1String> Members
 
-		/// <summary>
-		/// Returns ASN1_STRING_cmp()
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public int CompareTo(Asn1String other)
-		{
-			return Native.ASN1_STRING_cmp(ptr, other.Handle);
-		}
+        /// <summary>
+        /// Returns ASN1_STRING_cmp()
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(Asn1String other)
+        {
+            return Native.ASN1_STRING_cmp(ptr, other.Handle);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

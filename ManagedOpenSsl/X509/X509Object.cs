@@ -30,98 +30,94 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.X509
 {
-	/// <summary>
-	/// Wraps the X509_OBJECT: a glorified union
-	/// </summary>
-	public class X509Object : BaseReference, IStackable
-	{
-		#region X509_OBJECT
-		const int X509_LU_RETRY = -1;
-		const int X509_LU_FAIL = 0;
-		const int X509_LU_X509 = 1;
-		const int X509_LU_CRL = 2;
-		const int X509_LU_PKEY = 3;
+    /// <summary>
+    /// Wraps the X509_OBJECT: a glorified union
+    /// </summary>
+    public class X509Object : BaseReference, IStackable
+    {
+        #region X509_OBJECT
+        const int X509_LU_RETRY = -1;
+        const int X509_LU_FAIL = 0;
+        const int X509_LU_X509 = 1;
+        const int X509_LU_CRL = 2;
+        const int X509_LU_PKEY = 3;
 
-		[StructLayout(LayoutKind.Sequential)]
-		struct X509_OBJECT
-		{
-			/* one of the above types */
-			public int type;
-			public IntPtr ptr;
-		}
+        [StructLayout(LayoutKind.Sequential)]
+        struct X509_OBJECT
+        {
+            /* one of the above types */
+            public int type;
+            public IntPtr ptr;
+        }
 
-		#endregion
+        #endregion
 
-		#region Initialization
+        #region Initialization
 
-		internal X509Object(IStack stack, IntPtr ptr)
-			: base(ptr, true)
-		{
-		}
+        internal X509Object(IStack stack, IntPtr ptr)
+            : base(ptr, true)
+        {
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		/// <summary>
-		/// Returns a Certificate if the type is X509_LU_X509
-		/// </summary>
-		public X509Certificate Certificate
-		{
-			get
-			{
-				if (raw.type == X509_LU_X509)
-					return new X509Certificate(raw.ptr, false);
+        /// <summary>
+        /// Returns a Certificate if the type is X509_LU_X509
+        /// </summary>
+        public X509Certificate Certificate {
+            get {
+                if (raw.type == X509_LU_X509)
+                    return new X509Certificate(raw.ptr, false);
 
-				return null;
-			}
-		}
+                return null;
+            }
+        }
 
-		/// <summary>
-		/// Returns the PrivateKey if the type is X509_LU_PKEY
-		/// </summary>
-		public CryptoKey PrivateKey
-		{
-			get
-			{
-				if (raw.type == X509_LU_PKEY)
-					return new CryptoKey(raw.ptr, false);
+        /// <summary>
+        /// Returns the PrivateKey if the type is X509_LU_PKEY
+        /// </summary>
+        public CryptoKey PrivateKey {
+            get {
+                if (raw.type == X509_LU_PKEY)
+                    return new CryptoKey(raw.ptr, false);
 
-				return null;
-			}
-		}
+                return null;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		//!! TODO - Add support for CRL
+        //!! TODO - Add support for CRL
 
-		#region Overrides
+        #region Overrides
 
-		/// <summary>
-		/// Calls X509_OBJECT_up_ref_count()
-		/// </summary>
-		internal override void AddRef()
-		{
-			Native.X509_OBJECT_up_ref_count(ptr);
-		}
+        /// <summary>
+        /// Calls X509_OBJECT_up_ref_count()
+        /// </summary>
+        internal override void AddRef()
+        {
+            Native.X509_OBJECT_up_ref_count(ptr);
+        }
 
-		/// <summary>
-		/// Calls X509_OBJECT_free_contents()
-		/// </summary>
-		protected override void OnDispose()
-		{
-			Native.X509_OBJECT_free_contents(ptr);
-		}
+        /// <summary>
+        /// Calls X509_OBJECT_free_contents()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.X509_OBJECT_free_contents(ptr);
+        }
 
-		internal override void OnNewHandle(IntPtr ptr)
-		{
-			raw = (X509_OBJECT)Marshal.PtrToStructure(this.ptr, typeof(X509_OBJECT));
-		}
+        internal override void OnNewHandle(IntPtr ptr)
+        {
+            raw = (X509_OBJECT)Marshal.PtrToStructure(this.ptr, typeof(X509_OBJECT));
+        }
 
-		#endregion
+        #endregion
 
-		#region Fields
-		private X509_OBJECT raw;
-		#endregion
-	}
+        #region Fields
+        private X509_OBJECT raw;
+        #endregion
+    }
 }

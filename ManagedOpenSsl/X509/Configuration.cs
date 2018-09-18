@@ -30,168 +30,167 @@ using System.Text;
 
 namespace OpenSSL.X509
 {
-	#region X509v3Context
+    #region X509v3Context
 
-	/// <summary>
-	/// Wraps X509V3_CTX
-	/// </summary>
-	class X509V3Context : Base
-	{
-		#region X509V3_CTX
-		[StructLayout(LayoutKind.Sequential)]
-		struct X509V3_CTX
-		{
-			public int flags;
-			public IntPtr issuer_cert;
-			public IntPtr subject_cert;
-			public IntPtr subject_req;
-			public IntPtr crl;
-			public IntPtr db_meth;
-			public IntPtr db;
-		}
-		#endregion
+    /// <summary>
+    /// Wraps X509V3_CTX
+    /// </summary>
+    class X509V3Context : Base
+    {
+        #region X509V3_CTX
+        [StructLayout(LayoutKind.Sequential)]
+        struct X509V3_CTX
+        {
+            public int flags;
+            public IntPtr issuer_cert;
+            public IntPtr subject_cert;
+            public IntPtr subject_req;
+            public IntPtr crl;
+            public IntPtr db_meth;
+            public IntPtr db;
+        }
+        #endregion
 
-		#region Initialization
+        #region Initialization
 
-		/// <summary>
-		/// Calls OPENSSL_malloc()
-		/// </summary>
-		private X509V3Context()
-			: base(Native.OPENSSL_malloc(Marshal.SizeOf(typeof(X509V3_CTX))), true)
-		{ }
+        /// <summary>
+        /// Calls OPENSSL_malloc()
+        /// </summary>
+        private X509V3Context()
+            : base(Native.OPENSSL_malloc(Marshal.SizeOf(typeof(X509V3_CTX))), true)
+        { }
 
-		/// <summary>
-		/// Calls X509V3_set_ctx()
-		/// </summary>
-		/// <param name="issuer"></param>
-		/// <param name="subject"></param>
-		/// <param name="request"></param>
-		public X509V3Context(X509Certificate issuer, X509Certificate subject, X509Request request)
-			: this()
-		{
-			Native.X509V3_set_ctx(
-				this.ptr,
-				issuer != null ? issuer.Handle : IntPtr.Zero,
-				subject != null ? subject.Handle : IntPtr.Zero,
-				request != null ? request.Handle : IntPtr.Zero,
-				IntPtr.Zero,
-				0);
-		}
+        /// <summary>
+        /// Calls X509V3_set_ctx()
+        /// </summary>
+        /// <param name="issuer"></param>
+        /// <param name="subject"></param>
+        /// <param name="request"></param>
+        public X509V3Context(X509Certificate issuer, X509Certificate subject, X509Request request)
+            : this()
+        {
+            Native.X509V3_set_ctx(
+                this.ptr,
+                issuer != null ? issuer.Handle : IntPtr.Zero,
+                subject != null ? subject.Handle : IntPtr.Zero,
+                request != null ? request.Handle : IntPtr.Zero,
+                IntPtr.Zero,
+                0);
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		/// <summary>
-		/// X509V3_set_ctx_nodb - sets the db pointer to NULL
-		/// </summary>
-		public void SetNoDB()
-		{
-			var db_offset = (int)Marshal.OffsetOf(typeof(X509V3_CTX), "db");
-			var db_param = new IntPtr((int)ptr + db_offset);
-			Marshal.WriteIntPtr(db_param, IntPtr.Zero);
-		}
+        /// <summary>
+        /// X509V3_set_ctx_nodb - sets the db pointer to NULL
+        /// </summary>
+        public void SetNoDB()
+        {
+            var db_offset = (int)Marshal.OffsetOf(typeof(X509V3_CTX), "db");
+            var db_param = new IntPtr((int)ptr + db_offset);
+            Marshal.WriteIntPtr(db_param, IntPtr.Zero);
+        }
 
-		/// <summary>
-		/// Calls X509V3_set_nconf()
-		/// </summary>
-		/// <param name="cfg"></param>
-		public void SetConfiguration(Configuration cfg)
-		{
-			Native.X509V3_set_nconf(ptr, cfg.Handle);
-		}
+        /// <summary>
+        /// Calls X509V3_set_nconf()
+        /// </summary>
+        /// <param name="cfg"></param>
+        public void SetConfiguration(Configuration cfg)
+        {
+            Native.X509V3_set_nconf(ptr, cfg.Handle);
+        }
 
-		#endregion
+        #endregion
 
-		#region Overrides
+        #region Overrides
 
-		/// <summary>
-		/// Calls OPENSSL_free()
-		/// </summary>
-		protected override void OnDispose()
-		{
-			Native.OPENSSL_free(ptr);
-		}
+        /// <summary>
+        /// Calls OPENSSL_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.OPENSSL_free(ptr);
+        }
 
-		#endregion
-	}
-	#endregion
+        #endregion
+    }
+    #endregion
 
-	/// <summary>
-	/// Wraps the NCONF_* functions
-	/// </summary>
-	public class Configuration : Base
-	{
-		#region Initialization
+    /// <summary>
+    /// Wraps the NCONF_* functions
+    /// </summary>
+    public class Configuration : Base
+    {
+        #region Initialization
 
-		/// <summary>
-		/// Calls NCONF_new()
-		/// </summary>
-		private Configuration()
-			: base(Native.NCONF_new(IntPtr.Zero), true)
-		{ }
+        /// <summary>
+        /// Calls NCONF_new()
+        /// </summary>
+        private Configuration()
+            : base(Native.NCONF_new(IntPtr.Zero), true)
+        { }
 
-		/// <summary>
-		/// Calls NCONF_load()
-		/// </summary>
-		/// <param name="filename"></param>
-		public Configuration(string filename)
-			: this()
-		{
-			Load(filename);
-		}
+        /// <summary>
+        /// Calls NCONF_load()
+        /// </summary>
+        /// <param name="filename"></param>
+        public Configuration(string filename)
+            : this()
+        {
+            Load(filename);
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		/// <summary>
-		/// Calls NCONF_load()
-		/// </summary>
-		/// <param name="filename"></param>
-		public void Load(string filename)
-		{
-			var eline = 0;
-			Native.ExpectSuccess(Native.NCONF_load(ptr, filename, ref eline));
-		}
+        /// <summary>
+        /// Calls NCONF_load()
+        /// </summary>
+        /// <param name="filename"></param>
+        public void Load(string filename)
+        {
+            var eline = 0;
+            Native.ExpectSuccess(Native.NCONF_load(ptr, filename, ref eline));
+        }
 
-		/// <summary>
-		/// Creates a X509v3Context(), calls X509V3_set_ctx() on it, then calls
-		/// X509V3_EXT_add_nconf()
-		/// </summary>
-		/// <param name="section"></param>
-		/// <param name="issuer"></param>
-		/// <param name="subject"></param>
-		/// <param name="request"></param>
-		public void ApplyExtensions(
-			string section,
-			X509Certificate issuer,
-			X509Certificate subject,
-			X509Request request)
-		{
-			using (var ctx = new X509V3Context(issuer, subject, request))
-			{
-				ctx.SetConfiguration(this);
-				Native.ExpectSuccess(Native.X509V3_EXT_add_nconf(
-					this.ptr,
-					ctx.Handle,
-					Encoding.ASCII.GetBytes(section),
-					subject.Handle));
-			}
-		}
+        /// <summary>
+        /// Creates a X509v3Context(), calls X509V3_set_ctx() on it, then calls
+        /// X509V3_EXT_add_nconf()
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="issuer"></param>
+        /// <param name="subject"></param>
+        /// <param name="request"></param>
+        public void ApplyExtensions(
+            string section,
+            X509Certificate issuer,
+            X509Certificate subject,
+            X509Request request)
+        {
+            using (var ctx = new X509V3Context(issuer, subject, request)) {
+                ctx.SetConfiguration(this);
+                Native.ExpectSuccess(Native.X509V3_EXT_add_nconf(
+                    this.ptr,
+                    ctx.Handle,
+                    Encoding.ASCII.GetBytes(section),
+                    subject.Handle));
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Overrides
+        #region Overrides
 
-		/// <summary>
-		/// Calls NCONF_free()
-		/// </summary>
-		protected override void OnDispose()
-		{
-			Native.NCONF_free(ptr);
-		}
+        /// <summary>
+        /// Calls NCONF_free()
+        /// </summary>
+        protected override void OnDispose()
+        {
+            Native.NCONF_free(ptr);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

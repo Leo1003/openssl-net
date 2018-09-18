@@ -30,29 +30,29 @@ using System.IO;
 
 namespace OpenSSL.CLI
 {
-	class CmdGenRSA : ICommand
-	{
-		OptionParser options = new OptionParser();
+    class CmdGenRSA : ICommand
+    {
+        OptionParser options = new OptionParser();
 
-		public CmdGenRSA()
-		{
-			options.AddOption("-des", new Option("des", false));
-			options.AddOption("-des3", new Option("des3", false));
-			options.AddOption("-idea", new Option("idea", false));
-			options.AddOption("-aes128", new Option("aes128", false));
-			options.AddOption("-aes192", new Option("aes192", false));
-			options.AddOption("-aes256", new Option("aes256", false));
-			options.AddOption("-out", new Option("out", ""));
-			options.AddOption("-passout", new Option("passout", ""));
-			options.AddOption("-f4", new Option("f4", true));
-			options.AddOption("-3", new Option("3", false));
-			options.AddOption("-engine", new Option("engine", ""));
-			options.AddOption("-rand", new Option("rand", ""));
-		}
+        public CmdGenRSA()
+        {
+            options.AddOption("-des", new Option("des", false));
+            options.AddOption("-des3", new Option("des3", false));
+            options.AddOption("-idea", new Option("idea", false));
+            options.AddOption("-aes128", new Option("aes128", false));
+            options.AddOption("-aes192", new Option("aes192", false));
+            options.AddOption("-aes256", new Option("aes256", false));
+            options.AddOption("-out", new Option("out", ""));
+            options.AddOption("-passout", new Option("passout", ""));
+            options.AddOption("-f4", new Option("f4", true));
+            options.AddOption("-3", new Option("3", false));
+            options.AddOption("-engine", new Option("engine", ""));
+            options.AddOption("-rand", new Option("rand", ""));
+        }
 
-		void Usage()
-		{
-			Console.Error.WriteLine(
+        void Usage()
+        {
+            Console.Error.WriteLine(
 @"usage: genrsa [args] [numbits]
  -des            encrypt the generated key with DES in cbc mode
  -des3           encrypt the generated key with DES in ede cbc mode (168 bit key)
@@ -67,65 +67,61 @@ namespace OpenSSL.CLI
  -rand file;file;...
                  load the file (or the files in the directory) into
                  the random number generator");
-		}
+        }
 
-		#region ICommand Members
+        #region ICommand Members
 
-		public void Execute(string[] args)
-		{
-			try
-			{
-				options.ParseArguments(args);
-			}
-			catch (Exception)
-			{
-				Usage();
-				return;
-			}
+        public void Execute(string[] args)
+        {
+            try {
+                options.ParseArguments(args);
+            } catch (Exception) {
+                Usage();
+                return;
+            }
 
-			var bits = 512;
-			if (options.Arguments.Count == 1)
-				bits = Convert.ToInt32(options.Arguments[0]);
+            var bits = 512;
+            if (options.Arguments.Count == 1)
+                bits = Convert.ToInt32(options.Arguments[0]);
 
-			BigNumber e = null;
-			if (options.IsSet("3"))
-				e = 3;
-			else if (options.IsSet("f4"))
-				e = 0x10001;
+            BigNumber e = null;
+            if (options.IsSet("3"))
+                e = 3;
+            else if (options.IsSet("f4"))
+                e = 0x10001;
 
-			Console.Error.WriteLine("Generating RSA private key, {0} bit long modulus", bits);
+            Console.Error.WriteLine("Generating RSA private key, {0} bit long modulus", bits);
 
-			var rsa = new RSA();
-			rsa.GenerateKeys(bits, e, Program.OnGenerator, null);
+            var rsa = new RSA();
+            rsa.GenerateKeys(bits, e, Program.OnGenerator, null);
 
-			Console.Error.WriteLine("e is {0} (0x{1})", e.ToDecimalString(), e.ToHexString());
+            Console.Error.WriteLine("e is {0} (0x{1})", e.ToDecimalString(), e.ToHexString());
 
-			Cipher enc = null;
-			if (options.IsSet("des"))
-				enc = Cipher.DES_CBC;
-			else if (options.IsSet("des3"))
-				enc = Cipher.DES_EDE3_CBC;
-			else if (options.IsSet("idea"))
-				enc = Cipher.Idea_CBC;
-			else if (options.IsSet("aes128"))
-				enc = Cipher.AES_128_CBC;
-			else if (options.IsSet("aes192"))
-				enc = Cipher.AES_192_CBC;
-			else if (options.IsSet("aes256"))
-				enc = Cipher.AES_256_CBC;
+            Cipher enc = null;
+            if (options.IsSet("des"))
+                enc = Cipher.DES_CBC;
+            else if (options.IsSet("des3"))
+                enc = Cipher.DES_EDE3_CBC;
+            else if (options.IsSet("idea"))
+                enc = Cipher.Idea_CBC;
+            else if (options.IsSet("aes128"))
+                enc = Cipher.AES_128_CBC;
+            else if (options.IsSet("aes192"))
+                enc = Cipher.AES_192_CBC;
+            else if (options.IsSet("aes256"))
+                enc = Cipher.AES_256_CBC;
 
-			using (var bio = BIO.MemoryBuffer())
-			{
-				rsa.WritePrivateKey(bio, enc, Program.OnPassword, options["passout"]);
+            using (var bio = BIO.MemoryBuffer()) {
+                rsa.WritePrivateKey(bio, enc, Program.OnPassword, options["passout"]);
 
-				var outfile = options["out"] as string;
-				if (string.IsNullOrEmpty(outfile))
-					Console.WriteLine(bio.ReadString());
-				else
-					File.WriteAllText(outfile, bio.ReadString());
-			}
-		}
+                var outfile = options["out"] as string;
+                if (string.IsNullOrEmpty(outfile))
+                    Console.WriteLine(bio.ReadString());
+                else
+                    File.WriteAllText(outfile, bio.ReadString());
+            }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

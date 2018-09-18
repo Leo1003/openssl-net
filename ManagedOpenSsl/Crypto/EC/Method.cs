@@ -28,53 +28,52 @@ using System;
 
 namespace OpenSSL.Crypto.EC
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class Method : Base
-	{
-		#region Initialization
-		internal Method(IntPtr ptr, bool owner)
-			: base(ptr, owner)
-		{
-		}
+    /// <summary>
+    ///
+    /// </summary>
+    public class Method : Base
+    {
+        #region Initialization
+        internal Method(IntPtr ptr, bool owner)
+            : base(ptr, owner)
+        {
+        }
 
-		/// <summary>
-		/// Returns EC_GFp_simple_method()
-		/// </summary>
-		public static Method GFpSimple = new Method(Native.EC_GFp_simple_method(), false);
-		/// <summary>
-		/// Returns EC_GFp_mont_method()
-		/// </summary>
-		public static Method GFpMont = new Method(Native.EC_GFp_mont_method(), false);
-		/// <summary>
-		/// Returns EC_GFp_nist_method()
-		/// </summary>
-		public static Method GFpNist = new Method(Native.EC_GFp_nist_method(), false);
-		/// <summary>
-		/// Returns EC_GF2m_simple_method()
-		/// </summary>
-		public static Method GF2mSimple = new Method(Native.EC_GF2m_simple_method(), false);
-		#endregion
+        /// <summary>
+        /// Returns EC_GFp_simple_method()
+        /// </summary>
+        public static Method GFpSimple = new Method(Native.EC_GFp_simple_method(), false);
+        /// <summary>
+        /// Returns EC_GFp_mont_method()
+        /// </summary>
+        public static Method GFpMont = new Method(Native.EC_GFp_mont_method(), false);
+        /// <summary>
+        /// Returns EC_GFp_nist_method()
+        /// </summary>
+        public static Method GFpNist = new Method(Native.EC_GFp_nist_method(), false);
+        /// <summary>
+        /// Returns EC_GF2m_simple_method()
+        /// </summary>
+        public static Method GF2mSimple = new Method(Native.EC_GF2m_simple_method(), false);
+        #endregion
 
-		#region Properties
-		/// <summary>
-		/// Returns EC_METHOD_get_field_type()
-		/// </summary>
-		public int FieldType
-		{
-			get { return Native.EC_METHOD_get_field_type(ptr); }
-		}
-		#endregion
+        #region Properties
+        /// <summary>
+        /// Returns EC_METHOD_get_field_type()
+        /// </summary>
+        public int FieldType {
+            get { return Native.EC_METHOD_get_field_type(ptr); }
+        }
+        #endregion
 
-		#region Overrides
-		/// <summary>
-		/// 
-		/// </summary>
-		protected override void OnDispose()
-		{
-		}
-		#endregion
-	}
+        #region Overrides
+        /// <summary>
+        ///
+        /// </summary>
+        protected override void OnDispose()
+        {
+        }
+        #endregion
+    }
 }
 
