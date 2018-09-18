@@ -9,6 +9,7 @@ dist
 *.pidb
 *.aps
 *.eto
+.vs/
 .DS_Store
 test-results
 TestResult.xml
