@@ -101,7 +101,7 @@ namespace OpenSSL.Core
         /// </summary>
         public static void Init()
         {
-            Native.CRYPTO_set_mem_ex_functions(_ptrMalloc, _ptrRealloc, _ptrFree);
+            Native.CRYPTO_set_mem_functions(_ptrMalloc, _ptrRealloc, _ptrFree);
         }
 
         /// <summary>

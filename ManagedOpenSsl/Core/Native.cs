@@ -315,7 +315,7 @@ namespace OpenSSL.Core
         public extern static IntPtr CRYPTO_malloc(int num, string file, int line);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int CRYPTO_set_mem_ex_functions(
+        public extern static int CRYPTO_set_mem_functions(
             MallocFunctionPtr m,
             ReallocFunctionPtr r,
             FreeFunctionPtr f
@@ -377,49 +377,49 @@ namespace OpenSSL.Core
         #region stack
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_new_null();
+        public extern static IntPtr OPENSSL_sk_new_null();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int sk_num(IntPtr stack);
+        public extern static int OPENSSL_sk_num(IntPtr stack);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int sk_find(IntPtr stack, IntPtr data);
+        public extern static int OPENSSL_sk_find(IntPtr stack, IntPtr data);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int sk_insert(IntPtr stack, IntPtr data, int where);
+        public extern static int OPENSSL_sk_insert(IntPtr stack, IntPtr data, int where);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_shift(IntPtr stack);
+        public extern static IntPtr OPENSSL_sk_shift(IntPtr stack);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int sk_unshift(IntPtr stack, IntPtr data);
+        public extern static int OPENSSL_sk_unshift(IntPtr stack, IntPtr data);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int sk_push(IntPtr stack, IntPtr data);
+        public extern static int OPENSSL_sk_push(IntPtr stack, IntPtr data);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_pop(IntPtr stack);
+        public extern static IntPtr OPENSSL_sk_pop(IntPtr stack);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_delete(IntPtr stack, int loc);
+        public extern static IntPtr OPENSSL_sk_delete(IntPtr stack, int loc);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_delete_ptr(IntPtr stack, IntPtr p);
+        public extern static IntPtr OPENSSL_sk_delete_ptr(IntPtr stack, IntPtr p);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_value(IntPtr stack, int index);
+        public extern static IntPtr OPENSSL_sk_value(IntPtr stack, int index);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_set(IntPtr stack, int index, IntPtr data);
+        public extern static IntPtr OPENSSL_sk_set(IntPtr stack, int index, IntPtr data);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr sk_dup(IntPtr stack);
+        public extern static IntPtr OPENSSL_sk_dup(IntPtr stack);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void sk_zero(IntPtr stack);
+        public extern static void OPENSSL_sk_zero(IntPtr stack);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void sk_free(IntPtr stack);
+        public extern static void OPENSSL_sk_free(IntPtr stack);
 
         #endregion
 
