@@ -80,7 +80,7 @@ namespace OpenSSL.CLI
                 return;
             }
 
-            var bits = 512;
+            var bits = 2048;
             if (options.Arguments.Count == 1)
                 bits = Convert.ToInt32(options.Arguments[0]);
 
