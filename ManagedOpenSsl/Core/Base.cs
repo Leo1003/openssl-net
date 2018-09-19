@@ -203,7 +203,7 @@ namespace OpenSSL.Core
 
         internal override void AddRef()
         {
-            Native.CRYPTO_add_lock(refPtr, 1, LockType, "Base.cs", 0);
+            // Native.CRYPTO_add_lock(refPtr, 1, LockType, "Base.cs", 0);
         }
 
         internal abstract CryptoLockTypes LockType { get; }

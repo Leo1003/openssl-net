@@ -273,10 +273,10 @@ namespace OpenSSL.Core
          * #  define CRYPTO_num_locks()            (1)
          *
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int CRYPTO_num_locks();*/
+        public extern static int CRYPTO_num_locks();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int CRYPTO_add_lock(IntPtr ptr, int amount, CryptoLockTypes type, string file, int line);
+        public extern static int CRYPTO_add_lock(IntPtr ptr, int amount, CryptoLockTypes type, string file, int line);*/
 
         #endregion
 
