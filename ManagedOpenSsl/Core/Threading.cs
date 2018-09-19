@@ -32,7 +32,9 @@ namespace OpenSSL.Core
         public static void Initialize()
         {
             // Initialize the threading locks
-            var nLocks = Native.CRYPTO_num_locks();
+            //var nLocks = Native.CRYPTO_num_locks();
+            // replaced by 1
+            var nLocks = 1;
             lock_objects = new List<object>(nLocks);
 
             for (var i = 0; i < nLocks; i++) {
@@ -44,10 +46,10 @@ namespace OpenSSL.Core
             _threadIDs = new List<uint>();
 
             // Initialize the delegate for the locking callback
-            Native.CRYPTO_set_locking_callback(_ptrOnLocking);
+            //Native.CRYPTO_set_locking_callback(_ptrOnLocking);
 
             // Initialize the thread id callback
-            Native.CRYPTO_THREADID_set_callback(_ptrOnThreadId);
+            //Native.CRYPTO_THREADID_set_callback(_ptrOnThreadId);
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace OpenSSL.Core
         public static void Cleanup()
         {
             // Cleanup the thread lock objects
-            Native.CRYPTO_set_locking_callback(null);
+            //Native.CRYPTO_set_locking_callback(null);
             lock_objects.Clear();
 
             // Clean up error state for each thread that was used by OpenSSL
@@ -71,7 +73,7 @@ namespace OpenSSL.Core
         private static void RemoveState(uint threadId)
         {
             var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CRYPTO_THREADID)));
-            Native.CRYPTO_THREADID_set_numeric(ptr, threadId);
+            //Native.CRYPTO_THREADID_set_numeric(ptr, threadId);
             Native.ERR_remove_thread_state(ptr);
             Marshal.FreeHGlobal(ptr);
         }
@@ -91,7 +93,7 @@ namespace OpenSSL.Core
             if (!_threadIDs.Contains(threadId)) {
                 _threadIDs.Add(threadId);
             }
-            Native.CRYPTO_THREADID_set_numeric(tid, threadId);
+            //Native.CRYPTO_THREADID_set_numeric(tid, threadId);
         }
     }
 }

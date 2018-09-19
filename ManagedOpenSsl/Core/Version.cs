@@ -59,7 +59,7 @@ namespace OpenSSL.Core
         /// Returns the current version of the native library.
         /// </summary>
         public static Version Library {
-            get { return new Version(Native.SSLeay()); }
+            get { return new Version(Native.OpenSSL_version_num()); }
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace OpenSSL.Core
         /// <param name="format"></param>
         public static string GetText(Format format)
         {
-            return Native.StaticString(Native.SSLeay_version((int)format));
+            return Native.StaticString(Native.OpenSSL_version((int)format));
         }
     }
 }

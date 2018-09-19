@@ -176,19 +176,48 @@ namespace OpenSSL.Core
                 }
             }
 
-            ERR_load_crypto_strings();
-            SSL_load_error_strings();
-
-            OPENSSL_add_all_algorithms_noconf();
-
-            // Initialize SSL library
-            Native.ExpectSuccess(SSL_library_init());
+            // Initialize library
+            ExpectSuccess(OPENSSL_init_ssl(OpenSSL_Init.LOAD_SSL_STRINGS |
+                OpenSSL_Init.LOAD_CRYPTO_STRINGS, IntPtr.Zero));
+            ExpectSuccess(OPENSSL_init_crypto(OpenSSL_Init.LOAD_CRYPTO_STRINGS |
+                OpenSSL_Init.ADD_ALL_CIPHERS |
+                OpenSSL_Init.ADD_ALL_DIGESTS, IntPtr.Zero));
 
             var seed = new byte[128];
             var rng = RandomNumberGenerator.Create();
             rng.GetBytes(seed);
             RAND_seed(seed, seed.Length);
         }
+
+        public enum OpenSSL_Init : ulong
+        {
+            None = 0x00000000,
+            NO_LOAD_CRYPTO_STRINGS = 0x00000001,
+            LOAD_CRYPTO_STRINGS = 0x00000002,
+            ADD_ALL_CIPHERS = 0x00000004,
+            ADD_ALL_DIGESTS = 0x00000008,
+            NO_ADD_ALL_CIPHERS = 0x00000010,
+            NO_ADD_ALL_DIGESTS = 0x00000020,
+            LOAD_CONFIG = 0x00000040,
+            NO_LOAD_CONFIG = 0x00000080,
+            ASYNC = 0x00000100,
+            ENGINE_RDRAND = 0x00000200,
+            ENGINE_DYNAMIC = 0x00000400,
+            ENGINE_OPENSSL = 0x00000800,
+            ENGINE_CRYPTODEV = 0x00001000,
+            ENGINE_CAPI = 0x00002000,
+            ENGINE_PADLOCK = 0x00004000,
+            ENGINE_AFALG = 0x00008000,
+            // ZLIB = 0x00010000,
+            ATFORK = 0x00020000,
+            // BASE_ONLY = 0x00040000,
+            /* OPENSSL_INIT flag range 0xfff00000 reserved for OPENSSL_init_ssl() */
+            NO_LOAD_SSL_STRINGS = 0x00100000,
+            LOAD_SSL_STRINGS = 0x00200000,
+        }
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int OPENSSL_init_crypto(OpenSSL_Init opts, IntPtr settings);
 
         #endregion
 
@@ -198,10 +227,10 @@ namespace OpenSSL.Core
         public const uint Wrapper = 0x1010100F;
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLeay_version(int type);
+        public extern static IntPtr OpenSSL_version(int type);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static uint SSLeay();
+        public extern static uint OpenSSL_version_num();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr BN_options();
@@ -216,7 +245,7 @@ namespace OpenSSL.Core
         public extern static IntPtr DES_options();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr idea_options();
+        public extern static IntPtr IDEA_options();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr BF_options();
@@ -225,17 +254,26 @@ namespace OpenSSL.Core
 
         #region Threading
 
+        /*
+         * #  define CRYPTO_THREADID_set_callback(threadid_func)   (0)
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int CRYPTO_THREADID_set_callback(CRYPTO_id_callback cb);
-
+         *
+         * #  define CRYPTO_THREADID_set_numeric(id, val)
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void CRYPTO_THREADID_set_numeric(IntPtr id, uint val);
+        public extern static void CRYPTO_THREADID_set_numeric(IntPtr id, uint val);*/
 
+        /*
+         * The old locking functions have been removed completely.
+         * #  define CRYPTO_set_locking_callback(func)
+         *
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void CRYPTO_set_locking_callback(CRYPTO_locking_callback cb);
 
+         * #  define CRYPTO_num_locks()            (1)
+         *
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int CRYPTO_num_locks();
+        public extern static int CRYPTO_num_locks();*/
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int CRYPTO_add_lock(IntPtr ptr, int amount, CryptoLockTypes type, string file, int line);
@@ -243,12 +281,13 @@ namespace OpenSSL.Core
         #endregion
 
         #region CRYPTO
-
+        /*
+         * Replaced by OPENSSL_init_crypto()
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void OPENSSL_add_all_algorithms_noconf();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void OPENSSL_add_all_algorithms_conf();
+        public extern static void OPENSSL_add_all_algorithms_conf();*/
 
         /// <summary>
         /// #define OPENSSL_malloc(num)	CRYPTO_malloc((int)num,__FILE__,__LINE__)
@@ -281,9 +320,12 @@ namespace OpenSSL.Core
             ReallocFunctionPtr r,
             FreeFunctionPtr f
         );
-
+        /*
+         * Nolonger required
+         * # define CRYPTO_cleanup_all_ex_data() while(0) continue
+         *
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void CRYPTO_cleanup_all_ex_data();
+        public extern static void CRYPTO_cleanup_all_ex_data();*/
 
         #endregion
 
@@ -1723,7 +1765,7 @@ namespace OpenSSL.Core
         #region EVP_CIPHER
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void EVP_CIPHER_CTX_init(IntPtr a);
+        public extern static int EVP_CIPHER_CTX_reset(IntPtr a);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_CTX_rand_key(IntPtr ctx, byte[] key);
@@ -1737,8 +1779,10 @@ namespace OpenSSL.Core
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_CTX_ctrl(IntPtr ctx, int type, int arg, IntPtr ptr);
 
+        /*
+         * Replace by EVP_CIPHER_CTX_reset()
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_CIPHER_CTX_cleanup(IntPtr a);
+        public extern static int EVP_CIPHER_CTX_cleanup(IntPtr a);*/
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_type(IntPtr ctx);
@@ -2417,9 +2461,6 @@ namespace OpenSSL.Core
         #region ERR
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ERR_load_crypto_strings();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static uint ERR_get_error();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -2489,10 +2530,12 @@ namespace OpenSSL.Core
         #region Initialization
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_load_error_strings();
+        public extern static int OPENSSL_init_ssl(OpenSSL_Init opts, IntPtr settings);
 
+        /*
+         * Replaced by OPENSSL_init_ssl()
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_library_init();
+        public extern static int SSL_library_init();*/
 
         #endregion
 

@@ -530,13 +530,13 @@ namespace OpenSSL.Crypto
         private Cipher cipher;
 
         /// <summary>
-        /// Calls OPENSSL_malloc() and initializes the buffer using EVP_CIPHER_CTX_init()
+        /// Calls OPENSSL_malloc() and initializes the buffer using EVP_CIPHER_CTX_reset()
         /// </summary>
         /// <param name="cipher"></param>
         public CipherContext(Cipher cipher)
             : base(Native.OPENSSL_malloc(Marshal.SizeOf(typeof(EVP_CIPHER_CTX))), true)
         {
-            Native.EVP_CIPHER_CTX_init(ptr);
+            Native.EVP_CIPHER_CTX_reset(ptr);
             this.cipher = cipher;
         }
 
@@ -840,11 +840,11 @@ namespace OpenSSL.Crypto
         #region IDisposable Members
 
         /// <summary>
-        /// Calls EVP_CIPHER_CTX_clean() and then OPENSSL_free()
+        /// Calls EVP_CIPHER_CTX_reset() and then OPENSSL_free()
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EVP_CIPHER_CTX_cleanup(ptr);
+            Native.EVP_CIPHER_CTX_reset(ptr);
             Native.OPENSSL_free(ptr);
         }
 

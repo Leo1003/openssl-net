@@ -112,7 +112,7 @@ namespace OpenSSL.Core
         /// Returns idea_options()
         /// </summary>
         public static string Idea_Options {
-            get { return Native.StaticString(Native.idea_options()); }
+            get { return Native.StaticString(Native.IDEA_options()); }
         }
 
         /// <summary>
@@ -127,7 +127,8 @@ namespace OpenSSL.Core
         /// </summary>
         public static void Cleanup()
         {
-            Native.CRYPTO_cleanup_all_ex_data();
+            // Nolonger required
+            // Native.CRYPTO_cleanup_all_ex_data();
         }
 
         /// <summary>
