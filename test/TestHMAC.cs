@@ -47,11 +47,6 @@ namespace UnitTests
             "3E-06-9C-85-92-FC-14-ED-40-44-3E-B5-E7-8E-62-42",
             "0B-4F-17-84-39-1A-88-0F-A8-1F-94-D2-A0-12-50-94",
         };
-		public readonly string[] dss_results = 
-        {
-            "7B-04-91-96-D1-E0-C2-B0-6E-CB-CE-3D-E9-C8-2C-31-03-40-3E-10",
-            "C7-59-5D-DB-C0-7A-70-23-1A-70-B6-CA-75-2B-F3-F5-9A-E6-CA-56",
-        };
 		public readonly string[] dss1_results = 
         {
             "7B-04-91-96-D1-E0-C2-B0-6E-CB-CE-3D-E9-C8-2C-31-03-40-3E-10",
@@ -134,7 +129,6 @@ namespace UnitTests
 			VerifyHMAC(MessageDigest.SHA224, sha224_results);
 			VerifyHMAC(MessageDigest.SHA1, sha1_results);
 			VerifyHMAC(MessageDigest.DSS1, dss1_results);
-			VerifyHMAC(MessageDigest.DSS, dss_results);
 			// Shouldn't work in FIPS mode (actually, will crash the program, as the crypto
 			// library calls OpenSSLDie() which calls abort()
 			if (!FIPS.Enabled) {
