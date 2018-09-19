@@ -180,7 +180,7 @@ namespace OpenSSL.X509
             if (cfg != null)
                 cfg.ApplyExtensions("v3_ca", cert, cert, null);
 
-            cert.Sign(key, MessageDigest.DSS1);
+            cert.Sign(key, MessageDigest.SHA256);
 
             return new X509CertificateAuthority(cert, key, seq);
         }
@@ -325,7 +325,7 @@ namespace OpenSSL.X509
             Configuration cfg,
             string section)
         {
-            return ProcessRequest(request, startTime, endTime, cfg, section, MessageDigest.DSS1);
+            return ProcessRequest(request, startTime, endTime, cfg, section, MessageDigest.SHA256);
         }
 
         /// <summary>

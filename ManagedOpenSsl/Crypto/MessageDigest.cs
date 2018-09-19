@@ -134,11 +134,6 @@ namespace OpenSSL.Crypto
         public static MessageDigest SHA512 = new MessageDigest(Native.EVP_sha512(), false);
 
         /// <summary>
-        /// EVP_dss1()
-        /// </summary>
-        public static MessageDigest DSS1 = new MessageDigest(Native.EVP_dss1(), false);
-
-        /// <summary>
         /// EVP_ripemd160()
         /// </summary>
         public static MessageDigest RipeMD160 = new MessageDigest(Native.EVP_ripemd160(), false);

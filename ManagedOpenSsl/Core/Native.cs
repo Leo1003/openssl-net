@@ -1447,9 +1447,6 @@ namespace OpenSSL.Core
         public extern static IntPtr EVP_sha512();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_dss1();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EVP_mdc2();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]

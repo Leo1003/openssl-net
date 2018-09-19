@@ -77,7 +77,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public X509Request CreateRequest(string name)
         {
-            return CreateRequest(name, MessageDigest.DSS1);
+            return CreateRequest(name, MessageDigest.SHA256);
         }
 
         /// <summary>

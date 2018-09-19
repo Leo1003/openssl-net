@@ -297,7 +297,7 @@ namespace UnitTests
 			using (var key = new CryptoKey(new DSA(true)))
 			using (var cert = new X509Certificate(101, "CN=localhost", "CN=Root", key, start, end))
 			{
-				cert.Sign(key, MessageDigest.DSS1);
+				cert.Sign(key, MessageDigest.SHA256);
 			}
 		}
 
@@ -332,7 +332,7 @@ namespace UnitTests
 			using (var key = new CryptoKey(new DSA(true)))
 			using (var cert = new X509Certificate(101, "CN=localhost", "CN=Root", key, start, end))
 			{
-				cert.Sign(key, MessageDigest.DSS1);
+				cert.Sign(key, MessageDigest.SHA256);
 				Assert.AreEqual(true, cert.Verify(key));
 
 				using (var other = new CryptoKey(new DSA(true)))
@@ -361,7 +361,7 @@ namespace UnitTests
 			var end = start + TimeSpan.FromMinutes(10);
 			using (var key = new CryptoKey(new DSA(true)))
 			using (var cert = new X509Certificate(101, "CN=localhost", "CN=Root", key, start, end))
-			using (var request = cert.CreateRequest(key, MessageDigest.DSS1))
+			using (var request = cert.CreateRequest(key, MessageDigest.SHA256))
 			{
 				Assert.IsTrue(request.Verify(key));
 			}
