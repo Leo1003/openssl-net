@@ -109,11 +109,6 @@ namespace OpenSSL.Crypto
         public static MessageDigest MD5 = new MessageDigest(Native.EVP_md5(), false);
 
         /// <summary>
-        /// EVP_sha()
-        /// </summary>
-        public static MessageDigest SHA = new MessageDigest(Native.EVP_sha(), false);
-
-        /// <summary>
         /// EVP_sha1()
         /// </summary>
         public static MessageDigest SHA1 = new MessageDigest(Native.EVP_sha1(), false);

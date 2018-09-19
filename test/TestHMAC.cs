@@ -62,11 +62,6 @@ namespace UnitTests
             "A8-65-5E-18-F7-1F-1B-C6-AB-45-4C-71-73-CD-4B-12-2F-9B-3A-8C",
             "CA-62-28-CE-9F-D2-6E-89-2D-F5-16-04-1E-F4-9D-8C-40-35-A6-50",
         };
-		public readonly string[] sha_results = 
-        {
-            "FF-78-05-10-61-96-7D-19-06-F1-7D-DE-0B-FD-CD-31-31-9D-20-84",
-            "9F-7D-D1-0E-5C-0B-A8-AD-0E-D9-18-23-64-80-84-78-B8-9B-09-C7",
-        };
 		public readonly string[] sha1_results = 
         {
             "7B-04-91-96-D1-E0-C2-B0-6E-CB-CE-3D-E9-C8-2C-31-03-40-3E-10",
@@ -143,7 +138,6 @@ namespace UnitTests
 			// Shouldn't work in FIPS mode (actually, will crash the program, as the crypto
 			// library calls OpenSSLDie() which calls abort()
 			if (!FIPS.Enabled) {
-				VerifyHMAC(MessageDigest.SHA, sha_results);
 				VerifyHMAC(MessageDigest.RipeMD160, ripemd_results);
 				VerifyHMAC(MessageDigest.MD5, md5_results);
 				VerifyHMAC(MessageDigest.MD4, md4_results);

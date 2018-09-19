@@ -117,7 +117,6 @@
     <Compile Include="TestBase.cs" />
     <Compile Include="TestHMAC.cs" />
     <Compile Include="TestRandom.cs" />
-    <Compile Include="TestSHA.cs" />
     <Compile Include="TestSHA1.cs" />
     <Compile Include="TestSHA256.cs" />
     <Compile Include="TestSHA512.cs" />
