@@ -137,11 +137,6 @@ namespace OpenSSL.Crypto
         /// EVP_ripemd160()
         /// </summary>
         public static MessageDigest RipeMD160 = new MessageDigest(Native.EVP_ripemd160(), false);
-
-        /// <summary>
-        /// EVP_ecdsa()
-        /// </summary>
-        public static MessageDigest ECDSA = new MessageDigest(Native.EVP_ecdsa(), false);
         #endregion
 
         #region Properties

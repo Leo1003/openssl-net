@@ -1452,9 +1452,6 @@ namespace OpenSSL.Core
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EVP_ripemd160();
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_ecdsa();
-
         #endregion
 
         #region HMAC
