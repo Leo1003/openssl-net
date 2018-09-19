@@ -99,8 +99,14 @@ namespace OpenSSL.Core
         /// This is the name of the DLL that P/Invoke loads and tries to bind all of
         /// these native functions to.
         /// </summary>
-        const string DLLNAME = "libeay32";
-        const string SSLDLLNAME = "ssleay32";
+#if _WIN64
+        const string DLLNAME = "libcrypto-1_1-x64";
+        const string SSLDLLNAME = "libssl-1_1-x64";
+#endif
+#if _WIN32
+        const string DLLNAME = "libcrypto-1_1";
+        const string SSLDLLNAME = "libssl-1_1";
+#endif
 
         #region Delegates
 
@@ -188,8 +194,8 @@ namespace OpenSSL.Core
 
         #region Version
 
-        // 1.0.2a Release
-        public const uint Wrapper = 0x1000201F;
+        // 1.1.1 Release
+        public const uint Wrapper = 0x1010100F;
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr SSLeay_version(int type);
