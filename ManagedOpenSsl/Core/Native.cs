@@ -2528,16 +2528,6 @@ namespace OpenSSL.Core
         #endregion
 
         #region SSL Methods
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv2_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv2_server_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv2_client_method();
-
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr SSLv3_method();
 
