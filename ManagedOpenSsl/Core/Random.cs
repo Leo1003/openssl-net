@@ -67,14 +67,6 @@ namespace OpenSSL.Core
         }
 
         /// <summary>
-        /// Calls RAND_cleanup()
-        /// </summary>
-        public static void Cleanup()
-        {
-            Native.RAND_cleanup();
-        }
-
-        /// <summary>
         /// Calls RAND_bytes()
         /// </summary>
         /// <param name="len"></param>

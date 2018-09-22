@@ -395,8 +395,8 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EVP_MD_CTX_cleanup(ptr);
-            Native.EVP_MD_CTX_destroy(ptr);
+            Native.EVP_MD_CTX_reset(ptr);
+            Native.EVP_MD_CTX_free(ptr);
         }
 
         #endregion

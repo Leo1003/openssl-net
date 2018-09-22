@@ -576,7 +576,7 @@ namespace OpenSSL.Core
         public extern static void X509_PUBKEY_free(IntPtr pkey);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void X509_OBJECT_up_ref_count(IntPtr a);
+        public extern static int X509_OBJECT_up_ref_count(IntPtr a);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void X509_OBJECT_free_contents(IntPtr a);
@@ -783,9 +783,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr RAND_get_rand_method();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void RAND_cleanup();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void RAND_seed(byte[] buf, int len);
@@ -1411,13 +1408,16 @@ namespace OpenSSL.Core
 
         //!!void HMAC_CTX_init(HMAC_CTX *ctx);
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_CTX_init(IntPtr ctx);
+        public extern static IntPtr HMAC_CTX_new();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int HMAC_CTX_reset(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void HMAC_CTX_set_flags(IntPtr ctx, uint flags);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_CTX_cleanup(IntPtr ctx);
+        public extern static void HMAC_CTX_free(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void HMAC_Init(IntPtr ctx, byte[] key, int len, IntPtr md);
@@ -1795,13 +1795,13 @@ namespace OpenSSL.Core
         public extern static void EVP_MD_CTX_init(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_MD_CTX_cleanup(IntPtr ctx);
+        public extern static int EVP_MD_CTX_reset(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EVP_MD_CTX_create();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void EVP_MD_CTX_destroy(IntPtr ctx);
+        public extern static void EVP_MD_CTX_free(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_DigestInit_ex(IntPtr ctx, IntPtr type, IntPtr impl);

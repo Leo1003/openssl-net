@@ -57,10 +57,7 @@ namespace OpenSSL.Crypto
             : base(IntPtr.Zero, true)
         {
             // Allocate the context
-            ptr = Native.OPENSSL_malloc(Marshal.SizeOf(typeof(HMAC_CTX)));
-
-            // Initialize the context
-            Native.HMAC_CTX_init(ptr);
+            ptr = Native.HMAC_CTX_new();
         }
         #endregion
 
@@ -156,15 +153,13 @@ namespace OpenSSL.Crypto
 
         #region Overrides
         /// <summary>
-        /// Calls HMAC_CTX_cleanup() and then OPENSSL_free()
+        /// Calls HMAC_CTX_reset() and then HMAC_CTX_free()
         /// </summary>
         protected override void OnDispose()
         {
             // Clean up the context
-            Native.HMAC_CTX_cleanup(ptr);
-
-            // Free the structure allocation
-            Native.OPENSSL_free(ptr);
+            Native.HMAC_CTX_reset(ptr);
+            Native.HMAC_CTX_free(ptr);
         }
         #endregion
 
