@@ -123,15 +123,6 @@ namespace OpenSSL.Core
         }
 
         /// <summary>
-        /// Calls CRYPTO_cleanup_all_ex_data()
-        /// </summary>
-        public static void Cleanup()
-        {
-            // Nolonger required
-            // Native.CRYPTO_cleanup_all_ex_data();
-        }
-
-        /// <summary>
         /// Calls ERR_clear_error()
         /// </summary>
         public static void ClearErrors()

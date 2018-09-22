@@ -126,7 +126,6 @@ namespace OpenSSL.Core
             GC.WaitForPendingFinalizers();
             GC.Collect();
 
-            CryptoUtil.Cleanup();
             CryptoUtil.ClearErrors();
             Native.ERR_remove_thread_state(IntPtr.Zero);
 

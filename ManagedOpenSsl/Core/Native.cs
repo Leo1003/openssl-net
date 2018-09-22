@@ -247,14 +247,6 @@ namespace OpenSSL.Core
         #endregion
 
         #region CRYPTO
-        /*
-         * Replaced by OPENSSL_init_crypto()
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void OPENSSL_add_all_algorithms_noconf();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void OPENSSL_add_all_algorithms_conf();*/
-
         /// <summary>
         /// #define OPENSSL_malloc(num)	CRYPTO_malloc((int)num,__FILE__,__LINE__)
         /// </summary>
@@ -286,13 +278,6 @@ namespace OpenSSL.Core
             ReallocFunctionPtr r,
             FreeFunctionPtr f
         );
-        /*
-         * Nolonger required
-         * # define CRYPTO_cleanup_all_ex_data() while(0) continue
-         *
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void CRYPTO_cleanup_all_ex_data();*/
-
         #endregion
 
         #region OBJ
@@ -1733,11 +1718,6 @@ namespace OpenSSL.Core
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_CTX_ctrl(IntPtr ctx, int type, int arg, IntPtr ptr);
 
-        /*
-         * Replace by EVP_CIPHER_CTX_reset()
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_CIPHER_CTX_cleanup(IntPtr a);*/
-
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_type(IntPtr ctx);
 
@@ -2485,11 +2465,6 @@ namespace OpenSSL.Core
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int OPENSSL_init_ssl(OpenSSL_Init opts, IntPtr settings);
-
-        /*
-         * Replaced by OPENSSL_init_ssl()
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_library_init();*/
 
         #endregion
 
