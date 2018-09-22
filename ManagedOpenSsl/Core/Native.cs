@@ -227,6 +227,9 @@ namespace OpenSSL.Core
         public extern static uint OpenSSL_version_num();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr AES_options();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr BN_options();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -831,6 +834,60 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_pseudo_rand_range(IntPtr rnd, IntPtr range);
+
+        #endregion
+
+        #region AES
+
+        public enum AES_Operation : int
+        {
+            Decrypt = 0,
+            Encrypt = 1,
+        }
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AES_set_encrypt_key(IntPtr userKey, int bits, IntPtr key);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AES_set_decrypt_key(IntPtr userKey, int bits, IntPtr key);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_encrypt(IntPtr input, IntPtr output, IntPtr key);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_decrypt(IntPtr input, IntPtr output, IntPtr key);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_ecb_encrypt(IntPtr input, IntPtr output, IntPtr key, AES_Operation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_cbc_encrypt(IntPtr input, IntPtr output, ulong length, IntPtr key, IntPtr ivec, AES_Operation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_cfb128_encrypt(IntPtr input, IntPtr output, ulong length, IntPtr key, IntPtr ivec, ref int num, AES_Operation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_cfb1_encrypt(IntPtr input, IntPtr output, ulong length, IntPtr key, IntPtr ivec, ref int num, AES_Operation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_cfb8_encrypt(IntPtr input, IntPtr output, ulong length, IntPtr key, IntPtr ivec, ref int num, AES_Operation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_ofb128_encrypt(IntPtr input, IntPtr output, ulong length, IntPtr key, IntPtr ivec, ref int num);
+
+        /* NB: the IV is _two_ blocks long */
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_ige_encrypt(IntPtr input, IntPtr output, ulong length, IntPtr key, IntPtr ivec, AES_Operation enc);
+
+        /* NB: the IV is _four_ blocks long */
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void AES_bi_ige_encrypt(IntPtr input, IntPtr output, ulong length, IntPtr key, IntPtr key2, IntPtr ivec, AES_Operation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AES_wrap_key(IntPtr key, IntPtr ivec, IntPtr output, IntPtr input, uint inlen);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AES_unwrap_key(IntPtr key, IntPtr ivec, IntPtr output, IntPtr input, uint inlen);
 
         #endregion
 
