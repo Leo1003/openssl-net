@@ -165,7 +165,6 @@
     <Compile Include="SSL\Protocols.cs" />
     <Compile Include="SSL\ConnectionEnd.cs" />
     <Compile Include="Core\Asn1Encoding.cs" />
-    <Compile Include="Core\Threading.cs" />
     <Compile Include="SSL\Extensions\EnumExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

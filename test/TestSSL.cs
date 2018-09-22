@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2009 Ben Henderson
+// Copyright (c) 2009 Ben Henderson
 // Copyright (c) 2012 Frank Laub
 // All rights reserved.
 //
@@ -109,14 +109,12 @@ namespace UnitTests
 		public override void Setup()
 		{
 			base.Setup();
-			Threading.Initialize();
 			_ctx = new SslTestContext();
 		}
 
 		public override void Teardown()
 		{
 			_ctx.Dispose();
-			Threading.Cleanup();
 			base.Teardown();
 		}
 

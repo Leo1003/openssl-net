@@ -123,12 +123,6 @@ namespace OpenSSL.Core
         public delegate void ObjectNameHandler(IntPtr name, IntPtr arg);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void CRYPTO_locking_callback(int mode, int type, string file, int line);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void CRYPTO_id_callback(IntPtr tid);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int VerifyCertCallback(int ok, IntPtr x509_store_ctx);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -249,34 +243,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr BF_options();
-
-        #endregion
-
-        #region Threading
-
-        /*
-         * #  define CRYPTO_THREADID_set_callback(threadid_func)   (0)
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int CRYPTO_THREADID_set_callback(CRYPTO_id_callback cb);
-         *
-         * #  define CRYPTO_THREADID_set_numeric(id, val)
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void CRYPTO_THREADID_set_numeric(IntPtr id, uint val);*/
-
-        /*
-         * The old locking functions have been removed completely.
-         * #  define CRYPTO_set_locking_callback(func)
-         *
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void CRYPTO_set_locking_callback(CRYPTO_locking_callback cb);
-
-         * #  define CRYPTO_num_locks()            (1)
-         *
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int CRYPTO_num_locks();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int CRYPTO_add_lock(IntPtr ptr, int amount, CryptoLockTypes type, string file, int line);*/
 
         #endregion
 
