@@ -71,7 +71,7 @@ namespace OpenSSL.SSL
             bool checkCertificateRevocation)
         {
             // Initialize the context with specified TLS version
-            sslContext = new SslContext(SslMethod.TLSv12_client_method, ConnectionEnd.Client, new[] {
+            sslContext = new SslContext(SslMethod.TLS_client_method, ConnectionEnd.Client, new[] {
                 Protocols.Http2,
                 Protocols.Http1
             });

@@ -2495,69 +2495,22 @@ namespace OpenSSL.Core
 
         #region SSL Methods
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv3_method();
+        public extern static IntPtr TLS_method();
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv3_server_method();
+        public extern static IntPtr TLS_server_method();
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv3_client_method();
+        public extern static IntPtr TLS_client_method();
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv23_method();
+        public extern static IntPtr DTLS_method();
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv23_server_method();
+        public extern static IntPtr DTLS_client_method();
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSLv23_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_server_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_1_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_1_server_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_1_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_2_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_2_server_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLSv1_2_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLSv1_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLSv1_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLSv1_server_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLSv1_2_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLSv1_2_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLSv1_2_server_method();
-
-
+        public extern static IntPtr DTLS_server_method();
         #endregion
 
         #region SSL_CTX

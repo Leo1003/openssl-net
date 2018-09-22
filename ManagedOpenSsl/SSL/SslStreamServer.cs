@@ -123,7 +123,7 @@ namespace OpenSSL.SSL
             }
 
             // Initialize the context with specified TLS version
-            sslContext = new SslContext(SslMethod.TLSv12_server_method, ConnectionEnd.Server, new[] {
+            sslContext = new SslContext(SslMethod.TLS_server_method, ConnectionEnd.Server, new[] {
                 Protocols.Http2,
                 Protocols.Http1
             });
