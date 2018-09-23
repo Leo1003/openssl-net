@@ -42,11 +42,9 @@ namespace OpenSSL.Crypto
             // version is declared natively as long
             // http://stackoverflow.com/questions/384502/what-is-the-bit-size-of-long-on-64-bit-windows
             // this is an attempt to map it in a portable way:
-#if _WIN64
+
 			public int version;
-#else
-            public IntPtr version;
-#endif
+
             public IntPtr meth;
 
             public IntPtr engine;
@@ -58,6 +56,9 @@ namespace OpenSSL.Crypto
             public IntPtr dmp1;
             public IntPtr dmq1;
             public IntPtr iqmp;
+
+            public IntPtr prime_infos;
+            public IntPtr pss;
 
             #region CRYPTO_EX_DATA ex_data;
             public IntPtr ex_data_sk;
@@ -73,6 +74,7 @@ namespace OpenSSL.Crypto
             public IntPtr bignum_data;
             public IntPtr blinding;
             public IntPtr mt_blinding;
+            public IntPtr _lock;
         }
         #endregion
 
