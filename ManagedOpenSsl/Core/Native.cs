@@ -891,6 +891,31 @@ namespace OpenSSL.Core
 
         #endregion
 
+        #region BLOWFISH
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BF_set_key(IntPtr key, int len, IntPtr data);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BF_encrypt(ref uint data, IntPtr key);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BF_decrypt(ref uint data, IntPtr key);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BF_ecb_encrypt(IntPtr input, IntPtr output, IntPtr key, EncOperation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BF_cbc_encrypt(IntPtr input, IntPtr output, int length, IntPtr schedule, IntPtr ivec, EncOperation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BF_cfb64_encrypt(IntPtr input, IntPtr output, int length, IntPtr schedule, IntPtr ivec, ref int num, EncOperation enc);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BF_ofb64_encrypt(IntPtr input, IntPtr output, int length, IntPtr schedule, IntPtr ivec, ref int num);
+
+        #endregion
+
         #region DSA
 
         //[DllImport(DLLNAME, CallingConvention=CallingConvention.Cdecl)]
