@@ -234,22 +234,17 @@ namespace UnitTests
 
 		private void SetKey(RSA key, byte[] n, byte[] e, byte[] d, byte[] p, byte[] q, byte[] dmp1, byte[] dmq1, byte[] iqmp)
 		{
-			using (BigNumber bn = BigNumber.FromArray(n))
-				key.PublicModulus = bn;
-			using (BigNumber bn = BigNumber.FromArray(e))
-				key.PublicExponent = bn;
-			using (BigNumber bn = BigNumber.FromArray(d))
-				key.PrivateExponent = bn;
-			using (BigNumber bn = BigNumber.FromArray(p))
-				key.SecretPrimeFactorP = bn;
-			using (BigNumber bn = BigNumber.FromArray(q))
-				key.SecretPrimeFactorQ = bn;
-			using (BigNumber bn = BigNumber.FromArray(dmp1))
-				key.DmodP1 = bn;
-			using (BigNumber bn = BigNumber.FromArray(dmq1))
-				key.DmodQ1 = bn;
-			using (BigNumber bn = BigNumber.FromArray(iqmp))
-				key.IQmodP = bn;
+            using (BigNumber bn_n = BigNumber.FromArray(n))
+            using (BigNumber bn_e = BigNumber.FromArray(e))
+            using (BigNumber bn_d = BigNumber.FromArray(d))
+                key.SetKey(bn_n, bn_e, bn_d);
+            using (BigNumber bn_p = BigNumber.FromArray(p))
+            using (BigNumber bn_q = BigNumber.FromArray(q))
+                key.SetFactors(bn_p, bn_q);
+            using (BigNumber bn_dmp1 = BigNumber.FromArray(dmp1))
+            using (BigNumber bn_dmq1 = BigNumber.FromArray(dmq1))
+            using (BigNumber bn_iqmp = BigNumber.FromArray(iqmp))
+                key.SetCrtParams(bn_dmp1, bn_dmq1, bn_iqmp);
 		}
 
 		private void TestKey(int v, RSA key)

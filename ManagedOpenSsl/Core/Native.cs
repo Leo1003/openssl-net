@@ -1004,6 +1004,42 @@ namespace OpenSSL.Core
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int RSA_print(IntPtr bp, IntPtr r, int offset);
 
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int RSA_set0_key(IntPtr r, IntPtr n, IntPtr e, IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int RSA_set0_factors(IntPtr r, IntPtr p, IntPtr q);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int RSA_set0_crt_params(IntPtr r, IntPtr dmp1, IntPtr dmq1, IntPtr iqmp);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_n(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_e(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_d(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_p(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_q(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_dmp1(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_dmq1(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr RSA_get0_iqmp(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int RSA_get_version(IntPtr r);
+
         #endregion
 
         #region DH

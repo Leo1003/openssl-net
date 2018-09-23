@@ -34,50 +34,6 @@ namespace OpenSSL.Crypto
     /// </summary>
     public class RSA : BaseReference
     {
-        #region rsa_st
-        [StructLayout(LayoutKind.Sequential)]
-        struct rsa_st
-        {
-            public int pad;
-            // version is declared natively as long
-            // http://stackoverflow.com/questions/384502/what-is-the-bit-size-of-long-on-64-bit-windows
-            // this is an attempt to map it in a portable way:
-
-			public int version;
-
-            public IntPtr meth;
-
-            public IntPtr engine;
-            public IntPtr n;
-            public IntPtr e;
-            public IntPtr d;
-            public IntPtr p;
-            public IntPtr q;
-            public IntPtr dmp1;
-            public IntPtr dmq1;
-            public IntPtr iqmp;
-
-            public IntPtr prime_infos;
-            public IntPtr pss;
-
-            #region CRYPTO_EX_DATA ex_data;
-            public IntPtr ex_data_sk;
-            public int ex_data_dummy;
-            #endregion
-            public int references;
-            public int flags;
-
-            public IntPtr _method_mod_n;
-            public IntPtr _method_mod_p;
-            public IntPtr _method_mod_q;
-
-            public IntPtr bignum_data;
-            public IntPtr blinding;
-            public IntPtr mt_blinding;
-            public IntPtr _lock;
-        }
-        #endregion
-
         #region Enums
         /// <summary>
         /// RSA padding scheme
@@ -179,11 +135,6 @@ namespace OpenSSL.Crypto
         #endregion
 
         #region Properties
-        private rsa_st Raw {
-            get { return (rsa_st)Marshal.PtrToStructure(ptr, typeof(rsa_st)); }
-            set { Marshal.StructureToPtr(value, ptr, false); }
-        }
-
         /// <summary>
         /// Returns RSA_size()
         /// </summary>
@@ -204,11 +155,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the e field
         /// </summary>
         public BigNumber PublicExponent {
-            get { return new BigNumber(Raw.e, false); }
+            get { return new BigNumber(Native.RSA_get0_e(ptr), false); }
             set {
-                var raw = Raw;
-                raw.e = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_key(ptr, IntPtr.Zero, Native.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -216,11 +165,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the n field
         /// </summary>
         public BigNumber PublicModulus {
-            get { return new BigNumber(Raw.n, false); }
+            get { return new BigNumber(Native.RSA_get0_n(ptr), false); }
             set {
-                var raw = Raw;
-                raw.n = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_key(ptr, Native.BN_dup(value.Handle), IntPtr.Zero, IntPtr.Zero));
             }
         }
 
@@ -228,11 +175,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the d field
         /// </summary>
         public BigNumber PrivateExponent {
-            get { return new BigNumber(Raw.d, false); }
+            get { return new BigNumber(Native.RSA_get0_d(ptr), false); }
             set {
-                var raw = Raw;
-                raw.d = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_key(ptr, IntPtr.Zero, IntPtr.Zero, Native.BN_dup(value.Handle)));
             }
         }
 
@@ -240,11 +185,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the p field
         /// </summary>
         public BigNumber SecretPrimeFactorP {
-            get { return new BigNumber(Raw.p, false); }
+            get { return new BigNumber(Native.RSA_get0_p(ptr), false); }
             set {
-                var raw = Raw;
-                raw.p = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_factors(ptr, Native.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -252,11 +195,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the q field
         /// </summary>
         public BigNumber SecretPrimeFactorQ {
-            get { return new BigNumber(Raw.q, false); }
+            get { return new BigNumber(Native.RSA_get0_q(ptr), false); }
             set {
-                var raw = Raw;
-                raw.q = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_factors(ptr, IntPtr.Zero, Native.BN_dup(value.Handle)));
             }
         }
 
@@ -265,11 +206,9 @@ namespace OpenSSL.Crypto
         /// d mod (p-1)
         /// </summary>
         public BigNumber DmodP1 {
-            get { return new BigNumber(Raw.dmp1, false); }
+            get { return new BigNumber(Native.RSA_get0_dmp1(ptr), false); }
             set {
-                var raw = Raw;
-                raw.dmp1 = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, Native.BN_dup(value.Handle), IntPtr.Zero, IntPtr.Zero));
             }
         }
 
@@ -278,11 +217,9 @@ namespace OpenSSL.Crypto
         /// d mod (q-1)
         /// </summary>
         public BigNumber DmodQ1 {
-            get { return new BigNumber(Raw.dmq1, false); }
+            get { return new BigNumber(Native.RSA_get0_dmq1(ptr), false); }
             set {
-                var raw = Raw;
-                raw.dmq1 = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, IntPtr.Zero, Native.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -291,12 +228,14 @@ namespace OpenSSL.Crypto
         /// q^-1 mod p
         /// </summary>
         public BigNumber IQmodP {
-            get { return new BigNumber(Raw.iqmp, false); }
+            get { return new BigNumber(Native.RSA_get0_iqmp(ptr), false); }
             set {
-                var raw = Raw;
-                raw.iqmp = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, IntPtr.Zero, IntPtr.Zero, Native.BN_dup(value.Handle)));
             }
+        }
+
+        public int Version {
+            get { return Native.RSA_get_version(ptr); }
         }
 
         /// <summary>
@@ -443,6 +382,48 @@ namespace OpenSSL.Crypto
                 0,
                 thunk.Callback,
                 IntPtr.Zero));
+        }
+
+        /// <summary>
+        /// Set RSA public keys
+        /// </summary>
+        /// <param name="n">Public Modulus</param>
+        /// <param name="e">Public Exponent</param>
+        public void SetKey(BigNumber n, BigNumber e)
+        {
+            Native.ExpectSuccess(Native.RSA_set0_key(ptr, Native.BN_dup(n.Handle), Native.BN_dup(e.Handle), IntPtr.Zero));
+        }
+
+        /// <summary>
+        /// Set RSA public & private keys
+        /// </summary>
+        /// <param name="n">Public Modulus</param>
+        /// <param name="e">Public Exponent</param>
+        /// <param name="d">Private Exponent</param>
+        public void SetKey(BigNumber n, BigNumber e, BigNumber d)
+        {
+            Native.ExpectSuccess(Native.RSA_set0_key(ptr, Native.BN_dup(n.Handle), Native.BN_dup(e.Handle), Native.BN_dup(d.Handle)));
+        }
+
+        /// <summary>
+        /// Set prime factors
+        /// </summary>
+        /// <param name="p">Factor P</param>
+        /// <param name="q">Factor Q</param>
+        public void SetFactors(BigNumber p, BigNumber q)
+        {
+            Native.ExpectSuccess(Native.RSA_set0_factors(ptr, Native.BN_dup(p.Handle), Native.BN_dup(q.Handle)));
+        }
+
+        /// <summary>
+        /// Set key params
+        /// </summary>
+        /// <param name="dmp1">D mod (P - 1)</param>
+        /// <param name="dmq1">D mod (Q - 1)</param>
+        /// <param name="iqmp">(Q ^ -1) mod P</param>
+        public void SetCrtParams(BigNumber dmp1, BigNumber dmq1, BigNumber iqmp)
+        {
+            Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, Native.BN_dup(dmp1.Handle), Native.BN_dup(dmq1.Handle), Native.BN_dup(iqmp.Handle)));
         }
 
         /// <summary>
