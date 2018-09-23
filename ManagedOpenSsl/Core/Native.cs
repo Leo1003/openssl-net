@@ -833,6 +833,9 @@ namespace OpenSSL.Core
         public extern static int BN_rand_range(IntPtr rnd, IntPtr range);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_priv_rand_range(IntPtr rnd, IntPtr range);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_pseudo_rand_range(IntPtr rnd, IntPtr range);
 
         #endregion
@@ -1046,9 +1049,6 @@ namespace OpenSSL.Core
         public extern static IntPtr BN_CTX_new();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void BN_CTX_init(IntPtr c);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void BN_CTX_free(IntPtr c);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -1065,9 +1065,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void BN_free(IntPtr a);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void BN_init(IntPtr a);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr BN_bin2bn(byte[] s, int len, IntPtr ret);
@@ -1097,6 +1094,12 @@ namespace OpenSSL.Core
         public extern static int BN_sub(IntPtr r, IntPtr a, IntPtr b);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_usub(IntPtr r, IntPtr a, IntPtr b);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_uadd(IntPtr r, IntPtr a, IntPtr b);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_add(IntPtr r, IntPtr a, IntPtr b);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -1106,10 +1109,16 @@ namespace OpenSSL.Core
         public extern static int BN_num_bits(IntPtr a);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_num_bits_word(uint l);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_sqr(IntPtr r, IntPtr a, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_div(IntPtr dv, IntPtr rem, IntPtr m, IntPtr d, IntPtr ctx);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_exp(IntPtr r, IntPtr a, IntPtr p, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_print(IntPtr fp, IntPtr a);
@@ -1146,6 +1155,28 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static uint BN_get_word(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_abs_is_word(IntPtr a, uint w);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_is_zero(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_is_one(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_is_word(IntPtr a, uint w);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_is_odd(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_is_negative(IntPtr b);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BN_set_negative(IntPtr b, int n);
+
         //#define BN_GENCB_set(gencb, callback, cb_arg) { \
         //        BN_GENCB *tmp_gencb = (gencb); \
         //        tmp_gencb->ver = 2; \
