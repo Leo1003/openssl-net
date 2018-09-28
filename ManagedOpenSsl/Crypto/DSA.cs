@@ -34,43 +34,6 @@ namespace OpenSSL.Crypto
     /// </summary>
     public class DSA : BaseReference
     {
-        #region dsa_st
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct dsa_st
-        {
-            public int pad;
-            // version is declared natively as long
-            // http://stackoverflow.com/questions/384502/what-is-the-bit-size-of-long-on-64-bit-windows
-            // this is an attempt to map it in a portable way:
-#if _WIN64
-			public int version;
-#else
-            public IntPtr version;
-#endif
-            public int write_params;
-            public IntPtr p;
-            public IntPtr q;
-            public IntPtr g;
-
-            public IntPtr pub_key;
-            public IntPtr priv_key;
-
-            public IntPtr kinv;
-            public IntPtr r;
-
-            public int flags;
-            public IntPtr method_mont_p;
-            public int references;
-            #region CRYPTO_EX_DATA ex_data;
-            public IntPtr ex_data_sk;
-            public int ex_data_dummy;
-            #endregion
-            public IntPtr meth;
-            public IntPtr engine;
-        }
-        #endregion
-
         private int counter = 0;
         private IntPtr h;
         private BigNumber.GeneratorThunk thunk = null;
@@ -186,30 +149,26 @@ namespace OpenSSL.Crypto
         #endregion
 
         #region Properties
-        private dsa_st Raw {
-            get { return (dsa_st)Marshal.PtrToStructure(ptr, typeof(dsa_st)); }
-            set { Marshal.StructureToPtr(value, ptr, false); }
-        }
 
         /// <summary>
         /// Returns the p field
         /// </summary>
         public BigNumber P {
-            get { return new BigNumber(Raw.p, false); }
+            get { return new BigNumber(Native.DSA_get0_p(ptr), false); }
         }
 
         /// <summary>
         /// Returns the q field
         /// </summary>
         public BigNumber Q {
-            get { return new BigNumber(Raw.q, false); }
+            get { return new BigNumber(Native.DSA_get0_q(ptr), false); }
         }
 
         /// <summary>
         /// Returns the g field
         /// </summary>
         public BigNumber G {
-            get { return new BigNumber(Raw.g, false); }
+            get { return new BigNumber(Native.DSA_get0_g(ptr), false); }
         }
 
         /// <summary>
@@ -223,11 +182,9 @@ namespace OpenSSL.Crypto
         /// Returns the pub_key field
         /// </summary>
         public BigNumber PublicKey {
-            get { return new BigNumber(this.Raw.pub_key, false); }
+            get { return new BigNumber(Native.DSA_get0_pub_key(ptr), false); }
             set {
-                dsa_st raw = this.Raw;
-                raw.pub_key = Native.BN_dup(value.Handle);
-                this.Raw = raw;
+                Native.ExpectSuccess(Native.DSA_set0_key(ptr, Native.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -236,16 +193,13 @@ namespace OpenSSL.Crypto
         /// </summary>
         public BigNumber PrivateKey {
             get {
-                var pKey = Raw.priv_key;
+                var pKey = Native.DSA_get0_priv_key(ptr);
                 if (pKey == IntPtr.Zero)
                     return null;
-
                 return new BigNumber(pKey, false);
             }
             set {
-                var raw = Raw;
-                raw.priv_key = Native.BN_dup(value.Handle);
-                Raw = raw;
+                Native.ExpectSuccess(Native.DSA_set0_key(ptr, IntPtr.Zero, Native.BN_dup(value.Handle)));
             }
         }
 
@@ -296,6 +250,20 @@ namespace OpenSSL.Crypto
         public void GenerateKeys()
         {
             Native.ExpectSuccess(Native.DSA_generate_key(ptr));
+        }
+
+        /// <summary>
+        /// Set public key and private key
+        /// </summary>
+        /// <param name="pub_key"></param>
+        /// <param name="priv_key"></param>
+        public void SetKey(BigNumber pub_key, BigNumber priv_key)
+        {
+            if (priv_key == null) {
+                Native.ExpectSuccess(Native.DSA_set0_key(ptr, Native.BN_dup(pub_key.Handle), IntPtr.Zero));
+            } else {
+                Native.ExpectSuccess(Native.DSA_set0_key(ptr, Native.BN_dup(pub_key.Handle), Native.BN_dup(priv_key.Handle)));
+            }
         }
 
         /// <summary>

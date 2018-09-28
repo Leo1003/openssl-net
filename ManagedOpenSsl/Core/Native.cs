@@ -961,6 +961,36 @@ namespace OpenSSL.Core
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int DSA_verify(int type, byte[] dgst, int dgst_len, byte[] sigbuf, int siglen, IntPtr dsa);
 
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int DSA_set0_pqg(IntPtr d, IntPtr p, IntPtr q, IntPtr g);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int DSA_set0_key(IntPtr d, IntPtr pub_key, IntPtr priv_key);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr DSA_get0_p(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr DSA_get0_q(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr DSA_get0_g(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr DSA_get0_pub_key(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr DSA_get0_priv_key(IntPtr d);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DSA_clear_flags(IntPtr d, int flags);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int DSA_test_flags(IntPtr d, int flags);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DSA_set_flags(IntPtr d, int flags);
+
         #endregion
 
         #region RSA
