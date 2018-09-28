@@ -2635,7 +2635,6 @@ namespace OpenSSL.Core
         public const int SSL_OP_MSIE_SSLV2_RSA_PADDING = 0x00000040;
         public const int SSL_OP_SSLEAY_080_CLIENT_DH_BUG = 0x00000080;
         public const int SSL_OP_TLS_D5_BUG = 0x00000100;
-        public const int SSL_OP_TLS_BLOCK_PADDING_BUG = 0x00000200;
 
         /* Disable SSL 3.0/TLS 1.0 CBC vulnerability workaround that was added
 		 * in OpenSSL 0.9.6d.  Usually (depending on the application protocol)
