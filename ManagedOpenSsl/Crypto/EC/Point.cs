@@ -58,28 +58,15 @@ namespace OpenSSL.Crypto.EC
 
         #region Methods
         /// <summary>
-        /// Calls EC_POINT_get_affine_coordinates_GF2m()
+        /// Calls EC_POINT_get_affine_coordinates()
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="ctx"></param>
-        public void GetAffineCoordinatesGF2m(BigNumber x, BigNumber y, BigNumber.Context ctx)
+        public void GetAffineCoordinates(BigNumber x, BigNumber y, BigNumber.Context ctx)
         {
             Native.ExpectSuccess(
-                Native.EC_POINT_get_affine_coordinates_GF2m(group.Handle, ptr, x.Handle, y.Handle, ctx.Handle)
-            );
-        }
-
-        /// <summary>
-        /// Calls EC_POINT_get_affine_coordinates_GFp()
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="ctx"></param>
-        public void GetAffineCoordinatesGFp(BigNumber x, BigNumber y, BigNumber.Context ctx)
-        {
-            Native.ExpectSuccess(
-                Native.EC_POINT_get_affine_coordinates_GFp(group.Handle, ptr, x.Handle, y.Handle, ctx.Handle)
+                Native.EC_POINT_get_affine_coordinates(group.Handle, ptr, x.Handle, y.Handle, ctx.Handle)
             );
         }
         #endregion

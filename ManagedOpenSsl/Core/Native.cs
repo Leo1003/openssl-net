@@ -2088,16 +2088,10 @@ namespace OpenSSL.Core
         public extern static int EC_GROUP_set_seed(IntPtr x, byte[] buf, int len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_GROUP_set_curve_GFp(IntPtr group, IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
+        public extern static int EC_GROUP_set_curve(IntPtr group, IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_GROUP_get_curve_GFp(IntPtr group, IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_GROUP_set_curve_GF2m(IntPtr group, IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_GROUP_get_curve_GF2m(IntPtr group, IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
+        public extern static int EC_GROUP_get_curve(IntPtr group, IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_GROUP_get_degree(IntPtr group);
@@ -2170,27 +2164,13 @@ namespace OpenSSL.Core
             IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_set_affine_coordinates_GFp(IntPtr group, IntPtr p, IntPtr x, IntPtr y, IntPtr ctx);
+        public extern static int EC_POINT_set_affine_coordinates(IntPtr group, IntPtr p, IntPtr x, IntPtr y, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_get_affine_coordinates_GFp(IntPtr group, IntPtr p, IntPtr x, IntPtr y, IntPtr ctx);
+        public extern static int EC_POINT_get_affine_coordinates(IntPtr group, IntPtr p, IntPtr x, IntPtr y, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_set_compressed_coordinates_GFp(
-            IntPtr group,
-            IntPtr p,
-            IntPtr x,
-            int y_bit,
-            IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_set_affine_coordinates_GF2m(IntPtr group, IntPtr p, IntPtr x, IntPtr y, IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_get_affine_coordinates_GF2m(IntPtr group, IntPtr p, IntPtr x, IntPtr y, IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_set_compressed_coordinates_GF2m(
+        public extern static int EC_POINT_set_compressed_coordinates(
             IntPtr group,
             IntPtr p,
             IntPtr x,
