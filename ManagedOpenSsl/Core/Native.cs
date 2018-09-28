@@ -1971,13 +1971,10 @@ namespace OpenSSL.Core
         public extern static IntPtr EVP_get_digestbyname(byte[] name);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void EVP_MD_CTX_init(IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_MD_CTX_reset(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_MD_CTX_create();
+        public extern static IntPtr EVP_MD_CTX_new();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void EVP_MD_CTX_free(IntPtr ctx);
@@ -2336,15 +2333,6 @@ namespace OpenSSL.Core
         public extern static int ECDSA_do_verify(byte[] dgst, int dgst_len, IntPtr sig, IntPtr eckey);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr ECDSA_OpenSSL();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ECDSA_set_default_method(IntPtr meth);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr ECDSA_get_default_method();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int ECDSA_set_method(IntPtr eckey, IntPtr meth);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -2370,39 +2358,9 @@ namespace OpenSSL.Core
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int ECDSA_verify(int type, byte[] dgst, int dgstlen, byte[] sig, int siglen, IntPtr eckey);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ECDSA_get_ex_new_index(
-            IntPtr argl,
-            IntPtr argp,
-            IntPtr new_func,
-            IntPtr dup_func,
-            IntPtr free_func);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ECDSA_set_ex_data(IntPtr d, int idx, IntPtr arg);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr ECDSA_get_ex_data(IntPtr d, int idx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ERR_load_ECDSA_strings();
-
         #endregion
 
         #region ECDH
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr ECDH_OpenSSL();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ECDH_set_default_method(IntPtr method);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr ECDH_get_default_method();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ECDH_set_method(IntPtr key, IntPtr method);
-
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate IntPtr ECDH_KDF([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pin,
                                         int inlen,
@@ -2411,24 +2369,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int ECDH_compute_key(byte[] pout, int outlen, IntPtr pub_key, IntPtr ecdh, ECDH_KDF kdf);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ECDH_get_ex_new_index(
-            IntPtr argl,
-            IntPtr argp,
-            IntPtr new_func,
-            IntPtr dup_func,
-            IntPtr free_func);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ECDH_set_ex_data(IntPtr d, int idx, IntPtr arg);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr ECDH_get_ex_data(IntPtr d, int idx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ERR_load_ECDH_strings();
-
         #endregion
 
         #endregion
