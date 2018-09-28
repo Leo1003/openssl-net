@@ -61,7 +61,7 @@ namespace OpenSSL.Core
         public static byte[] PseudoBytes(int len)
         {
             var buf = new byte[len];
-            Native.ExpectSuccess(Native.RAND_pseudo_bytes(buf, buf.Length));
+            Native.ExpectSuccess(Native.RAND_bytes(buf, buf.Length));
 
             return buf;
         }

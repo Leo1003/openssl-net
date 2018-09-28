@@ -791,9 +791,6 @@ namespace OpenSSL.Core
         public extern static void RAND_seed(byte[] buf, int len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int RAND_pseudo_bytes(byte[] buf, int len);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int RAND_bytes(byte[] buf, int num);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
