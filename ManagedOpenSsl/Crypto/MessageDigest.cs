@@ -172,19 +172,6 @@ namespace OpenSSL.Crypto
     }
     #endregion
 
-    #region EVP_MD_CTX
-    [StructLayout(LayoutKind.Sequential)]
-    struct EVP_MD_CTX
-    {
-        public IntPtr digest;
-        public IntPtr engine;
-        public uint flags;
-        public IntPtr md_data;
-        public IntPtr pctx;
-        public IntPtr update;
-    }
-    #endregion
-
     /// <summary>
     /// Wraps the EVP_MD_CTX object
     /// </summary>
@@ -207,9 +194,9 @@ namespace OpenSSL.Crypto
         /// </summary>
         /// <param name="md"></param>
         public MessageDigestContext(MessageDigest md)
-            : base(Native.EVP_MD_CTX_create(), true)
+            : base(Native.EVP_MD_CTX_new(), true)
         {
-            Native.EVP_MD_CTX_init(ptr);
+            Native.EVP_MD_CTX_reset(ptr);
             this.md = md;
         }
 
@@ -391,11 +378,10 @@ namespace OpenSSL.Crypto
         #region IDisposable Members
 
         /// <summary>
-        /// Calls EVP_MD_CTX_cleanup() and EVP_MD_CTX_destroy()
+        /// Calls EVP_MD_CTX_free()
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EVP_MD_CTX_reset(ptr);
             Native.EVP_MD_CTX_free(ptr);
         }
 

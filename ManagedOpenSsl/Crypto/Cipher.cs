@@ -37,11 +37,10 @@ namespace OpenSSL.Crypto
     /// </summary>
     public class Cipher : Base
     {
-        private EVP_CIPHER raw;
         internal Cipher(IntPtr ptr, bool owner)
             : base(ptr, owner)
         {
-            raw = (EVP_CIPHER)Marshal.PtrToStructure(this.ptr, typeof(EVP_CIPHER));
+
         }
 
         /// <summary>
@@ -90,26 +89,6 @@ namespace OpenSSL.Crypto
         public static string[] AllNames {
             get { return new NameCollector(Native.OBJ_NAME_TYPE_CIPHER_METH, false).Result.ToArray(); }
         }
-
-        #region EVP_CIPHER
-        [StructLayout(LayoutKind.Sequential)]
-        struct EVP_CIPHER
-        {
-            public int nid;
-            public int block_size;
-            public int key_len;
-            public int iv_len;
-            public uint flags;
-            public IntPtr init;
-            public IntPtr do_cipher;
-            public IntPtr cleanup;
-            public int ctx_size;
-            public IntPtr set_asn1_parameters;
-            public IntPtr get_asn1_parameters;
-            public IntPtr ctrl;
-            public IntPtr app_data;
-        }
-        #endregion
 
         #region Ciphers
         /// <summary>
@@ -417,42 +396,42 @@ namespace OpenSSL.Crypto
         /// Returns the key_len field
         /// </summary>
         public int KeyLength {
-            get { return raw.key_len; }
+            get { return Native.EVP_CIPHER_key_length(ptr); }
         }
 
         /// <summary>
         /// Returns the iv_len field
         /// </summary>
         public int IVLength {
-            get { return raw.iv_len; }
+            get { return Native.EVP_CIPHER_iv_length(ptr); }
         }
 
         /// <summary>
         /// Returns the block_size field
         /// </summary>
         public int BlockSize {
-            get { return raw.block_size; }
+            get { return Native.EVP_CIPHER_block_size(ptr); }
         }
 
         /// <summary>
         /// Returns the flags field
         /// </summary>
         public uint Flags {
-            get { return raw.flags; }
+            get { return Native.EVP_CIPHER_flags(ptr); }
         }
 
         /// <summary>
         /// Returns the long name for the nid field using OBJ_nid2ln()
         /// </summary>
         public string LongName {
-            get { return Native.StaticString(Native.OBJ_nid2ln(raw.nid)); }
+            get { return Native.StaticString(Native.OBJ_nid2ln(Native.EVP_CIPHER_nid(ptr))); }
         }
 
         /// <summary>
         /// Returns the name for the nid field using OBJ_nid2sn()
         /// </summary>
         public string Name {
-            get { return Native.StaticString(Native.OBJ_nid2sn(raw.nid)); }
+            get { return Native.StaticString(Native.OBJ_nid2sn(Native.EVP_CIPHER_nid(ptr))); }
         }
 
         /// <summary>
@@ -498,43 +477,14 @@ namespace OpenSSL.Crypto
     /// </summary>
     public class CipherContext : Base, IDisposable
     {
-        #region EVP_CIPHER_CTX
-        [StructLayout(LayoutKind.Sequential)]
-        struct EVP_CIPHER_CTX
-        {
-            public IntPtr cipher;
-            public IntPtr engine;   /* functional reference if 'cipher' is ENGINE-provided */
-            public int encrypt;     /* encrypt or decrypt */
-            public int buf_len;     /* number we have left */
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.EVP_MAX_IV_LENGTH)]
-            public byte[] oiv;  /* original iv */
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.EVP_MAX_IV_LENGTH)]
-            public byte[] iv;   /* working iv */
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.EVP_MAX_BLOCK_LENGTH)]
-            public byte[] buf;/* saved partial block */
-            public int num;             /* used by cfb/ofb mode */
-
-            public IntPtr app_data;     /* application stuff */
-            public int key_len;     /* May change for variable length cipher */
-            public uint flags;  /* Various flags */
-            public IntPtr cipher_data; /* per EVP data */
-            public int final_used;
-            public int block_mask;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.EVP_MAX_BLOCK_LENGTH)]
-            public byte[] final;/* possible final block */
-        }
-        #endregion
-
         private Cipher cipher;
 
         /// <summary>
-        /// Calls OPENSSL_malloc() and initializes the buffer using EVP_CIPHER_CTX_reset()
+        /// Calls EVP_CIPHER_CTX_new() and initializes the buffer using EVP_CIPHER_CTX_reset()
         /// </summary>
         /// <param name="cipher"></param>
         public CipherContext(Cipher cipher)
-            : base(Native.OPENSSL_malloc(Marshal.SizeOf(typeof(EVP_CIPHER_CTX))), true)
+            : base(Native.EVP_CIPHER_CTX_new(), true)
         {
             Native.EVP_CIPHER_CTX_reset(ptr);
             this.cipher = cipher;
@@ -830,22 +780,16 @@ namespace OpenSSL.Crypto
         public bool IsStream {
             get { return (cipher.Flags & Native.EVP_CIPH_MODE) == Native.EVP_CIPH_STREAM_CIPHER; }
         }
-
-        private EVP_CIPHER_CTX Raw {
-            get { return (EVP_CIPHER_CTX)Marshal.PtrToStructure(ptr, typeof(EVP_CIPHER_CTX)); }
-            set { Marshal.StructureToPtr(value, ptr, false); }
-        }
         #endregion
 
         #region IDisposable Members
 
         /// <summary>
-        /// Calls EVP_CIPHER_CTX_reset() and then OPENSSL_free()
+        /// Calls EVP_CIPHER_CTX_free()
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EVP_CIPHER_CTX_reset(ptr);
-            Native.OPENSSL_free(ptr);
+            Native.EVP_CIPHER_CTX_free(ptr);
         }
 
         #endregion

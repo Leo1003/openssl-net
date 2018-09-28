@@ -1597,9 +1597,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void HMAC_CTX_free(IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_Init(IntPtr ctx, byte[] key, int len, IntPtr md);
         /* deprecated */
 
         //!!public extern static void HMAC_Init_ex(IntPtr ctx, const void *key, int len, const EVP_MD *md, ENGINE *impl);
@@ -1883,7 +1880,38 @@ namespace OpenSSL.Core
         #region EVP_CIPHER
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_CIPHER_nid(IntPtr cipher);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_CIPHER_block_size(IntPtr cipher);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_CIPHER_impl_ctx_size(IntPtr cipher);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_CIPHER_key_length(IntPtr cipher);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_CIPHER_iv_length(IntPtr cipher);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static uint EVP_CIPHER_flags(IntPtr cipher);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_CIPHER_type(IntPtr ctx);
+
+        #endregion
+
+        #region EVP_CIPHER_CTX
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_CIPHER_CTX_new();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_CTX_reset(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void EVP_CIPHER_CTX_free(IntPtr a);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_CTX_rand_key(IntPtr ctx, byte[] key);
@@ -1896,9 +1924,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CIPHER_CTX_ctrl(IntPtr ctx, int type, int arg, IntPtr ptr);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_CIPHER_type(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_CipherInit_ex(IntPtr ctx, IntPtr type, IntPtr impl, byte[] key, byte[] iv, int enc);

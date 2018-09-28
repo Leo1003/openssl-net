@@ -34,24 +34,9 @@ namespace OpenSSL.Crypto
     /// </summary>
     public class HMAC : Base
     {
-        #region Raw Structures
-        [StructLayout(LayoutKind.Sequential)]
-        struct HMAC_CTX
-        {
-            public IntPtr md;          //const EVP_MD *md;
-            public EVP_MD_CTX md_ctx;
-            public EVP_MD_CTX i_ctx;
-            public EVP_MD_CTX o_ctx;
-            public uint key_length;    //unsigned int key_length;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.HMAC_MAX_MD_CBLOCK)]
-            public byte[] key;
-        }
-        #endregion
-
         #region Initialization
         /// <summary>
-        /// Calls OPENSSL_malloc() and then HMAC_CTX_init()
+        /// Calls HMAC_CTX_new()
         /// </summary>
         public HMAC()
             : base(IntPtr.Zero, true)
@@ -153,12 +138,11 @@ namespace OpenSSL.Crypto
 
         #region Overrides
         /// <summary>
-        /// Calls HMAC_CTX_reset() and then HMAC_CTX_free()
+        /// Calls HMAC_CTX_free()
         /// </summary>
         protected override void OnDispose()
         {
             // Clean up the context
-            Native.HMAC_CTX_reset(ptr);
             Native.HMAC_CTX_free(ptr);
         }
         #endregion
