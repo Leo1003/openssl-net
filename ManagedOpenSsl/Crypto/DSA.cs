@@ -71,8 +71,6 @@ namespace OpenSSL.Crypto
         }
         #endregion
 
-        private const int FlagCacheMont_P = 0x01;
-        private const int FlagNoExpConstTime = 0x02;
         private int counter = 0;
         private IntPtr h;
         private BigNumber.GeneratorThunk thunk = null;
@@ -288,23 +286,6 @@ namespace OpenSSL.Crypto
         /// </summary>
         public IntPtr H {
             get { return h; }
-        }
-
-        /// <summary>
-        /// Accessor for the FlagNoExpConstTime flag
-        /// </summary>
-        public bool ConstantTime {
-            get { return (Raw.flags & FlagNoExpConstTime) != 0; }
-            set {
-                var raw = Raw;
-
-                if (value)
-                    raw.flags |= FlagNoExpConstTime;
-                else
-                    raw.flags &= ~FlagNoExpConstTime;
-
-                Raw = raw;
-            }
         }
         #endregion
 

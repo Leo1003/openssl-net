@@ -95,13 +95,11 @@ namespace UnitTests
 
 			byte[] msg = Encoding.ASCII.GetBytes(str1);
 
-			dsa.ConstantTime = true;
 			dsa.GenerateKeys();
 
 			byte[] sig = dsa.Sign(msg);
 			Assert.IsTrue(dsa.Verify(msg, sig));
 
-			dsa.ConstantTime = false;
 			dsa.GenerateKeys();
 			sig = dsa.Sign(msg);
 			Assert.IsTrue(dsa.Verify(msg, sig));
