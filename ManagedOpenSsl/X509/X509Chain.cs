@@ -167,7 +167,7 @@ namespace OpenSSL.X509
         {
             var bio = new BIO(der);
 
-            while (bio.NumberRead < der.Length) {
+            while (bio.NumberRead < (ulong)der.LongLength) {
                 var x509 = X509Certificate.FromDER(bio);
                 Add(x509);
             }

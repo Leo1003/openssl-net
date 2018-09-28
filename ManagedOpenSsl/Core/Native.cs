@@ -2506,10 +2506,10 @@ namespace OpenSSL.Core
         public extern static void BIO_free(IntPtr bio);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static uint BIO_number_read(IntPtr bio);
+        public extern static ulong BIO_number_read(IntPtr bio);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static uint BIO_number_written(IntPtr bio);
+        public extern static ulong BIO_number_written(IntPtr bio);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static uint BIO_ctrl_pending(IntPtr bio);

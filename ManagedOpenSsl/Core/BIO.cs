@@ -121,14 +121,14 @@ namespace OpenSSL.Core
         /// <summary>
         /// Returns BIO_number_read()
         /// </summary>
-        public uint NumberRead {
+        public ulong NumberRead {
             get { return Native.BIO_number_read(Handle); }
         }
 
         /// <summary>
         /// Returns BIO_number_written()
         /// </summary>
-        public uint NumberWritten {
+        public ulong NumberWritten {
             get { return Native.BIO_number_written(Handle); }
         }
 
