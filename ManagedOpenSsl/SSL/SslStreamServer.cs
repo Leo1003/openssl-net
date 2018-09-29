@@ -83,7 +83,8 @@ namespace OpenSSL.SSL
                 nRet = ssl.DoHandshake();
             } else if (handShakeState == HandshakeState.Renegotiate) {
                 nRet = ssl.DoHandshake();
-                ssl.State = Ssl.SSL_ST_ACCEPT;
+                //TODO: Rewrite handshake
+                //ssl.State = Ssl.SSL_ST_ACCEPT;
                 handShakeState = HandshakeState.RenegotiateInProcess;
             }
 

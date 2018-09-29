@@ -52,9 +52,6 @@ namespace OpenSSL.SSL
     /// </summary>
     public class Ssl : Base
     {
-        internal const int SSL_ST_CONNECT = 0x1000;
-        internal const int SSL_ST_ACCEPT = 0x2000;
-
         #region Initialization
 
         /// <summary>
@@ -74,9 +71,8 @@ namespace OpenSSL.SSL
 
         #region Properties
 
-        internal int State {
-            get { return Native.SSL_state(Handle); }
-            set { Native.SSL_set_state(Handle, value); }
+        internal Native.OpenSSL_HandshakeState State {
+            get { return Native.SSL_get_state(Handle); }
         }
 
         /// <summary>

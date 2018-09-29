@@ -2544,6 +2544,62 @@ namespace OpenSSL.Core
 
         #endregion
 
+        #region Enum
+        public enum OpenSSL_HandshakeState
+        {
+            TLS_ST_BEFORE,
+            TLS_ST_OK,
+            DTLS_ST_CR_HELLO_VERIFY_REQUEST,
+            TLS_ST_CR_SRVR_HELLO,
+            TLS_ST_CR_CERT,
+            TLS_ST_CR_CERT_STATUS,
+            TLS_ST_CR_KEY_EXCH,
+            TLS_ST_CR_CERT_REQ,
+            TLS_ST_CR_SRVR_DONE,
+            TLS_ST_CR_SESSION_TICKET,
+            TLS_ST_CR_CHANGE,
+            TLS_ST_CR_FINISHED,
+            TLS_ST_CW_CLNT_HELLO,
+            TLS_ST_CW_CERT,
+            TLS_ST_CW_KEY_EXCH,
+            TLS_ST_CW_CERT_VRFY,
+            TLS_ST_CW_CHANGE,
+            TLS_ST_CW_NEXT_PROTO,
+            TLS_ST_CW_FINISHED,
+            TLS_ST_SW_HELLO_REQ,
+            TLS_ST_SR_CLNT_HELLO,
+            DTLS_ST_SW_HELLO_VERIFY_REQUEST,
+            TLS_ST_SW_SRVR_HELLO,
+            TLS_ST_SW_CERT,
+            TLS_ST_SW_KEY_EXCH,
+            TLS_ST_SW_CERT_REQ,
+            TLS_ST_SW_SRVR_DONE,
+            TLS_ST_SR_CERT,
+            TLS_ST_SR_KEY_EXCH,
+            TLS_ST_SR_CERT_VRFY,
+            TLS_ST_SR_NEXT_PROTO,
+            TLS_ST_SR_CHANGE,
+            TLS_ST_SR_FINISHED,
+            TLS_ST_SW_SESSION_TICKET,
+            TLS_ST_SW_CERT_STATUS,
+            TLS_ST_SW_CHANGE,
+            TLS_ST_SW_FINISHED,
+            TLS_ST_SW_ENCRYPTED_EXTENSIONS,
+            TLS_ST_CR_ENCRYPTED_EXTENSIONS,
+            TLS_ST_CR_CERT_VRFY,
+            TLS_ST_SW_CERT_VRFY,
+            TLS_ST_CR_HELLO_REQ,
+            TLS_ST_SW_KEY_UPDATE,
+            TLS_ST_CW_KEY_UPDATE,
+            TLS_ST_SR_KEY_UPDATE,
+            TLS_ST_CR_KEY_UPDATE,
+            TLS_ST_EARLY_DATA,
+            TLS_ST_PENDING_EARLY_DATA_END,
+            TLS_ST_CW_END_OF_EARLY_DATA,
+            TLS_ST_SR_END_OF_EARLY_DATA
+        }
+        #endregion
+
         #region SSL Methods
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr TLS_method();
@@ -2813,10 +2869,7 @@ namespace OpenSSL.Core
         public extern static void SSL_free(IntPtr ssl);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_state(IntPtr ssl);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_set_state(IntPtr ssl, int state);
+        public extern static OpenSSL_HandshakeState SSL_get_state(IntPtr ssl);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void SSL_set_bio(IntPtr ssl, IntPtr read_bio, IntPtr write_bio);
