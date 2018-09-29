@@ -65,7 +65,6 @@ where options are
             if (opts) {
                 Console.WriteLine("options:  {0} {1} {2} {3} {4} {5}",
                     BigNumber.Options,
-                    CryptoUtil.MD2_Options,
                     CryptoUtil.RC4_Options,
                     CryptoUtil.DES_Options,
                     CryptoUtil.Idea_Options,

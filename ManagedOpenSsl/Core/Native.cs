@@ -233,9 +233,6 @@ namespace OpenSSL.Core
         public extern static IntPtr BN_options();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr MD2_options();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr RC4_options();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -1536,9 +1533,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EVP_md_null();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_md2();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EVP_md4();
