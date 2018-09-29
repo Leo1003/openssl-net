@@ -1722,18 +1722,6 @@ namespace OpenSSL.Core
         public extern static IntPtr EVP_cast5_ofb();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_rc5_32_12_16_cbc();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_rc5_32_12_16_ecb();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_rc5_32_12_16_cfb64();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EVP_rc5_32_12_16_ofb();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EVP_aes_128_ecb();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
