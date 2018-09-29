@@ -2288,21 +2288,6 @@ namespace OpenSSL.Core
         public extern static void EC_KEY_set_conv_form(IntPtr x, int y);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EC_KEY_get_key_method_data(
-            IntPtr x,
-            EC_KEY_dup_func dup_func,
-            EC_KEY_free_func free_func,
-            EC_KEY_free_func clear_free_func);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void EC_KEY_insert_key_method_data(
-            IntPtr x,
-            IntPtr data,
-            EC_KEY_dup_func dup_func,
-            EC_KEY_free_func free_func,
-            EC_KEY_free_func clear_free_func);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void EC_KEY_set_asn1_flag(IntPtr x, int y);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -2338,9 +2323,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int ECDSA_do_verify(byte[] dgst, int dgst_len, IntPtr sig, IntPtr eckey);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ECDSA_set_method(IntPtr eckey, IntPtr meth);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int ECDSA_size(IntPtr eckey);
