@@ -809,15 +809,6 @@ namespace OpenSSL.Core
         public extern static int RAND_status();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int RAND_query_egd_bytes(string path, byte[] buf, int bytes);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int RAND_egd(string path);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int RAND_egd_bytes(string path, int bytes);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int RAND_poll();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]

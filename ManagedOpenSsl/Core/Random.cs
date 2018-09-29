@@ -126,36 +126,6 @@ namespace OpenSSL.Core
         }
 
         /// <summary>
-        /// Calls RAND_query_egd_bytes()
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="buf"></param>
-        /// <param name="bytes"></param>
-        public static void GatherEntropy(string path, byte[] buf, int bytes)
-        {
-            Native.ExpectSuccess(Native.RAND_query_egd_bytes(path, buf, bytes));
-        }
-
-        /// <summary>
-        /// Calls RAND_egd()
-        /// </summary>
-        /// <param name="path"></param>
-        public static void GatherEntropy(string path)
-        {
-            Native.ExpectSuccess(Native.RAND_egd(path));
-        }
-
-        /// <summary>
-        /// Calls RAND_egd_bytes()
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="bytes"></param>
-        public static void GatherEntropy(string path, int bytes)
-        {
-            Native.ExpectSuccess(Native.RAND_egd_bytes(path, bytes));
-        }
-
-        /// <summary>
         /// Calls RAND_poll()
         /// </summary>
         public static void Poll()
