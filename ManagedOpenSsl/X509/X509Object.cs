@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2009 Frank Laub
+// Copyright (c) 2009 Frank Laub
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -106,7 +106,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void OnDispose()
         {
-            Native.X509_OBJECT_free_contents(ptr);
+            Native.X509_OBJECT_free(ptr);
         }
 
         internal override void OnNewHandle(IntPtr ptr)

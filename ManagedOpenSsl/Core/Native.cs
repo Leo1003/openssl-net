@@ -579,7 +579,7 @@ namespace OpenSSL.Core
         public extern static int X509_OBJECT_up_ref_count(IntPtr a);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void X509_OBJECT_free_contents(IntPtr a);
+        public extern static void X509_OBJECT_free(IntPtr a);
 
         #endregion
 
@@ -685,9 +685,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void X509_INFO_free(IntPtr a);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_INFO_up_ref(IntPtr a);
 
         #endregion
 
@@ -1340,16 +1337,6 @@ namespace OpenSSL.Core
 
         #endregion
 
-        #region X509_INFO
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int PEM_write_bio_X509_INFO(IntPtr bp, IntPtr x);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr PEM_read_bio_X509_INFO(IntPtr bp, IntPtr x, pem_password_cb cb, IntPtr u);
-
-        #endregion
-
         #region X509_AUX
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -1374,9 +1361,6 @@ namespace OpenSSL.Core
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int PEM_write_bio_X509_REQ_NEW(IntPtr bp, IntPtr x);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr PEM_read_bio_X509_REQ_NEW(IntPtr bp, IntPtr x, pem_password_cb cb, IntPtr u);
 
         #endregion
 

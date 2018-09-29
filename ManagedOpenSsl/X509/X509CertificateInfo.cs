@@ -46,7 +46,6 @@ namespace OpenSSL.X509
             #endregion
             public int enc_len;
             public IntPtr enc_data;
-            public int references;
         }
         #endregion
 
@@ -93,7 +92,7 @@ namespace OpenSSL.X509
 
         internal override void AddRef()
         {
-            Native.X509_INFO_up_ref(ptr);
+
         }
 
         #endregion
