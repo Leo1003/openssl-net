@@ -525,10 +525,10 @@ namespace OpenSSL.Core
         public extern static IntPtr X509_get_subject_name(IntPtr a);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_set_notBefore(IntPtr x, IntPtr tm);
+        public extern static int X509_set1_notBefore(IntPtr x, IntPtr tm);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_set_notAfter(IntPtr x, IntPtr tm);
+        public extern static int X509_set1_notAfter(IntPtr x, IntPtr tm);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int X509_set_pubkey(IntPtr x, IntPtr pkey);

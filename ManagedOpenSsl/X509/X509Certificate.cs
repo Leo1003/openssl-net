@@ -309,7 +309,7 @@ namespace OpenSSL.X509
             get { return Asn1DateTime.ToDateTime(RawValidity.notBefore); }
             set {
                 using (var asnDateTime = new Asn1DateTime(value)) {
-                    Native.ExpectSuccess(Native.X509_set_notBefore(ptr, asnDateTime.Handle));
+                    Native.ExpectSuccess(Native.X509_set1_notBefore(ptr, asnDateTime.Handle));
                 }
             }
         }
@@ -321,7 +321,7 @@ namespace OpenSSL.X509
             get { return Asn1DateTime.ToDateTime(RawValidity.notAfter); }
             set {
                 using (var asnDateTime = new Asn1DateTime(value)) {
-                    Native.ExpectSuccess(Native.X509_set_notAfter(ptr, asnDateTime.Handle));
+                    Native.ExpectSuccess(Native.X509_set1_notAfter(ptr, asnDateTime.Handle));
                 }
             }
         }
