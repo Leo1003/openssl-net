@@ -69,7 +69,7 @@ namespace OpenSSL.Core
         private PasswordHandler OnPassword;
         private object arg;
 
-        public Native.pem_password_cb Callback {
+        public NativeMethods.pem_password_cb Callback {
             get {
                 if (OnPassword == null)
                     return null;

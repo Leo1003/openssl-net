@@ -811,7 +811,7 @@ namespace OpenSSL.SSL
             if (ssl != null) {
                 // Call the SSL_renegotiate to reset the SSL object state
                 // to start handshake
-                Native.ExpectSuccess(Native.SSL_renegotiate(ssl.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.SSL_renegotiate(ssl.Handle));
                 handShakeState = HandshakeState.Renegotiate;
             }
         }

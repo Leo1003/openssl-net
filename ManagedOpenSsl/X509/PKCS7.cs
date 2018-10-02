@@ -97,7 +97,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public static PKCS7 FromDER(BIO bio)
         {
-            return new PKCS7(Native.ExpectNonNull(Native.d2i_PKCS7_bio(bio.Handle, IntPtr.Zero)));
+            return new PKCS7(NativeMethods.ExpectNonNull(NativeMethods.d2i_PKCS7_bio(bio.Handle, IntPtr.Zero)));
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public static PKCS7 FromPEM(BIO bio)
         {
-            return new PKCS7(Native.ExpectNonNull(Native.PEM_read_bio_PKCS7(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)));
+            return new PKCS7(NativeMethods.ExpectNonNull(NativeMethods.PEM_read_bio_PKCS7(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)));
         }
 
         #endregion
@@ -120,7 +120,7 @@ namespace OpenSSL.X509
         public X509Chain Certificates {
             get {
                 if (stack == null) {
-                    var type = Native.OBJ_obj2nid(raw.type);
+                    var type = NativeMethods.OBJ_obj2nid(raw.type);
                     switch (type) {
                         case NID_pkcs7_signed:
                             stack = GetStackFromSigned();
@@ -172,7 +172,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void OnDispose()
         {
-            Native.PKCS7_free(ptr);
+            NativeMethods.PKCS7_free(ptr);
         }
 
         internal override void OnNewHandle(IntPtr ptr)

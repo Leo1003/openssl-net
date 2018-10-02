@@ -56,7 +56,7 @@ namespace OpenSSL.Extensions
                 _knownProtocols = protoStream.GetBuffer();
             }
 
-            if (Native.SSL_CTX_set_alpn_protos(ctx, _knownProtocols, total) != 0) {
+            if (NativeMethods.SSL_CTX_set_alpn_protos(ctx, _knownProtocols, total) != 0) {
                 throw new AlpnException("cant set alpn protos");
             }
         }

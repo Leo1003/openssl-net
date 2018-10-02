@@ -40,7 +40,7 @@ namespace OpenSSL.X509
         /// Calls X509_EXTENSION_new()
         /// </summary>
         public X509Extension()
-            : base(Native.ExpectNonNull(Native.X509_EXTENSION_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.X509_EXTENSION_new()), true)
         { }
 
         internal X509Extension(IStack stack, IntPtr ptr)
@@ -59,7 +59,7 @@ namespace OpenSSL.X509
             : base(IntPtr.Zero, true)
         {
             using (var ctx = new X509V3Context(issuer, subject, null)) {
-                ptr = Native.ExpectNonNull(Native.X509V3_EXT_conf_nid(IntPtr.Zero, ctx.Handle, Native.TextToNID(name), value));
+                ptr = NativeMethods.ExpectNonNull(NativeMethods.X509V3_EXT_conf_nid(IntPtr.Zero, ctx.Handle, NativeMethods.TextToNID(name), value));
             }
         }
 
@@ -71,7 +71,7 @@ namespace OpenSSL.X509
         /// Uses X509_EXTENSION_get_object() and OBJ_nid2ln()
         /// </summary>
         public string Name {
-            get { return Native.StaticString(Native.OBJ_nid2ln(NID)); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2ln(NID)); }
         }
 
         /// <summary>
@@ -80,10 +80,10 @@ namespace OpenSSL.X509
         public int NID {
             get {
                 // Don't free the obj_ptr
-                var obj_ptr = Native.X509_EXTENSION_get_object(ptr);
+                var obj_ptr = NativeMethods.X509_EXTENSION_get_object(ptr);
 
                 if (obj_ptr != IntPtr.Zero)
-                    return Native.OBJ_obj2nid(obj_ptr);
+                    return NativeMethods.OBJ_obj2nid(obj_ptr);
 
                 return 0;
             }
@@ -94,7 +94,7 @@ namespace OpenSSL.X509
         /// </summary>
         public bool IsCritical {
             get {
-                var nCritical = Native.X509_EXTENSION_get_critical(ptr);
+                var nCritical = NativeMethods.X509_EXTENSION_get_critical(ptr);
                 return (nCritical == 1);
             }
         }
@@ -104,7 +104,7 @@ namespace OpenSSL.X509
         /// </summary>
         public byte[] Data {
             get {
-                using (var str = new Asn1String(Native.X509_EXTENSION_get_data(ptr), false)) {
+                using (var str = new Asn1String(NativeMethods.X509_EXTENSION_get_data(ptr), false)) {
                     return str.Data;
                 }
             }
@@ -119,7 +119,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void OnDispose()
         {
-            Native.X509_EXTENSION_free(ptr);
+            NativeMethods.X509_EXTENSION_free(ptr);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            Native.X509V3_EXT_print(bio.Handle, ptr, 0, 0);
+            NativeMethods.X509V3_EXT_print(bio.Handle, ptr, 0, 0);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         internal override IntPtr DuplicateHandle()
         {
-            return Native.X509_EXTENSION_dup(ptr);
+            return NativeMethods.X509_EXTENSION_dup(ptr);
         }
 
         #endregion

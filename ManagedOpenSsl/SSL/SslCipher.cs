@@ -100,14 +100,14 @@ namespace OpenSSL.SSL
         /// Returns SSL_CIPHER_get_name()
         /// </summary>
         public string Name {
-            get { return Native.StaticString(Native.SSL_CIPHER_get_name(Handle)); }
+            get { return NativeMethods.StaticString(NativeMethods.SSL_CIPHER_get_name(Handle)); }
         }
 
         /// <summary>
         /// Returns SSL_CIPHER_description()
         /// </summary>
         public string Description {
-            get { return Native.SSL_CIPHER_description(Handle, null, 0); }
+            get { return NativeMethods.SSL_CIPHER_description(Handle, null, 0); }
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace OpenSSL.SSL
         /// </summary>
         /// <value>The version.</value>
         public string Version {
-            get { return Native.StaticString(Native.SSL_CIPHER_get_version(Handle)); }
+            get { return NativeMethods.StaticString(NativeMethods.SSL_CIPHER_get_version(Handle)); }
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace OpenSSL.SSL
         public int Bits {
             get {
                 var alg_bits = 0;
-                return Native.SSL_CIPHER_get_bits(Handle, out alg_bits);
+                return NativeMethods.SSL_CIPHER_get_bits(Handle, out alg_bits);
             }
         }
 

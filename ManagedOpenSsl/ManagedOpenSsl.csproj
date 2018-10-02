@@ -212,6 +212,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Native\" />
+  </ItemGroup>
   <ItemGroup />
 </Project>

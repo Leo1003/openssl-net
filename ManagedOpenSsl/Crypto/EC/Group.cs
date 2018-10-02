@@ -44,7 +44,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         /// <param name="method"></param>
         public Group(Method method)
-            : base(Native.ExpectNonNull(Native.EC_GROUP_new(method.Handle)), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.EC_GROUP_new(method.Handle)), true)
         {
         }
 
@@ -55,7 +55,7 @@ namespace OpenSSL.Crypto.EC
         /// <returns></returns>
         public static Group FromCurveName(Asn1Object obj)
         {
-            return new Group(Native.ExpectNonNull(Native.EC_GROUP_new_by_curve_name(obj.NID)), true);
+            return new Group(NativeMethods.ExpectNonNull(NativeMethods.EC_GROUP_new_by_curve_name(obj.NID)), true);
         }
         #endregion
 
@@ -64,14 +64,14 @@ namespace OpenSSL.Crypto.EC
         /// Calls EC_GROUP_get_degree()
         /// </summary>
         public int Degree {
-            get { return Native.EC_GROUP_get_degree(ptr); }
+            get { return NativeMethods.EC_GROUP_get_degree(ptr); }
         }
 
         /// <summary>
         /// Calls EC_GROUP_method_of()
         /// </summary>
         public Method Method {
-            get { return new Method(Native.EC_GROUP_method_of(ptr), false); }
+            get { return new Method(NativeMethods.EC_GROUP_method_of(ptr), false); }
         }
         #endregion
 
@@ -84,7 +84,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EC_GROUP_free(this.ptr);
+            NativeMethods.EC_GROUP_free(this.ptr);
         }
         #endregion
     }

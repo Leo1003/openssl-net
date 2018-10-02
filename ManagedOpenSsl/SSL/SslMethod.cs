@@ -49,32 +49,32 @@ namespace OpenSSL.SSL
         /// <summary>
         /// TLS_method()
         /// </summary>
-        public static SslMethod TLS_method = new SslMethod(Native.TLS_method(), false);
+        public static SslMethod TLS_method = new SslMethod(NativeMethods.TLS_method(), false);
 
         /// <summary>
         /// TLS_server_method()
         /// </summary>
-        public static SslMethod TLS_server_method = new SslMethod(Native.TLS_server_method(), false);
+        public static SslMethod TLS_server_method = new SslMethod(NativeMethods.TLS_server_method(), false);
 
         /// <summary>
         /// TLS_client_method()
         /// </summary>
-        public static SslMethod TLS_client_method = new SslMethod(Native.TLS_client_method(), false);
+        public static SslMethod TLS_client_method = new SslMethod(NativeMethods.TLS_client_method(), false);
 
         /// <summary>
         /// DTLS_method()
         /// </summary>
-        public static SslMethod DTLS_method = new SslMethod(Native.DTLS_method(), false);
+        public static SslMethod DTLS_method = new SslMethod(NativeMethods.DTLS_method(), false);
 
         /// <summary>
         /// DTLS_server_method()
         /// </summary>
-        public static SslMethod DTLS_server_method = new SslMethod(Native.DTLS_server_method(), false);
+        public static SslMethod DTLS_server_method = new SslMethod(NativeMethods.DTLS_server_method(), false);
 
         /// <summary>
         /// DTLS_client_method()
         /// </summary>
-        public static SslMethod DTLS_client_method = new SslMethod(Native.DTLS_client_method(), false);
+        public static SslMethod DTLS_client_method = new SslMethod(NativeMethods.DTLS_client_method(), false);
 
     }
 }

@@ -51,9 +51,9 @@ namespace OpenSSL.SSL
         private RemoteCertificateValidationHandler OnVerifyCert;
 
         // hold down the thunk so it doesn't get collected
-        private Native.client_cert_cb _ptrOnClientCertThunk;
-        private Native.VerifyCertCallback _ptrOnVerifyCertThunk;
-        private Native.alpn_cb _ptrOnAlpn;
+        private NativeMethods.client_cert_cb _ptrOnClientCertThunk;
+        private NativeMethods.VerifyCertCallback _ptrOnVerifyCertThunk;
+        private NativeMethods.alpn_cb _ptrOnAlpn;
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace OpenSSL.SSL
             SslMethod sslMethod,
             ConnectionEnd end,
             IEnumerable<string> protoList) :
-            base(Native.ExpectNonNull(Native.SSL_CTX_new(sslMethod.Handle)), true)
+            base(NativeMethods.ExpectNonNull(NativeMethods.SSL_CTX_new(sslMethod.Handle)), true)
         {
             alpnExt = new AlpnExtension(Handle, protoList);
 
@@ -77,7 +77,7 @@ namespace OpenSSL.SSL
             _ptrOnAlpn = alpnExt.AlpnCb;
 
             if (end == ConnectionEnd.Server) {
-                Native.SSL_CTX_set_alpn_select_cb(Handle, _ptrOnAlpn, IntPtr.Zero);
+                NativeMethods.SSL_CTX_set_alpn_select_cb(Handle, _ptrOnAlpn, IntPtr.Zero);
             }
         }
 
@@ -87,13 +87,13 @@ namespace OpenSSL.SSL
         ///     Calls SSL_CTX_set_options
         /// </summary>
         public SslOptions Options {
-            set { Native.ExpectSuccess(Native.SSL_CTX_set_options(ptr, (int)value)); }
-            get { return (SslOptions)Native.SSL_CTX_get_options(ptr); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_set_options(ptr, (int)value)); }
+            get { return (SslOptions)NativeMethods.SSL_CTX_get_options(ptr); }
         }
 
         public SslMode Mode {
-            set { Native.ExpectSuccess(Native.SSL_CTX_set_mode(ptr, (int)value)); }
-            get { return (SslMode)Native.SSL_CTX_get_mode(ptr); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_set_mode(ptr, (int)value)); }
+            get { return (SslMode)NativeMethods.SSL_CTX_get_mode(ptr); }
         }
 
         #endregion
@@ -153,7 +153,7 @@ namespace OpenSSL.SSL
         public void SetCertificateStore(X509Store store)
         {
             store.AddRef();
-            Native.SSL_CTX_set_cert_store(ptr, store.Handle);
+            NativeMethods.SSL_CTX_set_cert_store(ptr, store.Handle);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace OpenSSL.SSL
         public void SetVerify(VerifyMode mode, RemoteCertificateValidationHandler callback)
         {
             OnVerifyCert = callback;
-            Native.SSL_CTX_set_verify(ptr, (int)mode, callback == null ? null : _ptrOnVerifyCertThunk);
+            NativeMethods.SSL_CTX_set_verify(ptr, (int)mode, callback == null ? null : _ptrOnVerifyCertThunk);
         }
 
         /// <summary>
@@ -173,12 +173,12 @@ namespace OpenSSL.SSL
         /// <param name="depth"></param>
         public void SetVerifyDepth(int depth)
         {
-            Native.SSL_CTX_set_verify_depth(ptr, depth);
+            NativeMethods.SSL_CTX_set_verify_depth(ptr, depth);
         }
 
         public Core.Stack<X509Name> LoadClientCAFile(string filename)
         {
-            var stack = Native.SSL_load_client_CA_file(filename);
+            var stack = NativeMethods.SSL_load_client_CA_file(filename);
             return new Core.Stack<X509Name>(stack, true);
         }
 
@@ -191,64 +191,64 @@ namespace OpenSSL.SSL
         /// </summary>
         public Core.Stack<X509Name> CAList {
             get {
-                var ptr = Native.SSL_CTX_get_client_CA_list(this.ptr);
+                var ptr = NativeMethods.SSL_CTX_get_client_CA_list(this.ptr);
                 return new Core.Stack<X509Name>(ptr, false);
             }
             set {
                 value.AddRef();
-                Native.SSL_CTX_set_client_CA_list(ptr, value.Handle);
+                NativeMethods.SSL_CTX_set_client_CA_list(ptr, value.Handle);
             }
         }
 
         public int LoadVerifyLocations(string caFile, string caPath)
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_load_verify_locations(ptr, caFile, caPath));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_load_verify_locations(ptr, caFile, caPath));
         }
 
         public int SetDefaultVerifyPaths()
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_set_default_verify_paths(ptr));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_set_default_verify_paths(ptr));
         }
 
         public int SetCipherList(string cipherList)
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_set_cipher_list(ptr, cipherList));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_set_cipher_list(ptr, cipherList));
         }
 
         public int UseCertificate(X509Certificate cert)
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_use_certificate(ptr, cert.Handle));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_use_certificate(ptr, cert.Handle));
         }
 
         public int UseCertificateChainFile(string filename)
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_use_certificate_chain_file(ptr, filename));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_use_certificate_chain_file(ptr, filename));
         }
 
         public int UsePrivateKey(CryptoKey key)
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_use_PrivateKey(ptr, key.Handle));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_use_PrivateKey(ptr, key.Handle));
         }
 
         public int UsePrivateKeyFile(string filename, SslFileType type)
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_use_PrivateKey_file(ptr, filename, (int)type));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_use_PrivateKey_file(ptr, filename, (int)type));
         }
 
         public int CheckPrivateKey()
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_check_private_key(ptr));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_check_private_key(ptr));
         }
 
         public int SetSessionIdContext(byte[] sid_ctx)
         {
-            return Native.ExpectSuccess(Native.SSL_CTX_set_session_id_context(ptr, sid_ctx, (uint)sid_ctx.Length));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_set_session_id_context(ptr, sid_ctx, (uint)sid_ctx.Length));
         }
 
         public void SetClientCertCallback(ClientCertCallbackHandler callback)
         {
             OnClientCert = callback;
-            Native.SSL_CTX_set_client_cert_cb(ptr, callback == null ? null : _ptrOnClientCertThunk);
+            NativeMethods.SSL_CTX_set_client_cert_cb(ptr, callback == null ? null : _ptrOnClientCertThunk);
         }
 
         #endregion
@@ -260,7 +260,7 @@ namespace OpenSSL.SSL
         /// </summary>
         protected override void OnDispose()
         {
-            Native.SSL_CTX_free(ptr);
+            NativeMethods.SSL_CTX_free(ptr);
         }
 
         #endregion

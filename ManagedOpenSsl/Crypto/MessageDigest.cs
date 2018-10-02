@@ -70,7 +70,7 @@ namespace OpenSSL.Crypto
         public static MessageDigest CreateByName(string name)
         {
             var buf = Encoding.ASCII.GetBytes(name);
-            var ptr = Native.EVP_get_digestbyname(buf);
+            var ptr = NativeMethods.EVP_get_digestbyname(buf);
 
             if (ptr == IntPtr.Zero)
                 return null;
@@ -82,61 +82,61 @@ namespace OpenSSL.Crypto
         /// Calls OBJ_NAME_do_all_sorted(OBJ_NAME_TYPE_CIPHER_METH)
         /// </summary>
         public static string[] AllNamesSorted {
-            get { return new NameCollector(Native.OBJ_NAME_TYPE_MD_METH, true).Result.ToArray(); }
+            get { return new NameCollector(NativeMethods.OBJ_NAME_TYPE_MD_METH, true).Result.ToArray(); }
         }
 
         /// <summary>
         /// Calls OBJ_NAME_do_all(OBJ_NAME_TYPE_CIPHER_METH)
         /// </summary>
         public static string[] AllNames {
-            get { return new NameCollector(Native.OBJ_NAME_TYPE_MD_METH, false).Result.ToArray(); }
+            get { return new NameCollector(NativeMethods.OBJ_NAME_TYPE_MD_METH, false).Result.ToArray(); }
         }
 
         #region MessageDigests
         /// <summary>
         /// EVP_md_null()
         /// </summary>
-        public static MessageDigest Null = new MessageDigest(Native.EVP_md_null(), false);
+        public static MessageDigest Null = new MessageDigest(NativeMethods.EVP_md_null(), false);
 
         /// <summary>
         /// EVP_md4()
         /// </summary>
-        public static MessageDigest MD4 = new MessageDigest(Native.EVP_md4(), false);
+        public static MessageDigest MD4 = new MessageDigest(NativeMethods.EVP_md4(), false);
 
         /// <summary>
         /// EVP_md5()
         /// </summary>
-        public static MessageDigest MD5 = new MessageDigest(Native.EVP_md5(), false);
+        public static MessageDigest MD5 = new MessageDigest(NativeMethods.EVP_md5(), false);
 
         /// <summary>
         /// EVP_sha1()
         /// </summary>
-        public static MessageDigest SHA1 = new MessageDigest(Native.EVP_sha1(), false);
+        public static MessageDigest SHA1 = new MessageDigest(NativeMethods.EVP_sha1(), false);
 
         /// <summary>
         /// EVP_sha224()
         /// </summary>
-        public static MessageDigest SHA224 = new MessageDigest(Native.EVP_sha224(), false);
+        public static MessageDigest SHA224 = new MessageDigest(NativeMethods.EVP_sha224(), false);
 
         /// <summary>
         /// EVP_sha256()
         /// </summary>
-        public static MessageDigest SHA256 = new MessageDigest(Native.EVP_sha256(), false);
+        public static MessageDigest SHA256 = new MessageDigest(NativeMethods.EVP_sha256(), false);
 
         /// <summary>
         /// EVP_sha384()
         /// </summary>
-        public static MessageDigest SHA384 = new MessageDigest(Native.EVP_sha384(), false);
+        public static MessageDigest SHA384 = new MessageDigest(NativeMethods.EVP_sha384(), false);
 
         /// <summary>
         /// EVP_sha512()
         /// </summary>
-        public static MessageDigest SHA512 = new MessageDigest(Native.EVP_sha512(), false);
+        public static MessageDigest SHA512 = new MessageDigest(NativeMethods.EVP_sha512(), false);
 
         /// <summary>
         /// EVP_ripemd160()
         /// </summary>
-        public static MessageDigest RipeMD160 = new MessageDigest(Native.EVP_ripemd160(), false);
+        public static MessageDigest RipeMD160 = new MessageDigest(NativeMethods.EVP_ripemd160(), false);
         #endregion
 
         #region Properties
@@ -144,28 +144,28 @@ namespace OpenSSL.Crypto
         /// Returns the block_size field
         /// </summary>
         public int BlockSize {
-            get { return Native.EVP_MD_block_size(ptr); }
+            get { return NativeMethods.EVP_MD_block_size(ptr); }
         }
 
         /// <summary>
         /// Returns the md_size field
         /// </summary>
         public int Size {
-            get { return Native.EVP_MD_size(ptr); }
+            get { return NativeMethods.EVP_MD_size(ptr); }
         }
 
         /// <summary>
         /// Returns the type field using OBJ_nid2ln()
         /// </summary>
         public string LongName {
-            get { return Native.StaticString(Native.OBJ_nid2ln(Native.EVP_MD_type(ptr))); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2ln(NativeMethods.EVP_MD_type(ptr))); }
         }
 
         /// <summary>
         /// Returns the type field using OBJ_nid2sn()
         /// </summary>
         public string Name {
-            get { return Native.StaticString(Native.OBJ_nid2sn(Native.EVP_MD_type(ptr))); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2sn(NativeMethods.EVP_MD_type(ptr))); }
         }
 
         #endregion
@@ -184,9 +184,9 @@ namespace OpenSSL.Crypto
         /// </summary>
         /// <param name="bio"></param>
         public MessageDigestContext(BIO bio)
-            : base(Native.ExpectNonNull(Native.BIO_get_md_ctx(bio.Handle)), false)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.BIO_get_md_ctx(bio.Handle)), false)
         {
-            md = new MessageDigest(Native.ExpectNonNull(Native.BIO_get_md(bio.Handle)), false);
+            md = new MessageDigest(NativeMethods.ExpectNonNull(NativeMethods.BIO_get_md(bio.Handle)), false);
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace OpenSSL.Crypto
         /// </summary>
         /// <param name="md"></param>
         public MessageDigestContext(MessageDigest md)
-            : base(Native.EVP_MD_CTX_new(), true)
+            : base(NativeMethods.EVP_MD_CTX_new(), true)
         {
-            Native.EVP_MD_CTX_reset(ptr);
+            NativeMethods.EVP_MD_CTX_reset(ptr);
             this.md = md;
         }
 
@@ -220,9 +220,9 @@ namespace OpenSSL.Crypto
         {
             var digest = new byte[md.Size];
             var len = (uint)digest.Length;
-            Native.ExpectSuccess(Native.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
-            Native.ExpectSuccess(Native.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
-            Native.ExpectSuccess(Native.EVP_DigestFinal_ex(ptr, digest, ref len));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestFinal_ex(ptr, digest, ref len));
             return digest;
         }
 
@@ -231,7 +231,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         public void Init()
         {
-            Native.ExpectSuccess(Native.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace OpenSSL.Crypto
         /// <param name="msg"></param>
         public void Update(byte[] msg)
         {
-            Native.ExpectSuccess(Native.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace OpenSSL.Crypto
         {
             var digest = new byte[md.Size];
             var len = (uint)digest.Length;
-            Native.ExpectSuccess(Native.EVP_DigestFinal_ex(ptr, digest, ref len));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestFinal_ex(ptr, digest, ref len));
 
             return digest;
         }
@@ -265,7 +265,7 @@ namespace OpenSSL.Crypto
         {
             var sig = new byte[pkey.Size];
             var len = (uint)sig.Length;
-            Native.ExpectSuccess(Native.EVP_SignFinal(ptr, sig, ref len, pkey.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_SignFinal(ptr, sig, ref len, pkey.Handle));
 
             return sig;
         }
@@ -278,7 +278,7 @@ namespace OpenSSL.Crypto
         /// <returns></returns>
         public bool VerifyFinal(byte[] sig, CryptoKey pkey)
         {
-            var ret = Native.ExpectSuccess(Native.EVP_VerifyFinal(ptr, sig, (uint)sig.Length, pkey.Handle));
+            var ret = NativeMethods.ExpectSuccess(NativeMethods.EVP_VerifyFinal(ptr, sig, (uint)sig.Length, pkey.Handle));
 
             return ret == 1;
         }
@@ -293,9 +293,9 @@ namespace OpenSSL.Crypto
         {
             var sig = new byte[pkey.Size];
             var len = (uint)sig.Length;
-            Native.ExpectSuccess(Native.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
-            Native.ExpectSuccess(Native.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
-            Native.ExpectSuccess(Native.EVP_SignFinal(ptr, sig, ref len, pkey.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_SignFinal(ptr, sig, ref len, pkey.Handle));
 
             var ret = new byte[len];
             Buffer.BlockCopy(sig, 0, ret, 0, (int)len);
@@ -325,7 +325,7 @@ namespace OpenSSL.Crypto
 
             var sig = new byte[pkey.Size];
             var len = (uint)sig.Length;
-            Native.ExpectSuccess(Native.EVP_SignFinal(ctx.Handle, sig, ref len, pkey.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_SignFinal(ctx.Handle, sig, ref len, pkey.Handle));
             var ret = new byte[len];
             Buffer.BlockCopy(sig, 0, ret, 0, (int)len);
 
@@ -341,10 +341,10 @@ namespace OpenSSL.Crypto
         /// <returns></returns>
         public bool Verify(byte[] msg, byte[] sig, CryptoKey pkey)
         {
-            Native.ExpectSuccess(Native.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
-            Native.ExpectSuccess(Native.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
 
-            var ret = Native.ExpectSuccess(Native.EVP_VerifyFinal(ptr, sig, (uint)sig.Length, pkey.Handle));
+            var ret = NativeMethods.ExpectSuccess(NativeMethods.EVP_VerifyFinal(ptr, sig, (uint)sig.Length, pkey.Handle));
             return ret == 1;
         }
 
@@ -369,7 +369,7 @@ namespace OpenSSL.Crypto
 
             var ctx = new MessageDigestContext(bmd);
 
-            var ret = Native.ExpectSuccess(Native.EVP_VerifyFinal(ctx.Handle, sig, (uint)sig.Length, pkey.Handle));
+            var ret = NativeMethods.ExpectSuccess(NativeMethods.EVP_VerifyFinal(ctx.Handle, sig, (uint)sig.Length, pkey.Handle));
             return ret == 1;
         }
 
@@ -382,7 +382,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EVP_MD_CTX_free(ptr);
+            NativeMethods.EVP_MD_CTX_free(ptr);
         }
 
         #endregion

@@ -41,7 +41,7 @@ namespace OpenSSL.X509
         /// Calls X509_REQ_new()
         /// </summary>
         public X509Request()
-            : base(Native.ExpectNonNull(Native.X509_REQ_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.X509_REQ_new()), true)
         {
         }
 
@@ -69,7 +69,7 @@ namespace OpenSSL.X509
         /// </summary>
         /// <param name="bio"></param>
         public X509Request(BIO bio)
-            : base(Native.ExpectNonNull(Native.PEM_read_bio_X509_REQ(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.PEM_read_bio_X509_REQ(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)), true)
         {
         }
 
@@ -132,24 +132,24 @@ namespace OpenSSL.X509
         /// Accessor to the version field. The settor calls X509_REQ_set_version().
         /// </summary>
         public int Version {
-            get { return Native.ASN1_INTEGER_get(RawInfo.version); }
-            set { Native.ExpectSuccess(Native.X509_REQ_set_version(ptr, value)); }
+            get { return NativeMethods.ASN1_INTEGER_get(RawInfo.version); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_set_version(ptr, value)); }
         }
 
         /// <summary>
         /// Accessor to the pubkey field. Uses X509_REQ_get_pubkey() and X509_REQ_set_pubkey()
         /// </summary>
         public CryptoKey PublicKey {
-            get { return new CryptoKey(Native.ExpectNonNull(Native.X509_REQ_get_pubkey(ptr)), true); }
-            set { Native.ExpectSuccess(Native.X509_REQ_set_pubkey(ptr, value.Handle)); }
+            get { return new CryptoKey(NativeMethods.ExpectNonNull(NativeMethods.X509_REQ_get_pubkey(ptr)), true); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_set_pubkey(ptr, value.Handle)); }
         }
 
         /// <summary>
         /// Accessor to the subject field. Setter calls X509_REQ_set_subject_name().
         /// </summary>
         public X509Name Subject {
-            get { return new X509Name(Native.X509_NAME_dup(RawInfo.subject), true); }
-            set { Native.ExpectSuccess(Native.X509_REQ_set_subject_name(ptr, value.Handle)); }
+            get { return new X509Name(NativeMethods.X509_NAME_dup(RawInfo.subject), true); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_set_subject_name(ptr, value.Handle)); }
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace OpenSSL.X509
         /// <param name="digest"></param>
         public void Sign(CryptoKey pkey, MessageDigest digest)
         {
-            if (Native.X509_REQ_sign(ptr, pkey.Handle, digest.Handle) == 0)
+            if (NativeMethods.X509_REQ_sign(ptr, pkey.Handle, digest.Handle) == 0)
                 throw new OpenSslException();
         }
 
@@ -187,7 +187,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public bool Verify(CryptoKey pkey)
         {
-            int ret = Native.X509_REQ_verify(ptr, pkey.Handle);
+            int ret = NativeMethods.X509_REQ_verify(ptr, pkey.Handle);
 
             if (ret < 0)
                 throw new OpenSslException();
@@ -203,7 +203,7 @@ namespace OpenSSL.X509
         public ArraySegment<byte> Digest(IntPtr type, byte[] digest)
         {
             uint len = (uint)digest.Length;
-            Native.ExpectSuccess(Native.X509_REQ_digest(this.ptr, type, digest, ref len));
+            NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_digest(this.ptr, type, digest, ref len));
             return new ArraySegment<byte>(digest, 0, (int)len);
         }
 
@@ -213,7 +213,7 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            Native.ExpectSuccess(Native.X509_REQ_print(bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_print(bio.Handle, ptr));
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public void Write(BIO bio)
         {
-            Native.ExpectSuccess(Native.PEM_write_bio_X509_REQ(bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_X509_REQ(bio.Handle, ptr));
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public X509Certificate CreateCertificate(int days, CryptoKey pkey)
         {
-            return new X509Certificate(Native.ExpectNonNull(Native.X509_REQ_to_X509(ptr, days, pkey.Handle)), true);
+            return new X509Certificate(NativeMethods.ExpectNonNull(NativeMethods.X509_REQ_to_X509(ptr, days, pkey.Handle)), true);
         }
 
         #endregion
@@ -245,7 +245,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void OnDispose()
         {
-            Native.X509_REQ_free(ptr);
+            NativeMethods.X509_REQ_free(ptr);
         }
 
         #endregion

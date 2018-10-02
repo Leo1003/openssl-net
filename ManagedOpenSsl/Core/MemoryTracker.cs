@@ -89,9 +89,9 @@ namespace OpenSSL.Core
         }
 
         // These are used to pin the functions down so they don't get yanked while in use
-        static Native.MallocFunctionPtr _ptrMalloc = malloc;
-        static Native.ReallocFunctionPtr _ptrRealloc = realloc;
-        static Native.FreeFunctionPtr _ptrFree = free;
+        static NativeMethods.MallocFunctionPtr _ptrMalloc = malloc;
+        static NativeMethods.ReallocFunctionPtr _ptrRealloc = realloc;
+        static NativeMethods.FreeFunctionPtr _ptrFree = free;
 
         static bool _tracking = false;
         static Dictionary<IntPtr, Block> _memory = new Dictionary<IntPtr, Block>();
@@ -101,7 +101,7 @@ namespace OpenSSL.Core
         /// </summary>
         public static void Init()
         {
-            Native.CRYPTO_set_mem_functions(_ptrMalloc, _ptrRealloc, _ptrFree);
+            NativeMethods.CRYPTO_set_mem_functions(_ptrMalloc, _ptrRealloc, _ptrFree);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace OpenSSL.Core
             GC.Collect();
 
             CryptoUtil.ClearErrors();
-            Native.ERR_remove_thread_state(IntPtr.Zero);
+            NativeMethods.ERR_remove_thread_state(IntPtr.Zero);
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -183,7 +183,7 @@ namespace OpenSSL.Core
         {
             lock (_memory) {
                 var block = new Block {
-                    file = Native.StaticString(file),
+                    file = NativeMethods.StaticString(file),
                     line = line,
                     stack = new StackTrace(1, true),
                     bytes = num,
@@ -218,7 +218,7 @@ namespace OpenSSL.Core
 
                 var block = new Block {
                     stack = new StackTrace(1, true),
-                    file = Native.StaticString(file),
+                    file = NativeMethods.StaticString(file),
                     line = line,
                     bytes = num,
                     ptr = Marshal.ReAllocHGlobal(addr, (IntPtr)num),

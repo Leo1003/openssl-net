@@ -35,7 +35,7 @@ namespace OpenSSL.Extensions
         {
             SSL_CTX_set_tlsext_servername_callback(cb, sslCtx);
 
-            Native.SSL_CTX_ctrl(sslCtx, SSL_CTRL_SET_TLSEXT_SERVERNAME_ARG, 0, _serverNamePtr);
+            NativeMethods.SSL_CTX_ctrl(sslCtx, SSL_CTRL_SET_TLSEXT_SERVERNAME_ARG, 0, _serverNamePtr);
             SSL_set_tlsext_host_name(ssl);
         }
 
@@ -47,12 +47,12 @@ namespace OpenSSL.Extensions
 
         private static long SSL_session_reused(IntPtr ssl)
         {
-            return Native.SSL_ctrl(ssl, SSL_CTRL_GET_SESSION_REUSED, 0, IntPtr.Zero);
+            return NativeMethods.SSL_ctrl(ssl, SSL_CTRL_GET_SESSION_REUSED, 0, IntPtr.Zero);
         }
 
         private int SSL_set_tlsext_host_name(IntPtr s)
         {
-            return Native.SSL_ctrl(s, SSL_CTRL_SET_TLSEXT_HOSTNAME,
+            return NativeMethods.SSL_ctrl(s, SSL_CTRL_SET_TLSEXT_HOSTNAME,
                 TLSEXT_NAMETYPE_host_name,
                 _serverNamePtr);
         }
@@ -60,7 +60,7 @@ namespace OpenSSL.Extensions
         private int SSL_CTX_set_tlsext_servername_callback(SniCallback cb, IntPtr ctx)
         {
             var cbPtr = Marshal.GetFunctionPointerForDelegate(cb);
-            return Native.SSL_CTX_callback_ctrl(ctx, SSL_CTRL_SET_TLSEXT_SERVERNAME_CB, cbPtr);
+            return NativeMethods.SSL_CTX_callback_ctrl(ctx, SSL_CTRL_SET_TLSEXT_SERVERNAME_CB, cbPtr);
         }
 
         //This callback just checks was session reused or not.
@@ -68,9 +68,9 @@ namespace OpenSSL.Extensions
         //should be true
         public int ClientSniCb(IntPtr ssl, IntPtr ad, IntPtr arg)
         {
-            var hnptr = Native.SSL_get_servername(ssl, TLSEXT_NAMETYPE_host_name);
+            var hnptr = NativeMethods.SSL_get_servername(ssl, TLSEXT_NAMETYPE_host_name);
 
-            if (Native.SSL_get_servername_type(ssl) != -1) {
+            if (NativeMethods.SSL_get_servername_type(ssl) != -1) {
                 var isReused = SSL_session_reused(ssl) != 0;
                 var clientSniArgAck = !isReused && hnptr != IntPtr.Zero;
 #if DEBUG
@@ -89,7 +89,7 @@ namespace OpenSSL.Extensions
         public int ServerSniCb(IntPtr ssl, IntPtr ad, IntPtr arg)
         {
             //Hostname in TLS extension
-            var extServerNamePtr = Native.SSL_get_servername(ssl, TLSEXT_NAMETYPE_host_name);
+            var extServerNamePtr = NativeMethods.SSL_get_servername(ssl, TLSEXT_NAMETYPE_host_name);
             var extServerName = Marshal.PtrToStringAnsi(extServerNamePtr);
 
             if (!_serverName.Equals(extServerName)) {

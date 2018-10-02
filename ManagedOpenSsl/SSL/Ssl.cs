@@ -59,7 +59,7 @@ namespace OpenSSL.SSL
         /// </summary>
         /// <param name="ctx"></param>
         internal Ssl(SslContext ctx) :
-            base(Native.ExpectNonNull(Native.SSL_new(ctx.Handle)), true)
+            base(NativeMethods.ExpectNonNull(NativeMethods.SSL_new(ctx.Handle)), true)
         {
         }
 
@@ -71,8 +71,8 @@ namespace OpenSSL.SSL
 
         #region Properties
 
-        internal Native.OpenSSL_HandshakeState State {
-            get { return Native.SSL_get_state(Handle); }
+        internal NativeMethods.OpenSSL_HandshakeState State {
+            get { return NativeMethods.SSL_get_state(Handle); }
         }
 
         /// <summary>
@@ -80,23 +80,23 @@ namespace OpenSSL.SSL
         /// </summary>
         /// <value>The current cipher.</value>
         public SslCipher CurrentCipher {
-            get { return new SslCipher(Native.SSL_get_current_cipher(Handle), false); }
+            get { return new SslCipher(NativeMethods.SSL_get_current_cipher(Handle), false); }
         }
 
         internal Core.Stack<X509Name> CAList {
-            get { return new Core.Stack<X509Name>(Native.SSL_get_client_CA_list(ptr), false); }
-            set { Native.SSL_set_client_CA_list(ptr, value.Handle); }
+            get { return new Core.Stack<X509Name>(NativeMethods.SSL_get_client_CA_list(ptr), false); }
+            set { NativeMethods.SSL_set_client_CA_list(ptr, value.Handle); }
         }
 
         internal X509Certificate LocalCertificate {
             get {
-                var cert = Native.SSL_get_certificate(ptr);
+                var cert = NativeMethods.SSL_get_certificate(ptr);
                 if (cert == IntPtr.Zero)
                     return null;
                 return new X509Certificate(cert, false);
             }
             set {
-                Native.ExpectSuccess(Native.SSL_use_certificate(ptr, value.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.SSL_use_certificate(ptr, value.Handle));
             }
         }
 
@@ -105,7 +105,7 @@ namespace OpenSSL.SSL
         }
 
         internal Core.Stack<SslCipher> Ciphers {
-            get { return new Core.Stack<SslCipher>(Native.SSL_get_ciphers(Handle), false); }
+            get { return new Core.Stack<SslCipher>(NativeMethods.SSL_get_ciphers(Handle), false); }
         }
 
         #endregion
@@ -114,22 +114,22 @@ namespace OpenSSL.SSL
 
         internal int Accept()
         {
-            return Native.SSL_accept(ptr);
+            return NativeMethods.SSL_accept(ptr);
         }
 
         internal int Connect()
         {
-            return Native.SSL_connect(ptr);
+            return NativeMethods.SSL_connect(ptr);
         }
 
         internal SslError GetError(int ret_code)
         {
-            return (SslError)Native.SSL_get_error(ptr, ret_code);
+            return (SslError)NativeMethods.SSL_get_error(ptr, ret_code);
         }
 
         internal X509Certificate GetPeerCertificate()
         {
-            var cert = Native.SSL_get_peer_certificate(ptr);
+            var cert = NativeMethods.SSL_get_peer_certificate(ptr);
             if (cert == IntPtr.Zero)
                 return null;
             return new X509Certificate(cert, true);
@@ -137,72 +137,72 @@ namespace OpenSSL.SSL
 
         internal VerifyResult GetVerifyResult()
         {
-            return (VerifyResult)Native.SSL_get_verify_result(ptr);
+            return (VerifyResult)NativeMethods.SSL_get_verify_result(ptr);
         }
 
         internal void SetVerifyResult(VerifyResult result)
         {
-            Native.SSL_set_verify_result(ptr, (int)result);
+            NativeMethods.SSL_set_verify_result(ptr, (int)result);
         }
 
         internal int Shutdown()
         {
-            return Native.SSL_shutdown(ptr);
+            return NativeMethods.SSL_shutdown(ptr);
         }
 
         internal int Write(byte[] buf, int len)
         {
-            return Native.SSL_write(ptr, buf, len);
+            return NativeMethods.SSL_write(ptr, buf, len);
         }
 
         internal int Read(byte[] buf, int len)
         {
-            return Native.SSL_read(ptr, buf, len);
+            return NativeMethods.SSL_read(ptr, buf, len);
         }
 
         internal int SetSessionIdContext(byte[] sid_ctx, uint sid_ctx_len)
         {
-            return Native.ExpectSuccess(Native.SSL_set_session_id_context(ptr, sid_ctx, sid_ctx_len));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_set_session_id_context(ptr, sid_ctx, sid_ctx_len));
         }
 
         internal int Renegotiate()
         {
-            return Native.ExpectSuccess(Native.SSL_renegotiate(ptr));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_renegotiate(ptr));
         }
 
         internal int DoHandshake()
         {
-            return Native.SSL_do_handshake(ptr);
+            return NativeMethods.SSL_do_handshake(ptr);
         }
 
         internal void SetAcceptState()
         {
-            Native.SSL_set_accept_state(ptr);
+            NativeMethods.SSL_set_accept_state(ptr);
         }
 
         internal void SetConnectState()
         {
-            Native.SSL_set_connect_state(ptr);
+            NativeMethods.SSL_set_connect_state(ptr);
         }
 
         internal void SetBIO(BIO read, BIO write)
         {
-            Native.SSL_set_bio(ptr, read.Handle, write.Handle);
+            NativeMethods.SSL_set_bio(ptr, read.Handle, write.Handle);
         }
 
         internal int UseCertificateFile(string filename, SslFileType type)
         {
-            return Native.ExpectSuccess(Native.SSL_use_certificate_file(ptr, filename, (int)type));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_use_certificate_file(ptr, filename, (int)type));
         }
 
         internal int UsePrivateKeyFile(string filename, SslFileType type)
         {
-            return Native.ExpectSuccess(Native.SSL_use_PrivateKey_file(ptr, filename, (int)type));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_use_PrivateKey_file(ptr, filename, (int)type));
         }
 
         internal int Clear()
         {
-            return Native.ExpectSuccess(Native.SSL_clear(ptr));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_clear(ptr));
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace OpenSSL.SSL
                 var ptr = new IntPtr();
                 var len = 0;
 
-                Native.SSL_get0_alpn_selected(Handle, out ptr, out len);
+                NativeMethods.SSL_get0_alpn_selected(Handle, out ptr, out len);
 
                 if (ptr == IntPtr.Zero)
                     throw new AlpnException("Cant get selected protocol. See if ALPN was included into client/server hello");
@@ -234,7 +234,7 @@ namespace OpenSSL.SSL
         /// </summary>
         protected override void OnDispose()
         {
-            Native.SSL_free(Handle);
+            NativeMethods.SSL_free(Handle);
         }
 
         #endregion

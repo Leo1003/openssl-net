@@ -42,7 +42,7 @@ namespace OpenSSL.Crypto
             : base(IntPtr.Zero, true)
         {
             // Allocate the context
-            ptr = Native.HMAC_CTX_new();
+            ptr = NativeMethods.HMAC_CTX_new();
         }
         #endregion
 
@@ -58,8 +58,8 @@ namespace OpenSSL.Crypto
         public static byte[] Digest(MessageDigest digest, byte[] key, byte[] data)
         {
             var hash_value = new byte[digest.Size];
-            uint hash_value_length = Native.EVP_MAX_MD_SIZE;
-            Native.HMAC(digest.Handle, key, key.Length, data, data.Length, hash_value, ref hash_value_length);
+            uint hash_value_length = NativeMethods.EVP_MAX_MD_SIZE;
+            NativeMethods.HMAC(digest.Handle, key, key.Length, data, data.Length, hash_value, ref hash_value_length);
 
             return hash_value;
         }
@@ -71,7 +71,7 @@ namespace OpenSSL.Crypto
         /// <param name="digest"></param>
         public void Init(byte[] key, MessageDigest digest)
         {
-            Native.HMAC_Init_ex(ptr, key, key.Length, digest.Handle, IntPtr.Zero);
+            NativeMethods.HMAC_Init_ex(ptr, key, key.Length, digest.Handle, IntPtr.Zero);
             digest_size = digest.Size;
             initialized = true;
         }
@@ -86,7 +86,7 @@ namespace OpenSSL.Crypto
                 throw new Exception("Failed to call Initialize before calling Update");
             }
 
-            Native.HMAC_Update(ptr, data, data.Length);
+            NativeMethods.HMAC_Update(ptr, data, data.Length);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace OpenSSL.Crypto
             }
 
             var seg = new ArraySegment<byte>(data, offset, count);
-            Native.HMAC_Update(ptr, seg.Array, seg.Count);
+            NativeMethods.HMAC_Update(ptr, seg.Array, seg.Count);
         }
 
         /// <summary>
@@ -128,9 +128,9 @@ namespace OpenSSL.Crypto
             }
 
             var hash_value = new byte[digest_size];
-            uint hash_value_length = Native.EVP_MAX_MD_SIZE;
+            uint hash_value_length = NativeMethods.EVP_MAX_MD_SIZE;
 
-            Native.HMAC_Final(ptr, hash_value, ref hash_value_length);
+            NativeMethods.HMAC_Final(ptr, hash_value, ref hash_value_length);
             return hash_value;
         }
 
@@ -143,7 +143,7 @@ namespace OpenSSL.Crypto
         protected override void OnDispose()
         {
             // Clean up the context
-            Native.HMAC_CTX_free(ptr);
+            NativeMethods.HMAC_CTX_free(ptr);
         }
         #endregion
 

@@ -40,7 +40,7 @@ namespace OpenSSL.Core
         /// <param name="seed"></param>
         public static void Seed(byte[] seed)
         {
-            Native.RAND_seed(seed, seed.Length);
+            NativeMethods.RAND_seed(seed, seed.Length);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace OpenSSL.Core
         public static void Seed(string seed)
         {
             var tmp = Encoding.ASCII.GetBytes(seed);
-            Native.RAND_seed(tmp, tmp.Length);
+            NativeMethods.RAND_seed(tmp, tmp.Length);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace OpenSSL.Core
         public static byte[] PseudoBytes(int len)
         {
             var buf = new byte[len];
-            Native.ExpectSuccess(Native.RAND_bytes(buf, buf.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.RAND_bytes(buf, buf.Length));
 
             return buf;
         }
@@ -74,7 +74,7 @@ namespace OpenSSL.Core
         public static byte[] Bytes(int len)
         {
             var buf = new byte[len];
-            Native.ExpectSuccess(Native.RAND_bytes(buf, len));
+            NativeMethods.ExpectSuccess(NativeMethods.RAND_bytes(buf, len));
 
             return buf;
         }
@@ -86,7 +86,7 @@ namespace OpenSSL.Core
         /// <param name="entropy"></param>
         public static void Add(byte[] buf, double entropy)
         {
-            Native.RAND_add(buf, buf.Length, entropy);
+            NativeMethods.RAND_add(buf, buf.Length, entropy);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace OpenSSL.Core
         /// <param name="max_bytes"></param>
         public static void LoadFile(string filename, int max_bytes)
         {
-            Native.ExpectSuccess(Native.RAND_load_file(filename, max_bytes));
+            NativeMethods.ExpectSuccess(NativeMethods.RAND_load_file(filename, max_bytes));
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace OpenSSL.Core
         /// <param name="filename"></param>
         public static void WriteFile(string filename)
         {
-            Native.ExpectSuccess(Native.RAND_write_file(filename));
+            NativeMethods.ExpectSuccess(NativeMethods.RAND_write_file(filename));
         }
 
         /// <summary>
@@ -115,14 +115,14 @@ namespace OpenSSL.Core
         public static string GetFilename()
         {
             var buf = new byte[1024];
-            return Native.RAND_file_name(buf, (uint)buf.Length);
+            return NativeMethods.RAND_file_name(buf, (uint)buf.Length);
         }
 
         /// <summary>
         /// Returns RAND_status()
         /// </summary>
         public static int Status {
-            get { return Native.RAND_status(); }
+            get { return NativeMethods.RAND_status(); }
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace OpenSSL.Core
         /// </summary>
         public static void Poll()
         {
-            Native.ExpectSuccess(Native.RAND_poll());
+            NativeMethods.ExpectSuccess(NativeMethods.RAND_poll());
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace OpenSSL.Core
         public static BigNumber Next(int bits, int top, int bottom)
         {
             var bn = new BigNumber();
-            Native.ExpectSuccess(Native.BN_rand(bn.Handle, bits, top, bottom));
+            NativeMethods.ExpectSuccess(NativeMethods.BN_rand(bn.Handle, bits, top, bottom));
 
             return bn;
         }
@@ -219,7 +219,7 @@ namespace OpenSSL.Core
             #region Initialization
             static Method()
             {
-                original = Native.ExpectNonNull(Native.RAND_get_rand_method());
+                original = NativeMethods.ExpectNonNull(NativeMethods.RAND_get_rand_method());
             }
 
             /// <summary>
@@ -303,12 +303,12 @@ namespace OpenSSL.Core
             public void Override()
             {
                 Marshal.StructureToPtr(raw, ptr, false);
-                Native.ExpectSuccess(Native.RAND_set_rand_method(ptr));
+                NativeMethods.ExpectSuccess(NativeMethods.RAND_set_rand_method(ptr));
             }
 
             private void Restore()
             {
-                Native.ExpectSuccess(Native.RAND_set_rand_method(original));
+                NativeMethods.ExpectSuccess(NativeMethods.RAND_set_rand_method(original));
             }
             #endregion
 

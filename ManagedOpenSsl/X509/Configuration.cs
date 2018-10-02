@@ -57,7 +57,7 @@ namespace OpenSSL.X509
         /// Calls OPENSSL_malloc()
         /// </summary>
         private X509V3Context()
-            : base(Native.OPENSSL_malloc(Marshal.SizeOf(typeof(X509V3_CTX))), true)
+            : base(NativeMethods.OPENSSL_malloc(Marshal.SizeOf(typeof(X509V3_CTX))), true)
         { }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace OpenSSL.X509
         public X509V3Context(X509Certificate issuer, X509Certificate subject, X509Request request)
             : this()
         {
-            Native.X509V3_set_ctx(
+            NativeMethods.X509V3_set_ctx(
                 this.ptr,
                 issuer != null ? issuer.Handle : IntPtr.Zero,
                 subject != null ? subject.Handle : IntPtr.Zero,
@@ -98,7 +98,7 @@ namespace OpenSSL.X509
         /// <param name="cfg"></param>
         public void SetConfiguration(Configuration cfg)
         {
-            Native.X509V3_set_nconf(ptr, cfg.Handle);
+            NativeMethods.X509V3_set_nconf(ptr, cfg.Handle);
         }
 
         #endregion
@@ -110,7 +110,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void OnDispose()
         {
-            Native.OPENSSL_free(ptr);
+            NativeMethods.OPENSSL_free(ptr);
         }
 
         #endregion
@@ -128,7 +128,7 @@ namespace OpenSSL.X509
         /// Calls NCONF_new()
         /// </summary>
         private Configuration()
-            : base(Native.NCONF_new(IntPtr.Zero), true)
+            : base(NativeMethods.NCONF_new(IntPtr.Zero), true)
         { }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace OpenSSL.X509
         public void Load(string filename)
         {
             var eline = 0;
-            Native.ExpectSuccess(Native.NCONF_load(ptr, filename, ref eline));
+            NativeMethods.ExpectSuccess(NativeMethods.NCONF_load(ptr, filename, ref eline));
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace OpenSSL.X509
         {
             using (var ctx = new X509V3Context(issuer, subject, request)) {
                 ctx.SetConfiguration(this);
-                Native.ExpectSuccess(Native.X509V3_EXT_add_nconf(
+                NativeMethods.ExpectSuccess(NativeMethods.X509V3_EXT_add_nconf(
                     this.ptr,
                     ctx.Handle,
                     Encoding.ASCII.GetBytes(section),
@@ -188,7 +188,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void OnDispose()
         {
-            Native.NCONF_free(ptr);
+            NativeMethods.NCONF_free(ptr);
         }
 
         #endregion

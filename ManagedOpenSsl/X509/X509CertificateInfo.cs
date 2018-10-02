@@ -41,7 +41,7 @@ namespace OpenSSL.X509
             public IntPtr x_pkey;
             #region EVP_CIPHER_INFO enc_cipher;
             public IntPtr cipher;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Native.EVP_MAX_IV_LENGTH)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = NativeMethods.EVP_MAX_IV_LENGTH)]
             public byte[] iv;
             #endregion
             public int enc_len;
@@ -87,7 +87,7 @@ namespace OpenSSL.X509
 
         protected override void OnDispose()
         {
-            Native.X509_INFO_free(ptr);
+            NativeMethods.X509_INFO_free(ptr);
         }
 
         internal override void AddRef()

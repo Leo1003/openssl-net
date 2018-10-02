@@ -68,7 +68,7 @@ namespace OpenSSL.Crypto
         public static Cipher CreateByName(string name)
         {
             var buf = Encoding.ASCII.GetBytes(name);
-            var ptr = Native.EVP_get_cipherbyname(buf);
+            var ptr = NativeMethods.EVP_get_cipherbyname(buf);
 
             if (ptr == IntPtr.Zero)
                 return null;
@@ -80,216 +80,216 @@ namespace OpenSSL.Crypto
         /// Calls OBJ_NAME_do_all_sorted(OBJ_NAME_TYPE_CIPHER_METH)
         /// </summary>
         public static string[] AllNamesSorted {
-            get { return new NameCollector(Native.OBJ_NAME_TYPE_CIPHER_METH, true).Result.ToArray(); }
+            get { return new NameCollector(NativeMethods.OBJ_NAME_TYPE_CIPHER_METH, true).Result.ToArray(); }
         }
 
         /// <summary>
         /// Calls OBJ_NAME_do_all(OBJ_NAME_TYPE_CIPHER_METH)
         /// </summary>
         public static string[] AllNames {
-            get { return new NameCollector(Native.OBJ_NAME_TYPE_CIPHER_METH, false).Result.ToArray(); }
+            get { return new NameCollector(NativeMethods.OBJ_NAME_TYPE_CIPHER_METH, false).Result.ToArray(); }
         }
 
         #region Ciphers
         /// <summary>
         /// EVP_enc_null()
         /// </summary>
-        public static Cipher Null = new Cipher(Native.EVP_enc_null(), false);
+        public static Cipher Null = new Cipher(NativeMethods.EVP_enc_null(), false);
 
         /// <summary>
         /// EVP_des_ecb()
         /// </summary>
-        public static Cipher DES_ECB = new Cipher(Native.EVP_des_ecb(), false);
+        public static Cipher DES_ECB = new Cipher(NativeMethods.EVP_des_ecb(), false);
 
         /// <summary>
         /// EVP_des_ede()
         /// </summary>
-        public static Cipher DES_EDE = new Cipher(Native.EVP_des_ede(), false);
+        public static Cipher DES_EDE = new Cipher(NativeMethods.EVP_des_ede(), false);
 
         /// <summary>
         /// EVP_des_ede3()
         /// </summary>
-        public static Cipher DES_EDE3 = new Cipher(Native.EVP_des_ede3(), false);
+        public static Cipher DES_EDE3 = new Cipher(NativeMethods.EVP_des_ede3(), false);
 
         /// <summary>
         /// EVP_des_ede_ecb()
         /// </summary>
-        public static Cipher DES_EDE_ECB = new Cipher(Native.EVP_des_ede_ecb(), false);
+        public static Cipher DES_EDE_ECB = new Cipher(NativeMethods.EVP_des_ede_ecb(), false);
 
         /// <summary>
         /// EVP_des_ede3_ecb()
         /// </summary>
-        public static Cipher DES_EDE3_ECB = new Cipher(Native.EVP_des_ede3_ecb(), false);
+        public static Cipher DES_EDE3_ECB = new Cipher(NativeMethods.EVP_des_ede3_ecb(), false);
 
         /// <summary>
         /// EVP_des_cfb64()
         /// </summary>
-        public static Cipher DES_CFB64 = new Cipher(Native.EVP_des_cfb64(), false);
+        public static Cipher DES_CFB64 = new Cipher(NativeMethods.EVP_des_cfb64(), false);
 
         /// <summary>
         /// EVP_des_cfb1()
         /// </summary>
-        public static Cipher DES_CFB1 = new Cipher(Native.EVP_des_cfb1(), false);
+        public static Cipher DES_CFB1 = new Cipher(NativeMethods.EVP_des_cfb1(), false);
 
         /// <summary>
         /// EVP_des_cfb8()
         /// </summary>
-        public static Cipher DES_CFB8 = new Cipher(Native.EVP_des_cfb8(), false);
+        public static Cipher DES_CFB8 = new Cipher(NativeMethods.EVP_des_cfb8(), false);
 
         /// <summary>
         /// EVP_des_ede_cfb64()
         /// </summary>
-        public static Cipher DES_EDE_CFB64 = new Cipher(Native.EVP_des_ede_cfb64(), false);
+        public static Cipher DES_EDE_CFB64 = new Cipher(NativeMethods.EVP_des_ede_cfb64(), false);
 
         /// <summary>
         /// EVP_des_ede3_cfb64()
         /// </summary>
-        public static Cipher DES_EDE3_CFB64 = new Cipher(Native.EVP_des_ede3_cfb64(), false);
+        public static Cipher DES_EDE3_CFB64 = new Cipher(NativeMethods.EVP_des_ede3_cfb64(), false);
 
         /// <summary>
         /// EVP_des_ede3_cfb1()
         /// </summary>
-        public static Cipher DES_EDE3_CFB1 = new Cipher(Native.EVP_des_ede3_cfb1(), false);
+        public static Cipher DES_EDE3_CFB1 = new Cipher(NativeMethods.EVP_des_ede3_cfb1(), false);
 
         /// <summary>
         /// EVP_des_ede3_cfb8()
         /// </summary>
-        public static Cipher DES_EDE3_CFB8 = new Cipher(Native.EVP_des_ede3_cfb8(), false);
+        public static Cipher DES_EDE3_CFB8 = new Cipher(NativeMethods.EVP_des_ede3_cfb8(), false);
 
         /// <summary>
         /// EVP_des_ofb()
         /// </summary>
-        public static Cipher DES_OFB = new Cipher(Native.EVP_des_ofb(), false);
+        public static Cipher DES_OFB = new Cipher(NativeMethods.EVP_des_ofb(), false);
 
         /// <summary>
         /// EVP_ded_ede_ofb()
         /// </summary>
-        public static Cipher DES_EDE_OFB = new Cipher(Native.EVP_des_ede_ofb(), false);
+        public static Cipher DES_EDE_OFB = new Cipher(NativeMethods.EVP_des_ede_ofb(), false);
 
         /// <summary>
         /// EVP_des_ede3_ofb()
         /// </summary>
-        public static Cipher DES_EDE3_OFB = new Cipher(Native.EVP_des_ede3_ofb(), false);
+        public static Cipher DES_EDE3_OFB = new Cipher(NativeMethods.EVP_des_ede3_ofb(), false);
 
         /// <summary>
         /// EVP_des_cbc()
         /// </summary>
-        public static Cipher DES_CBC = new Cipher(Native.EVP_des_cbc(), false);
+        public static Cipher DES_CBC = new Cipher(NativeMethods.EVP_des_cbc(), false);
 
         /// <summary>
         /// EVP_des_ede_cbc()
         /// </summary>
-        public static Cipher DES_EDE_CBC = new Cipher(Native.EVP_des_ede_cbc(), false);
+        public static Cipher DES_EDE_CBC = new Cipher(NativeMethods.EVP_des_ede_cbc(), false);
 
         /// <summary>
         /// EVP_des_ede3_cbc()
         /// </summary>
-        public static Cipher DES_EDE3_CBC = new Cipher(Native.EVP_des_ede3_cbc(), false);
+        public static Cipher DES_EDE3_CBC = new Cipher(NativeMethods.EVP_des_ede3_cbc(), false);
 
         /// <summary>
         /// EVP_desx_cbc()
         /// </summary>
-        public static Cipher DESX_CBC = new Cipher(Native.EVP_desx_cbc(), false);
+        public static Cipher DESX_CBC = new Cipher(NativeMethods.EVP_desx_cbc(), false);
 
         /// <summary>
         /// EVP_rc4()
         /// </summary>
-        public static Cipher RC4 = new Cipher(Native.EVP_rc4(), false);
+        public static Cipher RC4 = new Cipher(NativeMethods.EVP_rc4(), false);
 
         /// <summary>
         /// EVP_rc4_40()
         /// </summary>
-        public static Cipher RC4_40 = new Cipher(Native.EVP_rc4_40(), false);
+        public static Cipher RC4_40 = new Cipher(NativeMethods.EVP_rc4_40(), false);
 
         /// <summary>
         /// EVP_idea_ecb()
         /// </summary>
-        public static Cipher Idea_ECB = new Cipher(Native.EVP_idea_ecb(), false);
+        public static Cipher Idea_ECB = new Cipher(NativeMethods.EVP_idea_ecb(), false);
 
         /// <summary>
         /// EVP_idea_cfb64()
         /// </summary>
-        public static Cipher Idea_CFB64 = new Cipher(Native.EVP_idea_cfb64(), false);
+        public static Cipher Idea_CFB64 = new Cipher(NativeMethods.EVP_idea_cfb64(), false);
 
         /// <summary>
         /// EVP_idea_ofb()
         /// </summary>
-        public static Cipher Idea_OFB = new Cipher(Native.EVP_idea_ofb(), false);
+        public static Cipher Idea_OFB = new Cipher(NativeMethods.EVP_idea_ofb(), false);
 
         /// <summary>
         /// EVP_idea_cbc()
         /// </summary>
-        public static Cipher Idea_CBC = new Cipher(Native.EVP_idea_cbc(), false);
+        public static Cipher Idea_CBC = new Cipher(NativeMethods.EVP_idea_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_ecb()
         /// </summary>
-        public static Cipher RC2_ECB = new Cipher(Native.EVP_rc2_ecb(), false);
+        public static Cipher RC2_ECB = new Cipher(NativeMethods.EVP_rc2_ecb(), false);
 
         /// <summary>
         /// EVP_rc2_cbc()
         /// </summary>
-        public static Cipher RC2_CBC = new Cipher(Native.EVP_rc2_cbc(), false);
+        public static Cipher RC2_CBC = new Cipher(NativeMethods.EVP_rc2_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_40_cbc()
         /// </summary>
-        public static Cipher RC2_40_CBC = new Cipher(Native.EVP_rc2_40_cbc(), false);
+        public static Cipher RC2_40_CBC = new Cipher(NativeMethods.EVP_rc2_40_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_64_cbc()
         /// </summary>
-        public static Cipher RC2_64_CBC = new Cipher(Native.EVP_rc2_64_cbc(), false);
+        public static Cipher RC2_64_CBC = new Cipher(NativeMethods.EVP_rc2_64_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_cfb64()
         /// </summary>
-        public static Cipher RC2_CFB64 = new Cipher(Native.EVP_rc2_cfb64(), false);
+        public static Cipher RC2_CFB64 = new Cipher(NativeMethods.EVP_rc2_cfb64(), false);
 
         /// <summary>
         /// EVP_rc2_ofb()
         /// </summary>
-        public static Cipher RC2_OFB = new Cipher(Native.EVP_rc2_ofb(), false);
+        public static Cipher RC2_OFB = new Cipher(NativeMethods.EVP_rc2_ofb(), false);
 
         /// <summary>
         /// EVP_bf_ecb()
         /// </summary>
-        public static Cipher Blowfish_ECB = new Cipher(Native.EVP_bf_ecb(), false);
+        public static Cipher Blowfish_ECB = new Cipher(NativeMethods.EVP_bf_ecb(), false);
 
         /// <summary>
         /// EVP_bf_cbc()
         /// </summary>
-        public static Cipher Blowfish_CBC = new Cipher(Native.EVP_bf_cbc(), false);
+        public static Cipher Blowfish_CBC = new Cipher(NativeMethods.EVP_bf_cbc(), false);
 
         /// <summary>
         /// EVP_bf_cfb64()
         /// </summary>
-        public static Cipher Blowfish_CFB64 = new Cipher(Native.EVP_bf_cfb64(), false);
+        public static Cipher Blowfish_CFB64 = new Cipher(NativeMethods.EVP_bf_cfb64(), false);
 
         /// <summary>
         /// EVP_bf_ofb()
         /// </summary>
-        public static Cipher Blowfish_OFB = new Cipher(Native.EVP_bf_ofb(), false);
+        public static Cipher Blowfish_OFB = new Cipher(NativeMethods.EVP_bf_ofb(), false);
 
         /// <summary>
         /// EVP_cast5_ecb()
         /// </summary>
-        public static Cipher Cast5_ECB = new Cipher(Native.EVP_cast5_ecb(), false);
+        public static Cipher Cast5_ECB = new Cipher(NativeMethods.EVP_cast5_ecb(), false);
 
         /// <summary>
         /// EVP_cast5_cbc()
         /// </summary>
-        public static Cipher Cast5_CBC = new Cipher(Native.EVP_cast5_cbc(), false);
+        public static Cipher Cast5_CBC = new Cipher(NativeMethods.EVP_cast5_cbc(), false);
 
         /// <summary>
         /// EVP_cast5_cfb64()
         /// </summary>
-        public static Cipher Cast5_OFB64 = new Cipher(Native.EVP_cast5_cfb64(), false);
+        public static Cipher Cast5_OFB64 = new Cipher(NativeMethods.EVP_cast5_cfb64(), false);
 
         /// <summary>
         /// EVP_cast5_ofb()
         /// </summary>
-        public static Cipher Cast5_OFB = new Cipher(Native.EVP_cast5_ofb(), false);
+        public static Cipher Cast5_OFB = new Cipher(NativeMethods.EVP_cast5_ofb(), false);
 
 #if OPENSSL_RC5_SUPPORT
 		public static Cipher RC5_32_12_16_CBC = new Cipher(Native.EVP_rc5_32_12_16_cbc(), false);
@@ -301,92 +301,92 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// EVP_aes_128_ecb()
         /// </summary>
-        public static Cipher AES_128_ECB = new Cipher(Native.EVP_aes_128_ecb(), false);
+        public static Cipher AES_128_ECB = new Cipher(NativeMethods.EVP_aes_128_ecb(), false);
 
         /// <summary>
         /// EVP_aes_128_cbc()
         /// </summary>
-        public static Cipher AES_128_CBC = new Cipher(Native.EVP_aes_128_cbc(), false);
+        public static Cipher AES_128_CBC = new Cipher(NativeMethods.EVP_aes_128_cbc(), false);
 
         /// <summary>
         /// EVP_aes_128_cfb1()
         /// </summary>
-        public static Cipher AES_128_CFB1 = new Cipher(Native.EVP_aes_128_cfb1(), false);
+        public static Cipher AES_128_CFB1 = new Cipher(NativeMethods.EVP_aes_128_cfb1(), false);
 
         /// <summary>
         /// EVP_aes_128_cfb8()
         /// </summary>
-        public static Cipher AES_128_CFB8 = new Cipher(Native.EVP_aes_128_cfb8(), false);
+        public static Cipher AES_128_CFB8 = new Cipher(NativeMethods.EVP_aes_128_cfb8(), false);
 
         /// <summary>
         /// EVP_aes_128_cfb128()
         /// </summary>
-        public static Cipher AES_128_CFB128 = new Cipher(Native.EVP_aes_128_cfb128(), false);
+        public static Cipher AES_128_CFB128 = new Cipher(NativeMethods.EVP_aes_128_cfb128(), false);
 
         /// <summary>
         /// EVP_aes_128_ofb()
         /// </summary>
-        public static Cipher AES_128_OFB = new Cipher(Native.EVP_aes_128_ofb(), false);
+        public static Cipher AES_128_OFB = new Cipher(NativeMethods.EVP_aes_128_ofb(), false);
 
         /// <summary>
         /// EVP_aes_192_ecb()
         /// </summary>
-        public static Cipher AES_192_ECB = new Cipher(Native.EVP_aes_192_ecb(), false);
+        public static Cipher AES_192_ECB = new Cipher(NativeMethods.EVP_aes_192_ecb(), false);
 
         /// <summary>
         /// EVP_aes_192_cbc()
         /// </summary>
-        public static Cipher AES_192_CBC = new Cipher(Native.EVP_aes_192_cbc(), false);
+        public static Cipher AES_192_CBC = new Cipher(NativeMethods.EVP_aes_192_cbc(), false);
 
         /// <summary>
         /// EVP_aes_192_cfb1()
         /// </summary>
-        public static Cipher AES_192_CFB1 = new Cipher(Native.EVP_aes_192_cfb1(), false);
+        public static Cipher AES_192_CFB1 = new Cipher(NativeMethods.EVP_aes_192_cfb1(), false);
 
         /// <summary>
         /// EVP_aes_192_cfb8()
         /// </summary>
-        public static Cipher AES_192_CFB8 = new Cipher(Native.EVP_aes_192_cfb8(), false);
+        public static Cipher AES_192_CFB8 = new Cipher(NativeMethods.EVP_aes_192_cfb8(), false);
 
         /// <summary>
         /// EVP_aes_192_cfb128()
         /// </summary>
-        public static Cipher AES_192_CFB128 = new Cipher(Native.EVP_aes_192_cfb128(), false);
+        public static Cipher AES_192_CFB128 = new Cipher(NativeMethods.EVP_aes_192_cfb128(), false);
 
         /// <summary>
         /// EVP_aes_192_ofb()
         /// </summary>
-        public static Cipher AES_192_OFB = new Cipher(Native.EVP_aes_192_ofb(), false);
+        public static Cipher AES_192_OFB = new Cipher(NativeMethods.EVP_aes_192_ofb(), false);
 
         /// <summary>
         /// EVP_aes_256_ecb()
         /// </summary>
-        public static Cipher AES_256_ECB = new Cipher(Native.EVP_aes_256_ecb(), false);
+        public static Cipher AES_256_ECB = new Cipher(NativeMethods.EVP_aes_256_ecb(), false);
 
         /// <summary>
         /// EVP_aes_256_cbc()
         /// </summary>
-        public static Cipher AES_256_CBC = new Cipher(Native.EVP_aes_256_cbc(), false);
+        public static Cipher AES_256_CBC = new Cipher(NativeMethods.EVP_aes_256_cbc(), false);
 
         /// <summary>
         /// EVP_aes_256_cfb1()
         /// </summary>
-        public static Cipher AES_256_CFB1 = new Cipher(Native.EVP_aes_256_cfb1(), false);
+        public static Cipher AES_256_CFB1 = new Cipher(NativeMethods.EVP_aes_256_cfb1(), false);
 
         /// <summary>
         /// EVP_aes_256_cfb8()
         /// </summary>
-        public static Cipher AES_256_CFB8 = new Cipher(Native.EVP_aes_256_cfb8(), false);
+        public static Cipher AES_256_CFB8 = new Cipher(NativeMethods.EVP_aes_256_cfb8(), false);
 
         /// <summary>
         /// EVP_aes_256_cfb128()
         /// </summary>
-        public static Cipher AES_256_CFB128 = new Cipher(Native.EVP_aes_256_cfb128(), false);
+        public static Cipher AES_256_CFB128 = new Cipher(NativeMethods.EVP_aes_256_cfb128(), false);
 
         /// <summary>
         /// EVP_aes_256_ofb()
         /// </summary>
-        public static Cipher AES_256_OFB = new Cipher(Native.EVP_aes_256_ofb(), false);
+        public static Cipher AES_256_OFB = new Cipher(NativeMethods.EVP_aes_256_ofb(), false);
 
         #endregion
 
@@ -396,56 +396,56 @@ namespace OpenSSL.Crypto
         /// Returns the key_len field
         /// </summary>
         public int KeyLength {
-            get { return Native.EVP_CIPHER_key_length(ptr); }
+            get { return NativeMethods.EVP_CIPHER_key_length(ptr); }
         }
 
         /// <summary>
         /// Returns the iv_len field
         /// </summary>
         public int IVLength {
-            get { return Native.EVP_CIPHER_iv_length(ptr); }
+            get { return NativeMethods.EVP_CIPHER_iv_length(ptr); }
         }
 
         /// <summary>
         /// Returns the block_size field
         /// </summary>
         public int BlockSize {
-            get { return Native.EVP_CIPHER_block_size(ptr); }
+            get { return NativeMethods.EVP_CIPHER_block_size(ptr); }
         }
 
         /// <summary>
         /// Returns the flags field
         /// </summary>
         public uint Flags {
-            get { return Native.EVP_CIPHER_flags(ptr); }
+            get { return NativeMethods.EVP_CIPHER_flags(ptr); }
         }
 
         /// <summary>
         /// Returns the long name for the nid field using OBJ_nid2ln()
         /// </summary>
         public string LongName {
-            get { return Native.StaticString(Native.OBJ_nid2ln(Native.EVP_CIPHER_nid(ptr))); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2ln(NativeMethods.EVP_CIPHER_nid(ptr))); }
         }
 
         /// <summary>
         /// Returns the name for the nid field using OBJ_nid2sn()
         /// </summary>
         public string Name {
-            get { return Native.StaticString(Native.OBJ_nid2sn(Native.EVP_CIPHER_nid(ptr))); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2sn(NativeMethods.EVP_CIPHER_nid(ptr))); }
         }
 
         /// <summary>
         /// Returns EVP_CIPHER_type()
         /// </summary>
         public int Type {
-            get { return Native.EVP_CIPHER_type(ptr); }
+            get { return NativeMethods.EVP_CIPHER_type(ptr); }
         }
 
         /// <summary>
         /// Returns the long name for the type using OBJ_nid2ln()
         /// </summary>
         public string TypeName {
-            get { return Native.StaticString(Native.OBJ_nid2ln(Type)); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2ln(Type)); }
         }
         #endregion
     }
@@ -484,9 +484,9 @@ namespace OpenSSL.Crypto
         /// </summary>
         /// <param name="cipher"></param>
         public CipherContext(Cipher cipher)
-            : base(Native.EVP_CIPHER_CTX_new(), true)
+            : base(NativeMethods.EVP_CIPHER_CTX_new(), true)
         {
-            Native.EVP_CIPHER_CTX_reset(ptr);
+            NativeMethods.EVP_CIPHER_CTX_reset(ptr);
             this.cipher = cipher;
         }
 
@@ -511,17 +511,17 @@ namespace OpenSSL.Crypto
         /// <returns></returns>
         public byte[] Open(byte[] input, byte[] ekey, byte[] iv, CryptoKey pkey)
         {
-            Native.ExpectSuccess(Native.EVP_OpenInit(
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_OpenInit(
                 ptr, cipher.Handle, ekey, ekey.Length, iv, pkey.Handle));
 
             var memory = new MemoryStream();
             var output = new byte[input.Length + Cipher.BlockSize];
             int len;
 
-            Native.ExpectSuccess(Native.EVP_DecryptUpdate(ptr, output, out len, input, input.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DecryptUpdate(ptr, output, out len, input, input.Length));
             memory.Write(output, 0, len);
 
-            Native.ExpectSuccess(Native.EVP_OpenFinal(ptr, output, out len));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_OpenFinal(ptr, output, out len));
             memory.Write(output, 0, len);
 
             return memory.ToArray();
@@ -553,7 +553,7 @@ namespace OpenSSL.Crypto
                     env.IV = new byte[Cipher.IVLength];
                 }
 
-                Native.ExpectSuccess(Native.EVP_SealInit(
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_SealInit(
                     ptr, Cipher.Handle, ptrs, ekeylens, env.IV, pubkeys, pubkeys.Length));
 
                 for (var i = 0; i < pkeys.Length; i++) {
@@ -565,10 +565,10 @@ namespace OpenSSL.Crypto
                 var output = new byte[input.Length + Cipher.BlockSize];
 
                 int len;
-                Native.ExpectSuccess(Native.EVP_EncryptUpdate(ptr, output, out len, input, input.Length));
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_EncryptUpdate(ptr, output, out len, input, input.Length));
                 memory.Write(output, 0, len);
 
-                Native.ExpectSuccess(Native.EVP_SealFinal(ptr, output, out len));
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_SealFinal(ptr, output, out len));
                 memory.Write(output, 0, len);
 
                 env.Data = memory.ToArray();
@@ -646,33 +646,33 @@ namespace OpenSSL.Crypto
             var buf = new byte[total];
             var memory = new MemoryStream(total);
 
-            Native.ExpectSuccess(Native.EVP_CipherInit_ex(
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
                 ptr, cipher.Handle, IntPtr.Zero, null, null, enc));
 
-            Native.ExpectSuccess(Native.EVP_CIPHER_CTX_set_key_length(ptr, real_key.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_set_key_length(ptr, real_key.Length));
 
             if (IsStream) {
                 for (int i = 0; i < Math.Min(real_key.Length, iv.Length); i++) {
                     real_key[i] ^= iv[i];
                 }
 
-                Native.ExpectSuccess(Native.EVP_CipherInit_ex(
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
                     ptr, cipher.Handle, IntPtr.Zero, real_key, null, enc));
             } else {
-                Native.ExpectSuccess(Native.EVP_CipherInit_ex(
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
                     ptr, cipher.Handle, IntPtr.Zero, real_key, real_iv, enc));
             }
 
             if (padding >= 0)
-                Native.ExpectSuccess(Native.EVP_CIPHER_CTX_set_padding(ptr, padding));
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_set_padding(ptr, padding));
 
             var len = 0;
-            Native.ExpectSuccess(Native.EVP_CipherUpdate(ptr, buf, out len, input, input.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherUpdate(ptr, buf, out len, input, input.Length));
 
             memory.Write(buf, 0, len);
 
             len = buf.Length;
-            Native.EVP_CipherFinal_ex(ptr, buf, ref len);
+            NativeMethods.EVP_CipherFinal_ex(ptr, buf, ref len);
 
             memory.Write(buf, 0, len);
 
@@ -752,7 +752,7 @@ namespace OpenSSL.Crypto
             }
             iv = new byte[ivlen];
 
-            Native.ExpectSuccess(Native.EVP_BytesToKey(
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_BytesToKey(
                 cipher.Handle,
                 md.Handle,
                 salt,
@@ -778,7 +778,7 @@ namespace OpenSSL.Crypto
         /// Returns if EVP_CIPH_STREAM_CIPHER is set in flags
         /// </summary>
         public bool IsStream {
-            get { return (cipher.Flags & Native.EVP_CIPH_MODE) == Native.EVP_CIPH_STREAM_CIPHER; }
+            get { return (cipher.Flags & NativeMethods.EVP_CIPH_MODE) == NativeMethods.EVP_CIPH_STREAM_CIPHER; }
         }
         #endregion
 
@@ -789,7 +789,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EVP_CIPHER_CTX_free(ptr);
+            NativeMethods.EVP_CIPHER_CTX_free(ptr);
         }
 
         #endregion

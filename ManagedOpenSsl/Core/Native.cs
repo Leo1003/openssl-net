@@ -93,7 +93,7 @@ namespace OpenSSL.Core
     /// This is the low-level C-style interface to the crypto API.
     /// Use this interface with caution.
     /// </summary>
-    internal class Native
+    internal class NativeMethods
     {
         /// <summary>
         /// This is the name of the DLL that P/Invoke loads and tries to bind all of
@@ -151,7 +151,7 @@ namespace OpenSSL.Core
 
         #region Initialization
 
-        static Native()
+        static NativeMethods()
         {
             var lib = Version.Library;
             var wrapper = Version.Wrapper;
@@ -2367,7 +2367,7 @@ namespace OpenSSL.Core
 
         public static void BIO_set_md(IntPtr bp, IntPtr md)
         {
-            Native.ExpectSuccess(BIO_ctrl(bp, BIO_C_SET_MD, 0, md));
+            NativeMethods.ExpectSuccess(BIO_ctrl(bp, BIO_C_SET_MD, 0, md));
         }
 
         // Unsupported!
@@ -2402,7 +2402,7 @@ namespace OpenSSL.Core
 
         public static void BIO_set_md_ctx(IntPtr bp, IntPtr mdcp)
         {
-            Native.ExpectSuccess(BIO_ctrl(bp, BIO_C_SET_MD_CTX, 0, mdcp));
+            NativeMethods.ExpectSuccess(BIO_ctrl(bp, BIO_C_SET_MD_CTX, 0, mdcp));
         }
 
         /* man - set the 'close' on free */
@@ -2935,7 +2935,7 @@ namespace OpenSSL.Core
             var buf = new byte[len];
             Marshal.Copy(ptr, buf, 0, len);
             if (hasOwnership)
-                Native.OPENSSL_free(ptr);
+                NativeMethods.OPENSSL_free(ptr);
 
             return Encoding.ASCII.GetString(buf, 0, len);
         }
@@ -2958,9 +2958,9 @@ namespace OpenSSL.Core
 
         public static int TextToNID(string text)
         {
-            var nid = Native.OBJ_txt2nid(text);
+            var nid = NativeMethods.OBJ_txt2nid(text);
 
-            if (nid == Native.NID_undef)
+            if (nid == NativeMethods.NID_undef)
                 throw new OpenSslException();
 
             return nid;
@@ -2987,15 +2987,15 @@ namespace OpenSSL.Core
         public NameCollector(int type, bool isSorted)
         {
             if (isSorted)
-                Native.OBJ_NAME_do_all_sorted(type, OnObjectName, IntPtr.Zero);
+                NativeMethods.OBJ_NAME_do_all_sorted(type, OnObjectName, IntPtr.Zero);
             else
-                Native.OBJ_NAME_do_all(type, OnObjectName, IntPtr.Zero);
+                NativeMethods.OBJ_NAME_do_all(type, OnObjectName, IntPtr.Zero);
         }
 
         private void OnObjectName(IntPtr ptr, IntPtr arg)
         {
             var name = (OBJ_NAME)Marshal.PtrToStructure(ptr, typeof(OBJ_NAME));
-            var str = Native.PtrToStringAnsi(name.name, false);
+            var str = NativeMethods.PtrToStringAnsi(name.name, false);
             list.Add(str);
         }
     }

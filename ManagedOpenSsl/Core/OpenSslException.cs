@@ -57,21 +57,21 @@ namespace OpenSSL.Core
         /// Returns the result of ERR_lib_error_string()
         /// </summary>
         public string Library {
-            get { return Native.PtrToStringAnsi(Native.ERR_lib_error_string(err), false); }
+            get { return NativeMethods.PtrToStringAnsi(NativeMethods.ERR_lib_error_string(err), false); }
         }
 
         /// <summary>
         /// Returns the results of ERR_reason_error_string()
         /// </summary>
         public string Reason {
-            get { return Native.PtrToStringAnsi(Native.ERR_reason_error_string(err), false); }
+            get { return NativeMethods.PtrToStringAnsi(NativeMethods.ERR_reason_error_string(err), false); }
         }
 
         /// <summary>
         /// Returns the results of ERR_func_error_string()
         /// </summary>
         public string Function {
-            get { return Native.PtrToStringAnsi(Native.ERR_func_error_string(err), false); }
+            get { return NativeMethods.PtrToStringAnsi(NativeMethods.ERR_func_error_string(err), false); }
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace OpenSSL.Core
                 var buf = new byte[1024];
 
                 buf.Initialize();
-                Native.ERR_error_string_n(err, buf, buf.Length);
+                NativeMethods.ERR_error_string_n(err, buf, buf.Length);
 
                 int len;
                 for (len = 0; len < buf.Length; len++) {
@@ -124,7 +124,7 @@ namespace OpenSSL.Core
             var ret = new List<OpenSslError>();
 
             while (true) {
-                var err = Native.ERR_get_error();
+                var err = NativeMethods.ERR_get_error();
 
                 if (err == 0)
                     break;

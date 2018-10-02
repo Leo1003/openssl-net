@@ -115,7 +115,7 @@ namespace OpenSSL.Crypto
         /// <param name="primeLen"></param>
         /// <param name="generator"></param>
         public DH(int primeLen, int generator)
-            : base(Native.ExpectNonNull(Native.DH_generate_parameters(primeLen, generator, IntPtr.Zero, IntPtr.Zero)), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_generate_parameters(primeLen, generator, IntPtr.Zero, IntPtr.Zero)), true)
         {
         }
 
@@ -127,10 +127,10 @@ namespace OpenSSL.Crypto
         /// <param name="callback"></param>
         /// <param name="arg"></param>
         public DH(int primeLen, int generator, BigNumber.GeneratorHandler callback, object arg)
-            : base(Native.ExpectNonNull(Native.DH_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
         {
             thunk = new BigNumber.GeneratorThunk(callback, arg);
-            Native.ExpectSuccess(Native.DH_generate_parameters_ex(
+            NativeMethods.ExpectSuccess(NativeMethods.DH_generate_parameters_ex(
                 ptr,
                 primeLen,
                 generator,
@@ -142,11 +142,11 @@ namespace OpenSSL.Crypto
         /// Calls DH_new().
         /// </summary>
         public DH()
-            : base(Native.ExpectNonNull(Native.DH_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
         {
             var raw = Raw;
-            raw.p = Native.BN_dup(BigNumber.One.Handle);
-            raw.g = Native.BN_dup(BigNumber.One.Handle);
+            raw.p = NativeMethods.BN_dup(BigNumber.One.Handle);
+            raw.g = NativeMethods.BN_dup(BigNumber.One.Handle);
             Raw = raw;
         }
 
@@ -156,11 +156,11 @@ namespace OpenSSL.Crypto
         /// <param name="p"></param>
         /// <param name="g"></param>
         public DH(BigNumber p, BigNumber g)
-                : base(Native.ExpectNonNull(Native.DH_new()), true)
+                : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
         {
             var raw = Raw;
-            raw.p = Native.BN_dup(p.Handle);
-            raw.g = Native.BN_dup(g.Handle);
+            raw.p = NativeMethods.BN_dup(p.Handle);
+            raw.g = NativeMethods.BN_dup(g.Handle);
             Raw = raw;
         }
 
@@ -172,13 +172,13 @@ namespace OpenSSL.Crypto
         /// <param name="pub_key"></param>
         /// <param name="priv_key"></param>
         public DH(BigNumber p, BigNumber g, BigNumber pub_key, BigNumber priv_key)
-            : base(Native.ExpectNonNull(Native.DH_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
         {
             var raw = Raw;
-            raw.p = Native.BN_dup(p.Handle);
-            raw.g = Native.BN_dup(g.Handle);
-            raw.pub_key = Native.BN_dup(pub_key.Handle);
-            raw.priv_key = Native.BN_dup(priv_key.Handle);
+            raw.p = NativeMethods.BN_dup(p.Handle);
+            raw.g = NativeMethods.BN_dup(g.Handle);
+            raw.pub_key = NativeMethods.BN_dup(pub_key.Handle);
+            raw.priv_key = NativeMethods.BN_dup(priv_key.Handle);
             Raw = raw;
         }
 
@@ -201,7 +201,7 @@ namespace OpenSSL.Crypto
         /// <returns></returns>
         public static DH FromParametersPEM(BIO bio)
         {
-            var ptr = Native.ExpectNonNull(Native.PEM_read_bio_DHparams(
+            var ptr = NativeMethods.ExpectNonNull(NativeMethods.PEM_read_bio_DHparams(
                 bio.Handle, IntPtr.Zero, null, IntPtr.Zero));
             return new DH(ptr, true);
         }
@@ -214,12 +214,12 @@ namespace OpenSSL.Crypto
 
         private static IntPtr Managed_DH_new()
         {
-            return Native.DH_new();
+            return NativeMethods.DH_new();
         }
 
         private static IntPtr Managed_d2i_DHparams(out IntPtr a, IntPtr pp, int length)
         {
-            return Native.d2i_DHparams(out a, pp, length);
+            return NativeMethods.d2i_DHparams(out a, pp, length);
         }
         /// <summary>
         /// Factory method that calls XXX() to deserialize
@@ -233,7 +233,7 @@ namespace OpenSSL.Crypto
             var d2i_DHparams = new d2i_DHparams_delegate(Managed_d2i_DHparams);
             var dh_new_ptr = Marshal.GetFunctionPointerForDelegate(dh_new);
             var d2i_DHparams_ptr = Marshal.GetFunctionPointerForDelegate(d2i_DHparams);
-            var ptr = Native.ExpectNonNull(Native.ASN1_d2i_bio(dh_new_ptr, d2i_DHparams_ptr, bio.Handle, IntPtr.Zero));
+            var ptr = NativeMethods.ExpectNonNull(NativeMethods.ASN1_d2i_bio(dh_new_ptr, d2i_DHparams_ptr, bio.Handle, IntPtr.Zero));
             var dh = new DH(ptr, true);
 
             return dh;
@@ -246,7 +246,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         public void GenerateKeys()
         {
-            Native.ExpectSuccess(Native.DH_generate_key(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.DH_generate_key(ptr));
         }
 
         /// <summary>
@@ -256,9 +256,9 @@ namespace OpenSSL.Crypto
         /// <returns></returns>
         public byte[] ComputeKey(BigNumber pubkey)
         {
-            var len = Native.DH_size(ptr);
+            var len = NativeMethods.DH_size(ptr);
             var key = new byte[len];
-            Native.DH_compute_key(key, pubkey.Handle, ptr);
+            NativeMethods.DH_compute_key(key, pubkey.Handle, ptr);
 
             return key;
         }
@@ -269,7 +269,7 @@ namespace OpenSSL.Crypto
         /// <param name="bio"></param>
         public void WriteParametersPEM(BIO bio)
         {
-            Native.ExpectSuccess(Native.PEM_write_bio_DHparams(bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_DHparams(bio.Handle, ptr));
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -277,7 +277,7 @@ namespace OpenSSL.Crypto
 
         private int Managed_i2d_DHparams(IntPtr a, IntPtr pp)
         {
-            return Native.i2d_DHparams(a, pp);
+            return NativeMethods.i2d_DHparams(a, pp);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace OpenSSL.Crypto
             var i2d_DHparams = new i2d_DHparams_delegate(Managed_i2d_DHparams);
             var i2d_DHparams_ptr = Marshal.GetFunctionPointerForDelegate(i2d_DHparams);
 
-            Native.ExpectSuccess(Native.ASN1_i2d_bio(i2d_DHparams_ptr, bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.ASN1_i2d_bio(i2d_DHparams_ptr, bio.Handle, ptr));
             //!!
             /*
 			IntPtr hModule = Native.LoadLibrary(Native.DLLNAME);
@@ -306,7 +306,7 @@ namespace OpenSSL.Crypto
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            Native.ExpectSuccess(Native.DHparams_print(bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.DHparams_print(bio.Handle, ptr));
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace OpenSSL.Crypto
         public CheckCode Check()
         {
             var codes = 0;
-            Native.ExpectSuccess(Native.DH_check(ptr, out codes));
+            NativeMethods.ExpectSuccess(NativeMethods.DH_check(ptr, out codes));
 
             return (CheckCode)codes;
         }
@@ -335,7 +335,7 @@ namespace OpenSSL.Crypto
             get { return new BigNumber(Raw.p, false); }
             set {
                 var raw = Raw;
-                raw.p = Native.BN_dup(value.Handle);
+                raw.p = NativeMethods.BN_dup(value.Handle);
                 Raw = raw;
             }
         }
@@ -347,7 +347,7 @@ namespace OpenSSL.Crypto
             get { return new BigNumber(Raw.g, false); }
             set {
                 var raw = Raw;
-                raw.g = Native.BN_dup(value.Handle);
+                raw.g = NativeMethods.BN_dup(value.Handle);
                 Raw = raw;
             }
         }
@@ -359,7 +359,7 @@ namespace OpenSSL.Crypto
             get { return new BigNumber(Raw.pub_key, false); }
             set {
                 var raw = Raw;
-                raw.pub_key = Native.BN_dup(value.Handle);
+                raw.pub_key = NativeMethods.BN_dup(value.Handle);
                 Raw = raw;
             }
         }
@@ -371,7 +371,7 @@ namespace OpenSSL.Crypto
             get { return new BigNumber(Raw.priv_key, false); }
             set {
                 var raw = Raw;
-                raw.priv_key = Native.BN_dup(value.Handle);
+                raw.priv_key = NativeMethods.BN_dup(value.Handle);
                 Raw = raw;
             }
         }
@@ -422,7 +422,7 @@ namespace OpenSSL.Crypto
 
         internal override void AddRef()
         {
-            Native.DH_up_ref(ptr);
+            NativeMethods.DH_up_ref(ptr);
         }
 
         #region IDisposable Members
@@ -432,7 +432,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void OnDispose()
         {
-            Native.DH_free(ptr);
+            NativeMethods.DH_free(ptr);
         }
 
         #endregion

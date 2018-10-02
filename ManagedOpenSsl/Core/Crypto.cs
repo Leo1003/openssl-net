@@ -91,28 +91,28 @@ namespace OpenSSL.Core
         /// Returns RC4_options()
         /// </summary>
         public static string RC4_Options {
-            get { return Native.StaticString(Native.RC4_options()); }
+            get { return NativeMethods.StaticString(NativeMethods.RC4_options()); }
         }
 
         /// <summary>
         /// Returns DES_options()
         /// </summary>
         public static string DES_Options {
-            get { return Native.StaticString(Native.DES_options()); }
+            get { return NativeMethods.StaticString(NativeMethods.DES_options()); }
         }
 
         /// <summary>
         /// Returns idea_options()
         /// </summary>
         public static string Idea_Options {
-            get { return Native.StaticString(Native.IDEA_options()); }
+            get { return NativeMethods.StaticString(NativeMethods.IDEA_options()); }
         }
 
         /// <summary>
         /// Returns BF_options()
         /// </summary>
         public static string Blowfish_Options {
-            get { return Native.StaticString(Native.BF_options()); }
+            get { return NativeMethods.StaticString(NativeMethods.BF_options()); }
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace OpenSSL.Core
         /// </summary>
         public static void ClearErrors()
         {
-            Native.ERR_clear_error();
+            NativeMethods.ERR_clear_error();
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace OpenSSL.Core
         public static List<string> GetErrors()
         {
             var errors = new List<string>();
-            Native.ERR_print_errors_cb((IntPtr str, uint len, IntPtr u) => {
-                errors.Add(Native.StaticString(str));
+            NativeMethods.ERR_print_errors_cb((IntPtr str, uint len, IntPtr u) => {
+                errors.Add(NativeMethods.StaticString(str));
                 return 0;
             }, IntPtr.Zero);
             return errors;

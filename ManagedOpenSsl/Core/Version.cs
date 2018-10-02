@@ -59,14 +59,14 @@ namespace OpenSSL.Core
         /// Returns the current version of the native library.
         /// </summary>
         public static Version Library {
-            get { return new Version(Native.OpenSSL_version_num()); }
+            get { return new Version(NativeMethods.OpenSSL_version_num()); }
         }
 
         /// <summary>
         /// Returns the version that this wrapper is built for.
         /// </summary>
         public static Version Wrapper {
-            get { return new Version(Native.Wrapper); }
+            get { return new Version(NativeMethods.Wrapper); }
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace OpenSSL.Core
         /// <param name="format"></param>
         public static string GetText(Format format)
         {
-            return Native.StaticString(Native.OpenSSL_version((int)format));
+            return NativeMethods.StaticString(NativeMethods.OpenSSL_version((int)format));
         }
     }
 }

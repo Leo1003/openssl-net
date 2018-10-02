@@ -175,7 +175,7 @@ namespace OpenSSL.X509
             if (ca == null)
                 throw new ArgumentException("Certificate chain cannot be null", "ca");
 
-            return Native.ExpectNonNull(Native.PKCS12_create(
+            return NativeMethods.ExpectNonNull(NativeMethods.PKCS12_create(
                 password,
                 name,
                 key.Handle,
@@ -195,7 +195,7 @@ namespace OpenSSL.X509
         /// <param name="password"></param>
         public PKCS12(BIO bio, string password)
             : base(
-                Native.ExpectNonNull(Native.d2i_PKCS12_bio(bio.Handle, IntPtr.Zero)),
+                NativeMethods.ExpectNonNull(NativeMethods.d2i_PKCS12_bio(bio.Handle, IntPtr.Zero)),
                 true)
         {
             Init(password);
@@ -208,7 +208,7 @@ namespace OpenSSL.X509
             IntPtr cacerts;
 
             // Parse the PKCS12 object and get privatekey, cert, cacerts if available
-            Native.ExpectSuccess(Native.PKCS12_parse(ptr, password, out pkey, out cert, out cacerts));
+            NativeMethods.ExpectSuccess(NativeMethods.PKCS12_parse(ptr, password, out pkey, out cert, out cacerts));
 
             if (cert != IntPtr.Zero) {
                 certificate = new X509Certificate(cert, pkey);
@@ -229,7 +229,7 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public void Write(BIO bio)
         {
-            Native.ExpectSuccess(Native.i2d_PKCS12_bio(bio.Handle, Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.i2d_PKCS12_bio(bio.Handle, Handle));
         }
 
         #region Properties
@@ -271,7 +271,7 @@ namespace OpenSSL.X509
                 caCertificates = null;
             }
 
-            Native.PKCS12_free(ptr);
+            NativeMethods.PKCS12_free(ptr);
         }
 
         #endregion

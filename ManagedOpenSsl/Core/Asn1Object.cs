@@ -60,7 +60,7 @@ namespace OpenSSL.Core
         /// <param name="sn">Sn.</param>
         public Asn1Object(string sn)
         {
-            nid = Native.OBJ_sn2nid(sn);
+            nid = NativeMethods.OBJ_sn2nid(sn);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace OpenSSL.Core
         /// </summary>
         /// <value>The short name.</value>
         public string ShortName {
-            get { return Native.StaticString(Native.OBJ_nid2sn(nid)); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2sn(nid)); }
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace OpenSSL.Core
         /// </summary>
         /// <value>The long name.</value>
         public string LongName {
-            get { return Native.StaticString(Native.OBJ_nid2ln(nid)); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2ln(nid)); }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace OpenSSL.Core
         /// <param name="sn">Sn.</param>
         public static Asn1Object FromLongName(string sn)
         {
-            return new Asn1Object(Native.OBJ_ln2nid(sn));
+            return new Asn1Object(NativeMethods.OBJ_ln2nid(sn));
         }
 
         /// <summary>

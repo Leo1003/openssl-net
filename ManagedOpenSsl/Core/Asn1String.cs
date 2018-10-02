@@ -38,7 +38,7 @@ namespace OpenSSL.Core
         /// Calls ASN1_STRING_type_new()
         /// </summary>
         public Asn1String()
-            : base(Native.ASN1_STRING_type_new(Native.V_ASN1_OCTET_STRING), true)
+            : base(NativeMethods.ASN1_STRING_type_new(NativeMethods.V_ASN1_OCTET_STRING), true)
         {
         }
 
@@ -59,7 +59,7 @@ namespace OpenSSL.Core
         public Asn1String(byte[] data)
             : this()
         {
-            Native.ExpectSuccess(Native.ASN1_STRING_set(ptr, data, data.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.ASN1_STRING_set(ptr, data, data.Length));
         }
         #endregion
 
@@ -68,7 +68,7 @@ namespace OpenSSL.Core
         /// Returns ASN1_STRING_length()
         /// </summary>
         public int Length {
-            get { return Native.ASN1_STRING_length(ptr); }
+            get { return NativeMethods.ASN1_STRING_length(ptr); }
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace OpenSSL.Core
         /// </summary>
         public byte[] Data {
             get {
-                var pData = Native.ASN1_STRING_data(ptr);
+                var pData = NativeMethods.ASN1_STRING_data(ptr);
                 var ret = new byte[Length];
 
                 Marshal.Copy(pData, ret, 0, ret.Length);
@@ -90,7 +90,7 @@ namespace OpenSSL.Core
 
         internal override IntPtr DuplicateHandle()
         {
-            return Native.ASN1_STRING_dup(ptr);
+            return NativeMethods.ASN1_STRING_dup(ptr);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace OpenSSL.Core
         /// </summary>
         protected override void OnDispose()
         {
-            Native.ASN1_STRING_free(ptr);
+            NativeMethods.ASN1_STRING_free(ptr);
         }
 
         #endregion
@@ -112,7 +112,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public int CompareTo(Asn1String other)
         {
-            return Native.ASN1_STRING_cmp(ptr, other.Handle);
+            return NativeMethods.ASN1_STRING_cmp(ptr, other.Handle);
         }
 
         #endregion

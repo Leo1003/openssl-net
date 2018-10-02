@@ -34,7 +34,7 @@ namespace OpenSSL.Core
         { }
 
         public Asn1Integer()
-            : base(Native.ASN1_INTEGER_new(), true)
+            : base(NativeMethods.ASN1_INTEGER_new(), true)
         { }
 
         public Asn1Integer(int value)
@@ -45,17 +45,17 @@ namespace OpenSSL.Core
 
         protected override void OnDispose()
         {
-            Native.ASN1_INTEGER_free(ptr);
+            NativeMethods.ASN1_INTEGER_free(ptr);
         }
 
         public int Value {
-            get { return Native.ASN1_INTEGER_get(ptr); }
-            set { Native.ExpectSuccess(Native.ASN1_INTEGER_set(ptr, value)); }
+            get { return NativeMethods.ASN1_INTEGER_get(ptr); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.ASN1_INTEGER_set(ptr, value)); }
         }
 
         public static int ToInt32(IntPtr ptr)
         {
-            return Native.ASN1_INTEGER_get(ptr);
+            return NativeMethods.ASN1_INTEGER_get(ptr);
         }
     }
 }

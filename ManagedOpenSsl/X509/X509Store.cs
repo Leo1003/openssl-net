@@ -67,7 +67,7 @@ namespace OpenSSL.X509
         /// Calls X509_STORE_new()
         /// </summary>
         public X509Store()
-            : base(Native.ExpectNonNull(Native.X509_STORE_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.X509_STORE_new()), true)
         { }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace OpenSSL.X509
         /// <param name="chain"></param>
         /// <param name="takeOwnership"></param>
         public X509Store(X509Chain chain, bool takeOwnership)
-            : base(Native.ExpectNonNull(Native.X509_STORE_new()), takeOwnership)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.X509_STORE_new()), takeOwnership)
         {
             foreach (var cert in chain) {
                 AddTrusted(cert);
@@ -165,7 +165,7 @@ namespace OpenSSL.X509
         public void AddTrusted(X509Certificate cert)
         {
             // Don't Addref here -- X509_STORE_add_cert increases the refcount of the certificate pointer
-            Native.ExpectSuccess(Native.X509_STORE_add_cert(ptr, cert.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.X509_STORE_add_cert(ptr, cert.Handle));
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void OnDispose()
         {
-            Native.X509_STORE_free(ptr);
+            NativeMethods.X509_STORE_free(ptr);
             if (untrusted != null) {
                 untrusted.Dispose();
                 untrusted = null;

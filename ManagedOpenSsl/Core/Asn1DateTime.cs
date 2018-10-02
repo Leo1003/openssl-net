@@ -35,7 +35,7 @@ namespace OpenSSL.Core
         { }
 
         public Asn1DateTime()
-            : base(Native.ASN1_TIME_new(), true)
+            : base(NativeMethods.ASN1_TIME_new(), true)
         { }
 
         public Asn1DateTime(DateTime dateTime)
@@ -46,7 +46,7 @@ namespace OpenSSL.Core
 
         protected override void OnDispose()
         {
-            Native.ASN1_TIME_free(ptr);
+            NativeMethods.ASN1_TIME_free(ptr);
         }
 
         public DateTime DateTime {
@@ -55,7 +55,7 @@ namespace OpenSSL.Core
             }
             set {
                 var time_t = DateTimeToTimeT(value.ToUniversalTime());
-                Native.ASN1_TIME_set(ptr, time_t);
+                NativeMethods.ASN1_TIME_set(ptr, time_t);
             }
         }
 
@@ -79,7 +79,7 @@ namespace OpenSSL.Core
             string str;
 
             using (var bio = BIO.MemoryBuffer()) {
-                Native.ExpectSuccess(Native.ASN1_UTCTIME_print(bio.Handle, ptr));
+                NativeMethods.ExpectSuccess(NativeMethods.ASN1_UTCTIME_print(bio.Handle, ptr));
                 str = bio.ReadString();
             }
 

@@ -48,8 +48,8 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public X509Chain(BIO bio)
         {
-            var sk = Native.ExpectNonNull(
-                Native.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)
+            var sk = NativeMethods.ExpectNonNull(
+                NativeMethods.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero)
             );
 
             using (var stack = new Core.Stack<X509CertificateInfo>(sk, true)) {
@@ -84,7 +84,7 @@ namespace OpenSSL.X509
         public X509Certificate FindByIssuerAndSerial(X509Name issuer, int serial)
         {
             using (var asnInt = new Asn1Integer(serial)) {
-                var ptr = Native.X509_find_by_issuer_and_serial(this.ptr, issuer.Handle, asnInt.Handle);
+                var ptr = NativeMethods.X509_find_by_issuer_and_serial(this.ptr, issuer.Handle, asnInt.Handle);
 
                 if (ptr == IntPtr.Zero)
                     return null;
@@ -105,7 +105,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public X509Certificate FindBySubject(X509Name subject)
         {
-            var ptr = Native.X509_find_by_subject(this.ptr, subject.Handle);
+            var ptr = NativeMethods.X509_find_by_subject(this.ptr, subject.Handle);
 
             if (ptr == IntPtr.Zero)
                 return null;
@@ -137,8 +137,8 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public X509List(BIO bio)
         {
-            var sk = Native.ExpectNonNull(
-                Native.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero));
+            var sk = NativeMethods.ExpectNonNull(
+                NativeMethods.PEM_X509_INFO_read_bio(bio.Handle, IntPtr.Zero, null, IntPtr.Zero));
 
             using (var stack = new Core.Stack<X509CertificateInfo>(sk, true)) {
                 while (stack.Count > 0) {

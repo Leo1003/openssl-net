@@ -81,7 +81,7 @@ namespace OpenSSL.Crypto
         /// Calls EVP_PKEY_new()
         /// </summary>
         public CryptoKey()
-            : base(Native.ExpectNonNull(Native.EVP_PKEY_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.EVP_PKEY_new()), true)
         {
         }
 
@@ -135,7 +135,7 @@ namespace OpenSSL.Crypto
         public static CryptoKey FromPublicKey(BIO bio, PasswordHandler handler, object arg)
         {
             var thunk = new PasswordThunk(handler, arg);
-            var ptr = Native.ExpectNonNull(Native.PEM_read_bio_PUBKEY(
+            var ptr = NativeMethods.ExpectNonNull(NativeMethods.PEM_read_bio_PUBKEY(
                           bio.Handle,
                           IntPtr.Zero,
                           thunk.Callback,
@@ -180,7 +180,7 @@ namespace OpenSSL.Crypto
         public static CryptoKey FromPrivateKey(BIO bio, PasswordHandler handler, object arg)
         {
             var thunk = new PasswordThunk(handler, arg);
-            var ptr = Native.ExpectNonNull(Native.PEM_read_bio_PrivateKey(
+            var ptr = NativeMethods.ExpectNonNull(NativeMethods.PEM_read_bio_PrivateKey(
                           bio.Handle,
                           IntPtr.Zero,
                           thunk.Callback,
@@ -197,7 +197,7 @@ namespace OpenSSL.Crypto
         public CryptoKey(DSA dsa)
             : this()
         {
-            Native.ExpectSuccess(Native.EVP_PKEY_set1_DSA(ptr, dsa.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_set1_DSA(ptr, dsa.Handle));
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace OpenSSL.Crypto
         public CryptoKey(RSA rsa)
             : this()
         {
-            Native.ExpectSuccess(Native.EVP_PKEY_set1_RSA(ptr, rsa.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_set1_RSA(ptr, rsa.Handle));
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace OpenSSL.Crypto
         public CryptoKey(EC.Key ec)
             : this()
         {
-            Native.ExpectSuccess(Native.EVP_PKEY_set1_EC_KEY(ptr, ec.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_set1_EC_KEY(ptr, ec.Handle));
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace OpenSSL.Crypto
         public CryptoKey(DH dh)
             : this()
         {
-            Native.ExpectSuccess(Native.EVP_PKEY_set1_DH(ptr, dh.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_set1_DH(ptr, dh.Handle));
         }
 
         #endregion
@@ -242,21 +242,21 @@ namespace OpenSSL.Crypto
         /// Returns EVP_PKEY_type()
         /// </summary>
         public KeyType Type {
-            get { return (KeyType)Native.EVP_PKEY_type(Raw.type); }
+            get { return (KeyType)NativeMethods.EVP_PKEY_type(Raw.type); }
         }
 
         /// <summary>
         /// Returns EVP_PKEY_bits()
         /// </summary>
         public int Bits {
-            get { return Native.EVP_PKEY_bits(ptr); }
+            get { return NativeMethods.EVP_PKEY_bits(ptr); }
         }
 
         /// <summary>
         /// Returns EVP_PKEY_size()
         /// </summary>
         public int Size {
-            get { return Native.EVP_PKEY_size(ptr); }
+            get { return NativeMethods.EVP_PKEY_size(ptr); }
         }
 
         #endregion
@@ -270,7 +270,7 @@ namespace OpenSSL.Crypto
         public void Assign(RSA key)
         {
             key.AddRef();
-            Native.ExpectSuccess(Native.EVP_PKEY_assign(ptr, (int)KeyType.RSA, key.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_assign(ptr, (int)KeyType.RSA, key.Handle));
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace OpenSSL.Crypto
         public void Assign(DSA key)
         {
             key.AddRef();
-            Native.ExpectSuccess(Native.EVP_PKEY_assign(ptr, (int)KeyType.DSA, key.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_assign(ptr, (int)KeyType.DSA, key.Handle));
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace OpenSSL.Crypto
         public void Assign(DH key)
         {
             key.AddRef();
-            Native.ExpectSuccess(Native.EVP_PKEY_assign(ptr, (int)KeyType.DH, key.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_assign(ptr, (int)KeyType.DH, key.Handle));
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace OpenSSL.Crypto
         public void Assign(EC.Key key)
         {
             key.AddRef();
-            Native.ExpectSuccess(Native.EVP_PKEY_assign(ptr, (int)KeyType.EC, key.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_assign(ptr, (int)KeyType.EC, key.Handle));
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace OpenSSL.Crypto
             if (Type != KeyType.DSA)
                 throw new InvalidOperationException();
 
-            return new DSA(Native.ExpectNonNull(Native.EVP_PKEY_get1_DSA(ptr)), true);
+            return new DSA(NativeMethods.ExpectNonNull(NativeMethods.EVP_PKEY_get1_DSA(ptr)), true);
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace OpenSSL.Crypto
             if (Type != KeyType.DH)
                 throw new InvalidOperationException();
 
-            return new DH(Native.ExpectNonNull(Native.EVP_PKEY_get1_DH(ptr)), true);
+            return new DH(NativeMethods.ExpectNonNull(NativeMethods.EVP_PKEY_get1_DH(ptr)), true);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace OpenSSL.Crypto
             if (Type != KeyType.RSA)
                 throw new InvalidOperationException();
 
-            return new RSA(Native.ExpectNonNull(Native.EVP_PKEY_get1_RSA(ptr)), true);
+            return new RSA(NativeMethods.ExpectNonNull(NativeMethods.EVP_PKEY_get1_RSA(ptr)), true);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace OpenSSL.Crypto
             if (Type != KeyType.EC)
                 throw new InvalidOperationException();
 
-            return new EC.Key(Native.ExpectNonNull(Native.EVP_PKEY_get1_EC_KEY(ptr)), true);
+            return new EC.Key(NativeMethods.ExpectNonNull(NativeMethods.EVP_PKEY_get1_EC_KEY(ptr)), true);
         }
 
 
@@ -374,7 +374,7 @@ namespace OpenSSL.Crypto
         public void WritePrivateKey(BIO bp, Cipher cipher, PasswordHandler handler, object arg)
         {
             var thunk = new PasswordThunk(handler, null);
-            Native.ExpectSuccess(Native.PEM_write_bio_PKCS8PrivateKey(bp.Handle, ptr, cipher.Handle, IntPtr.Zero, 0, thunk.Callback, IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_PKCS8PrivateKey(bp.Handle, ptr, cipher.Handle, IntPtr.Zero, 0, thunk.Callback, IntPtr.Zero));
         }
 
         #endregion
@@ -386,7 +386,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EVP_PKEY_free(ptr);
+            NativeMethods.EVP_PKEY_free(ptr);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace OpenSSL.Crypto
             if (rhs == null)
                 return false;
 
-            return Native.EVP_PKEY_cmp(ptr, rhs.Handle) == 1;
+            return NativeMethods.EVP_PKEY_cmp(ptr, rhs.Handle) == 1;
         }
 
         /// <summary>

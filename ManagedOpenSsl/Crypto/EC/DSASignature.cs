@@ -51,7 +51,7 @@ namespace OpenSSL.Crypto.EC
         /// Calls ECDSA_SIG_new()
         /// </summary>
         public DSASignature()
-            : base(Native.ExpectNonNull(Native.ECDSA_SIG_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.ECDSA_SIG_new()), true)
         {
         }
         #endregion
@@ -86,7 +86,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         protected override void OnDispose()
         {
-            Native.ECDSA_SIG_free(ptr);
+            NativeMethods.ECDSA_SIG_free(ptr);
         }
         #endregion
     }

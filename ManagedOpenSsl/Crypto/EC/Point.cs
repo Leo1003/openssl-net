@@ -47,7 +47,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         /// <param name="group"></param>
         public Point(Group group)
-            : base(Native.EC_POINT_new(group.Handle), true)
+            : base(NativeMethods.EC_POINT_new(group.Handle), true)
         {
             this.group = group;
         }
@@ -65,8 +65,8 @@ namespace OpenSSL.Crypto.EC
         /// <param name="ctx"></param>
         public void GetAffineCoordinates(BigNumber x, BigNumber y, BigNumber.Context ctx)
         {
-            Native.ExpectSuccess(
-                Native.EC_POINT_get_affine_coordinates(group.Handle, ptr, x.Handle, y.Handle, ctx.Handle)
+            NativeMethods.ExpectSuccess(
+                NativeMethods.EC_POINT_get_affine_coordinates(group.Handle, ptr, x.Handle, y.Handle, ctx.Handle)
             );
         }
         #endregion
@@ -77,7 +77,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         protected override void OnDispose()
         {
-            Native.EC_POINT_free(this.ptr);
+            NativeMethods.EC_POINT_free(this.ptr);
         }
         #endregion
     }

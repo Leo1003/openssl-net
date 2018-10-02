@@ -79,7 +79,7 @@ namespace OpenSSL.Crypto
         /// Calls RSA_new()
         /// </summary>
         public RSA()
-            : base(Native.ExpectNonNull(Native.RSA_new()), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.RSA_new()), true)
         { }
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace OpenSSL.Crypto
         public static RSA FromPublicKey(BIO bio, PasswordHandler callback, object arg)
         {
             var thunk = new PasswordThunk(callback, arg);
-            var ptr = Native.PEM_read_bio_RSA_PUBKEY(bio.Handle, IntPtr.Zero, thunk.Callback, IntPtr.Zero);
+            var ptr = NativeMethods.PEM_read_bio_RSA_PUBKEY(bio.Handle, IntPtr.Zero, thunk.Callback, IntPtr.Zero);
 
-            return new RSA(Native.ExpectNonNull(ptr), true);
+            return new RSA(NativeMethods.ExpectNonNull(ptr), true);
         }
 
         /// <summary>
@@ -127,9 +127,9 @@ namespace OpenSSL.Crypto
         public static RSA FromPrivateKey(BIO bio, PasswordHandler callback, object arg)
         {
             var thunk = new PasswordThunk(callback, arg);
-            var ptr = Native.PEM_read_bio_RSAPrivateKey(bio.Handle, IntPtr.Zero, thunk.Callback, IntPtr.Zero);
+            var ptr = NativeMethods.PEM_read_bio_RSAPrivateKey(bio.Handle, IntPtr.Zero, thunk.Callback, IntPtr.Zero);
 
-            return new RSA(Native.ExpectNonNull(ptr), true);
+            return new RSA(NativeMethods.ExpectNonNull(ptr), true);
         }
 
         #endregion
@@ -139,7 +139,7 @@ namespace OpenSSL.Crypto
         /// Returns RSA_size()
         /// </summary>
         public int Size {
-            get { return Native.ExpectSuccess(Native.RSA_size(ptr)); }
+            get { return NativeMethods.ExpectSuccess(NativeMethods.RSA_size(ptr)); }
         }
 
         /// <summary>
@@ -155,9 +155,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the e field
         /// </summary>
         public BigNumber PublicExponent {
-            get { return new BigNumber(Native.RSA_get0_e(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_e(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_key(ptr, IntPtr.Zero, Native.BN_dup(value.Handle), IntPtr.Zero));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_key(ptr, IntPtr.Zero, NativeMethods.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -165,9 +165,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the n field
         /// </summary>
         public BigNumber PublicModulus {
-            get { return new BigNumber(Native.RSA_get0_n(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_n(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_key(ptr, Native.BN_dup(value.Handle), IntPtr.Zero, IntPtr.Zero));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_key(ptr, NativeMethods.BN_dup(value.Handle), IntPtr.Zero, IntPtr.Zero));
             }
         }
 
@@ -175,9 +175,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the d field
         /// </summary>
         public BigNumber PrivateExponent {
-            get { return new BigNumber(Native.RSA_get0_d(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_d(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_key(ptr, IntPtr.Zero, IntPtr.Zero, Native.BN_dup(value.Handle)));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_key(ptr, IntPtr.Zero, IntPtr.Zero, NativeMethods.BN_dup(value.Handle)));
             }
         }
 
@@ -185,9 +185,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the p field
         /// </summary>
         public BigNumber SecretPrimeFactorP {
-            get { return new BigNumber(Native.RSA_get0_p(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_p(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_factors(ptr, Native.BN_dup(value.Handle), IntPtr.Zero));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_factors(ptr, NativeMethods.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -195,9 +195,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the q field
         /// </summary>
         public BigNumber SecretPrimeFactorQ {
-            get { return new BigNumber(Native.RSA_get0_q(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_q(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_factors(ptr, IntPtr.Zero, Native.BN_dup(value.Handle)));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_factors(ptr, IntPtr.Zero, NativeMethods.BN_dup(value.Handle)));
             }
         }
 
@@ -206,9 +206,9 @@ namespace OpenSSL.Crypto
         /// d mod (p-1)
         /// </summary>
         public BigNumber DmodP1 {
-            get { return new BigNumber(Native.RSA_get0_dmp1(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_dmp1(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, Native.BN_dup(value.Handle), IntPtr.Zero, IntPtr.Zero));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_crt_params(ptr, NativeMethods.BN_dup(value.Handle), IntPtr.Zero, IntPtr.Zero));
             }
         }
 
@@ -217,9 +217,9 @@ namespace OpenSSL.Crypto
         /// d mod (q-1)
         /// </summary>
         public BigNumber DmodQ1 {
-            get { return new BigNumber(Native.RSA_get0_dmq1(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_dmq1(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, IntPtr.Zero, Native.BN_dup(value.Handle), IntPtr.Zero));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_crt_params(ptr, IntPtr.Zero, NativeMethods.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -228,14 +228,14 @@ namespace OpenSSL.Crypto
         /// q^-1 mod p
         /// </summary>
         public BigNumber IQmodP {
-            get { return new BigNumber(Native.RSA_get0_iqmp(ptr), false); }
+            get { return new BigNumber(NativeMethods.RSA_get0_iqmp(ptr), false); }
             set {
-                Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, IntPtr.Zero, IntPtr.Zero, Native.BN_dup(value.Handle)));
+                NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_crt_params(ptr, IntPtr.Zero, IntPtr.Zero, NativeMethods.BN_dup(value.Handle)));
             }
         }
 
         public int Version {
-            get { return Native.RSA_get_version(ptr); }
+            get { return NativeMethods.RSA_get_version(ptr); }
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace OpenSSL.Crypto
         public void GenerateKeys(int bits, BigNumber e, BigNumber.GeneratorHandler callback, object arg)
         {
             thunk = new BigNumber.GeneratorThunk(callback, arg);
-            Native.ExpectSuccess(Native.RSA_generate_key_ex(ptr, bits, e.Handle, thunk.CallbackStruct));
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_generate_key_ex(ptr, bits, e.Handle, thunk.CallbackStruct));
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace OpenSSL.Crypto
         public byte[] PublicEncrypt(byte[] msg, Padding padding)
         {
             var ret = new byte[Size];
-            var len = Native.ExpectSuccess(Native.RSA_public_encrypt(msg.Length, msg, ret, ptr, (int)padding));
+            var len = NativeMethods.ExpectSuccess(NativeMethods.RSA_public_encrypt(msg.Length, msg, ret, ptr, (int)padding));
 
             if (len != ret.Length) {
                 var tmp = new byte[len];
@@ -306,7 +306,7 @@ namespace OpenSSL.Crypto
         public byte[] PrivateEncrypt(byte[] msg, Padding padding)
         {
             byte[] ret = new byte[this.Size];
-            int len = Native.ExpectSuccess(Native.RSA_private_encrypt(msg.Length, msg, ret, this.ptr, (int)padding));
+            int len = NativeMethods.ExpectSuccess(NativeMethods.RSA_private_encrypt(msg.Length, msg, ret, this.ptr, (int)padding));
             if (len != ret.Length) {
                 byte[] tmp = new byte[len];
                 Buffer.BlockCopy(ret, 0, tmp, 0, len);
@@ -324,7 +324,7 @@ namespace OpenSSL.Crypto
         public byte[] PublicDecrypt(byte[] msg, Padding padding)
         {
             var ret = new byte[Size];
-            var len = Native.ExpectSuccess(Native.RSA_public_decrypt(msg.Length, msg, ret, ptr, (int)padding));
+            var len = NativeMethods.ExpectSuccess(NativeMethods.RSA_public_decrypt(msg.Length, msg, ret, ptr, (int)padding));
 
             if (len != ret.Length) {
                 var tmp = new byte[len];
@@ -344,7 +344,7 @@ namespace OpenSSL.Crypto
         public byte[] PrivateDecrypt(byte[] msg, Padding padding)
         {
             var ret = new byte[this.Size];
-            var len = Native.ExpectSuccess(Native.RSA_private_decrypt(msg.Length, msg, ret, ptr, (int)padding));
+            var len = NativeMethods.ExpectSuccess(NativeMethods.RSA_private_decrypt(msg.Length, msg, ret, ptr, (int)padding));
 
             if (len != ret.Length) {
                 var tmp = new byte[len];
@@ -361,7 +361,7 @@ namespace OpenSSL.Crypto
         /// <param name="bio"></param>
         public void WritePublicKey(BIO bio)
         {
-            Native.ExpectSuccess(Native.PEM_write_bio_RSA_PUBKEY(bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_RSA_PUBKEY(bio.Handle, ptr));
         }
 
         /// <summary>
@@ -374,7 +374,7 @@ namespace OpenSSL.Crypto
         public void WritePrivateKey(BIO bio, Cipher enc, PasswordHandler passwd, object arg)
         {
             PasswordThunk thunk = new PasswordThunk(passwd, arg);
-            Native.ExpectSuccess(Native.PEM_write_bio_RSAPrivateKey(
+            NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_RSAPrivateKey(
                 bio.Handle,
                 this.ptr,
                 enc == null ? IntPtr.Zero : enc.Handle,
@@ -391,7 +391,7 @@ namespace OpenSSL.Crypto
         /// <param name="e">Public Exponent</param>
         public void SetKey(BigNumber n, BigNumber e)
         {
-            Native.ExpectSuccess(Native.RSA_set0_key(ptr, Native.BN_dup(n.Handle), Native.BN_dup(e.Handle), IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_key(ptr, NativeMethods.BN_dup(n.Handle), NativeMethods.BN_dup(e.Handle), IntPtr.Zero));
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace OpenSSL.Crypto
         /// <param name="d">Private Exponent</param>
         public void SetKey(BigNumber n, BigNumber e, BigNumber d)
         {
-            Native.ExpectSuccess(Native.RSA_set0_key(ptr, Native.BN_dup(n.Handle), Native.BN_dup(e.Handle), Native.BN_dup(d.Handle)));
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_key(ptr, NativeMethods.BN_dup(n.Handle), NativeMethods.BN_dup(e.Handle), NativeMethods.BN_dup(d.Handle)));
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace OpenSSL.Crypto
         /// <param name="q">Factor Q</param>
         public void SetFactors(BigNumber p, BigNumber q)
         {
-            Native.ExpectSuccess(Native.RSA_set0_factors(ptr, Native.BN_dup(p.Handle), Native.BN_dup(q.Handle)));
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_factors(ptr, NativeMethods.BN_dup(p.Handle), NativeMethods.BN_dup(q.Handle)));
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace OpenSSL.Crypto
         /// <param name="iqmp">(Q ^ -1) mod P</param>
         public void SetCrtParams(BigNumber dmp1, BigNumber dmq1, BigNumber iqmp)
         {
-            Native.ExpectSuccess(Native.RSA_set0_crt_params(ptr, Native.BN_dup(dmp1.Handle), Native.BN_dup(dmq1.Handle), Native.BN_dup(iqmp.Handle)));
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_set0_crt_params(ptr, NativeMethods.BN_dup(dmp1.Handle), NativeMethods.BN_dup(dmq1.Handle), NativeMethods.BN_dup(iqmp.Handle)));
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace OpenSSL.Crypto
         /// <returns></returns>
         public bool Check()
         {
-            var ret = Native.ExpectSuccess(Native.RSA_check_key(ptr));
+            var ret = NativeMethods.ExpectSuccess(NativeMethods.RSA_check_key(ptr));
             return ret == 1;
         }
 
@@ -442,7 +442,7 @@ namespace OpenSSL.Crypto
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            Native.ExpectSuccess(Native.RSA_print(bio.Handle, ptr, 0));
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_print(bio.Handle, ptr, 0));
         }
 
         #endregion
@@ -454,14 +454,14 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void OnDispose()
         {
-            Native.RSA_free(ptr);
+            NativeMethods.RSA_free(ptr);
         }
 
         #endregion
 
         internal override void AddRef()
         {
-            Native.RSA_up_ref(ptr);
+            NativeMethods.RSA_up_ref(ptr);
         }
 
         #region Fields

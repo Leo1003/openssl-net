@@ -45,7 +45,7 @@ namespace OpenSSL.Core
         /// </summary>
         /// <param name="buf"></param>
         public BIO(byte[] buf)
-            : base(Native.ExpectNonNull(Native.BIO_new(Native.BIO_s_mem())), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.BIO_new(NativeMethods.BIO_s_mem())), true)
         {
             Write(buf);
         }
@@ -66,7 +66,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public static BIO MemoryBuffer(bool takeOwnership)
         {
-            var ptr = Native.ExpectNonNull(Native.BIO_new(Native.BIO_s_mem()));
+            var ptr = NativeMethods.ExpectNonNull(NativeMethods.BIO_new(NativeMethods.BIO_s_mem()));
             return new BIO(ptr, takeOwnership);
         }
 
@@ -87,7 +87,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public static BIO File(string filename, string mode)
         {
-            var ptr = Native.ExpectNonNull(Native.BIO_new_file(filename, mode));
+            var ptr = NativeMethods.ExpectNonNull(NativeMethods.BIO_new_file(filename, mode));
             return new BIO(ptr, true);
         }
 
@@ -102,8 +102,8 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public static BIO MessageDigest(MessageDigest md)
         {
-            var ptr = Native.ExpectNonNull(Native.BIO_new(Native.BIO_f_md()));
-            Native.BIO_set_md(ptr, md.Handle);
+            var ptr = NativeMethods.ExpectNonNull(NativeMethods.BIO_new(NativeMethods.BIO_f_md()));
+            NativeMethods.BIO_set_md(ptr, md.Handle);
 
             return new BIO(ptr, true);
         }
@@ -122,21 +122,21 @@ namespace OpenSSL.Core
         /// Returns BIO_number_read()
         /// </summary>
         public ulong NumberRead {
-            get { return Native.BIO_number_read(Handle); }
+            get { return NativeMethods.BIO_number_read(Handle); }
         }
 
         /// <summary>
         /// Returns BIO_number_written()
         /// </summary>
         public ulong NumberWritten {
-            get { return Native.BIO_number_written(Handle); }
+            get { return NativeMethods.BIO_number_written(Handle); }
         }
 
         /// <summary>
         /// Returns number of bytes buffered in the BIO - calls BIO_ctrl_pending
         /// </summary>
         public uint BytesPending {
-            get { return Native.BIO_ctrl_pending(Handle); }
+            get { return NativeMethods.BIO_ctrl_pending(Handle); }
         }
 
         #endregion
@@ -164,7 +164,7 @@ namespace OpenSSL.Core
         /// <param name="opt"></param>
         public void SetClose(CloseOption opt)
         {
-            Native.BIO_set_close(ptr, (int)opt);
+            NativeMethods.BIO_set_close(ptr, (int)opt);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace OpenSSL.Core
         /// <param name="bio"></param>
         public void Push(BIO bio)
         {
-            Native.ExpectNonNull(Native.BIO_push(ptr, bio.Handle));
+            NativeMethods.ExpectNonNull(NativeMethods.BIO_push(ptr, bio.Handle));
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace OpenSSL.Core
         /// <param name="buf"></param>
         public void Write(byte[] buf)
         {
-            if (Native.BIO_write(ptr, buf, buf.Length) != buf.Length)
+            if (NativeMethods.BIO_write(ptr, buf, buf.Length) != buf.Length)
                 throw new OpenSslException();
         }
 
@@ -193,7 +193,7 @@ namespace OpenSSL.Core
         /// <param name="len"></param>
         public void Write(byte[] buf, int len)
         {
-            if (Native.BIO_write(ptr, buf, len) != len)
+            if (NativeMethods.BIO_write(ptr, buf, len) != len)
                 throw new OpenSslException();
         }
 
@@ -246,7 +246,7 @@ namespace OpenSSL.Core
         {
             var buf = Encoding.ASCII.GetBytes(str);
 
-            if (Native.BIO_puts(this.ptr, buf) != buf.Length)
+            if (NativeMethods.BIO_puts(this.ptr, buf) != buf.Length)
                 throw new OpenSslException();
         }
 
@@ -258,7 +258,7 @@ namespace OpenSSL.Core
         public ArraySegment<byte> ReadBytes(int count)
         {
             var buf = new byte[count];
-            var ret = Native.BIO_read(ptr, buf, buf.Length);
+            var ret = NativeMethods.BIO_read(ptr, buf, buf.Length);
 
             if (ret < 0)
                 throw new OpenSslException();
@@ -278,7 +278,7 @@ namespace OpenSSL.Core
             var ret = 0;
 
             while (true) {
-                ret = Native.BIO_gets(ptr, buf, buf.Length);
+                ret = NativeMethods.BIO_gets(ptr, buf, buf.Length);
                 if (ret == 0)
                     break;
                 if (ret < 0)
@@ -308,7 +308,7 @@ namespace OpenSSL.Core
         /// </summary>
         protected override void OnDispose()
         {
-            Native.BIO_free(ptr);
+            NativeMethods.BIO_free(ptr);
         }
 
         #endregion
