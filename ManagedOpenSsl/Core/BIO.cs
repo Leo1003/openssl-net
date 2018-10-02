@@ -24,6 +24,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using OpenSSL.Crypto;
+using OpenSSL.Native;
 using System;
 using System.IO;
 using System.Text;

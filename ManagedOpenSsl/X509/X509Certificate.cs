@@ -25,6 +25,7 @@
 
 using OpenSSL.Core;
 using OpenSSL.Crypto;
+using OpenSSL.Native;
 using System;
 using System.Runtime.InteropServices;
 

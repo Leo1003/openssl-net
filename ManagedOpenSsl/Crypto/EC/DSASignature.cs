@@ -24,6 +24,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using OpenSSL.Core;
+using OpenSSL.Native;
 using System;
 using System.Runtime.InteropServices;
 

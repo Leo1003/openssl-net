@@ -25,6 +25,7 @@
 
 using OpenSSL.Core;
 using OpenSSL.Extensions;
+using OpenSSL.Native;
 using OpenSSL.X509;
 using System;
 using System.Collections.Generic;

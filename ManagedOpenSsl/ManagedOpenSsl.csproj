@@ -40,7 +40,7 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>NativeFunction.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
@@ -120,7 +120,7 @@
     <Compile Include="Crypto\HMAC.cs" />
     <Compile Include="X509\Identity.cs" />
     <Compile Include="Crypto\MessageDigest.cs" />
-    <Compile Include="Core\Native.cs" />
+    <Compile Include="Native\NativeMethods.cs" />
     <Compile Include="Core\OpenSslException.cs" />
     <Compile Include="Core\Password.cs" />
     <Compile Include="X509\PKCS12.cs" />
@@ -212,8 +212,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Native\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
 </Project>

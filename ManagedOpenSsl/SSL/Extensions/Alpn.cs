@@ -3,6 +3,7 @@
 
 using OpenSSL.Core;
 using OpenSSL.Exceptions;
+using OpenSSL.Native;
 using OpenSSL.SSL;
 using System;
 using System.Collections.Generic;

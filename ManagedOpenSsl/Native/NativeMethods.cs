@@ -23,6 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using OpenSSL.Core;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -31,7 +32,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 
-namespace OpenSSL.Core
+namespace OpenSSL.Native
 {
     /// <summary>
     ///
@@ -153,8 +154,8 @@ namespace OpenSSL.Core
 
         static NativeMethods()
         {
-            var lib = Version.Library;
-            var wrapper = Version.Wrapper;
+            var lib = Core.Version.Library;
+            var wrapper = Core.Version.Wrapper;
             if (lib.Raw < wrapper.Raw)
                 throw new Exception(string.Format("Invalid version of {0}, expecting {1}, got: {2}",
                     DLLNAME, wrapper, lib));

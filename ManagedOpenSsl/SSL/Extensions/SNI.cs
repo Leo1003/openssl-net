@@ -1,4 +1,5 @@
 ﻿using OpenSSL.Core;
+using OpenSSL.Native;
 using OpenSSL.SSL;
 using System;
 using System.Runtime.InteropServices;
