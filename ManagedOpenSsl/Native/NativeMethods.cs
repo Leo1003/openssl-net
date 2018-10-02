@@ -184,33 +184,6 @@ namespace OpenSSL.Native
             RAND_seed(seed, seed.Length);
         }
 
-        public enum OpenSSL_Init : ulong
-        {
-            None = 0x00000000,
-            NO_LOAD_CRYPTO_STRINGS = 0x00000001,
-            LOAD_CRYPTO_STRINGS = 0x00000002,
-            ADD_ALL_CIPHERS = 0x00000004,
-            ADD_ALL_DIGESTS = 0x00000008,
-            NO_ADD_ALL_CIPHERS = 0x00000010,
-            NO_ADD_ALL_DIGESTS = 0x00000020,
-            LOAD_CONFIG = 0x00000040,
-            NO_LOAD_CONFIG = 0x00000080,
-            ASYNC = 0x00000100,
-            ENGINE_RDRAND = 0x00000200,
-            ENGINE_DYNAMIC = 0x00000400,
-            ENGINE_OPENSSL = 0x00000800,
-            ENGINE_CRYPTODEV = 0x00001000,
-            ENGINE_CAPI = 0x00002000,
-            ENGINE_PADLOCK = 0x00004000,
-            ENGINE_AFALG = 0x00008000,
-            // ZLIB = 0x00010000,
-            ATFORK = 0x00020000,
-            // BASE_ONLY = 0x00040000,
-            /* OPENSSL_INIT flag range 0xfff00000 reserved for OPENSSL_init_ssl() */
-            NO_LOAD_SSL_STRINGS = 0x00100000,
-            LOAD_SSL_STRINGS = 0x00200000,
-        }
-
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int OPENSSL_init_crypto(OpenSSL_Init opts, IntPtr settings);
 
@@ -286,13 +259,6 @@ namespace OpenSSL.Native
         public const int NID_undef = 0;
 
         public const int OBJ_undef = 0;
-
-        public const int OBJ_NAME_TYPE_UNDEF = 0x00;
-        public const int OBJ_NAME_TYPE_MD_METH = 0x01;
-        public const int OBJ_NAME_TYPE_CIPHER_METH = 0x02;
-        public const int OBJ_NAME_TYPE_PKEY_METH = 0x03;
-        public const int OBJ_NAME_TYPE_COMP_METH = 0x04;
-        public const int OBJ_NAME_TYPE_NUM = 0x05;
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void OBJ_NAME_do_all(int type, ObjectNameHandler fn, IntPtr arg);
@@ -2529,62 +2495,6 @@ namespace OpenSSL.Native
 
         #endregion
 
-        #region Enum
-        public enum OpenSSL_HandshakeState
-        {
-            TLS_ST_BEFORE,
-            TLS_ST_OK,
-            DTLS_ST_CR_HELLO_VERIFY_REQUEST,
-            TLS_ST_CR_SRVR_HELLO,
-            TLS_ST_CR_CERT,
-            TLS_ST_CR_CERT_STATUS,
-            TLS_ST_CR_KEY_EXCH,
-            TLS_ST_CR_CERT_REQ,
-            TLS_ST_CR_SRVR_DONE,
-            TLS_ST_CR_SESSION_TICKET,
-            TLS_ST_CR_CHANGE,
-            TLS_ST_CR_FINISHED,
-            TLS_ST_CW_CLNT_HELLO,
-            TLS_ST_CW_CERT,
-            TLS_ST_CW_KEY_EXCH,
-            TLS_ST_CW_CERT_VRFY,
-            TLS_ST_CW_CHANGE,
-            TLS_ST_CW_NEXT_PROTO,
-            TLS_ST_CW_FINISHED,
-            TLS_ST_SW_HELLO_REQ,
-            TLS_ST_SR_CLNT_HELLO,
-            DTLS_ST_SW_HELLO_VERIFY_REQUEST,
-            TLS_ST_SW_SRVR_HELLO,
-            TLS_ST_SW_CERT,
-            TLS_ST_SW_KEY_EXCH,
-            TLS_ST_SW_CERT_REQ,
-            TLS_ST_SW_SRVR_DONE,
-            TLS_ST_SR_CERT,
-            TLS_ST_SR_KEY_EXCH,
-            TLS_ST_SR_CERT_VRFY,
-            TLS_ST_SR_NEXT_PROTO,
-            TLS_ST_SR_CHANGE,
-            TLS_ST_SR_FINISHED,
-            TLS_ST_SW_SESSION_TICKET,
-            TLS_ST_SW_CERT_STATUS,
-            TLS_ST_SW_CHANGE,
-            TLS_ST_SW_FINISHED,
-            TLS_ST_SW_ENCRYPTED_EXTENSIONS,
-            TLS_ST_CR_ENCRYPTED_EXTENSIONS,
-            TLS_ST_CR_CERT_VRFY,
-            TLS_ST_SW_CERT_VRFY,
-            TLS_ST_CR_HELLO_REQ,
-            TLS_ST_SW_KEY_UPDATE,
-            TLS_ST_CW_KEY_UPDATE,
-            TLS_ST_SR_KEY_UPDATE,
-            TLS_ST_CR_KEY_UPDATE,
-            TLS_ST_EARLY_DATA,
-            TLS_ST_PENDING_EARLY_DATA_END,
-            TLS_ST_CW_END_OF_EARLY_DATA,
-            TLS_ST_SR_END_OF_EARLY_DATA
-        }
-        #endregion
-
         #region SSL Methods
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr TLS_method();
@@ -2970,34 +2880,5 @@ namespace OpenSSL.Native
         #endregion
     }
 
-    class NameCollector
-    {
-        [StructLayout(LayoutKind.Sequential)]
-        struct OBJ_NAME
-        {
-            public int type;
-            public int alias;
-            public IntPtr name;
-            public IntPtr data;
-        };
 
-        private List<string> list = new List<string>();
-
-        public List<string> Result { get { return list; } }
-
-        public NameCollector(int type, bool isSorted)
-        {
-            if (isSorted)
-                NativeMethods.OBJ_NAME_do_all_sorted(type, OnObjectName, IntPtr.Zero);
-            else
-                NativeMethods.OBJ_NAME_do_all(type, OnObjectName, IntPtr.Zero);
-        }
-
-        private void OnObjectName(IntPtr ptr, IntPtr arg)
-        {
-            var name = (OBJ_NAME)Marshal.PtrToStructure(ptr, typeof(OBJ_NAME));
-            var str = NativeMethods.PtrToStringAnsi(name.name, false);
-            list.Add(str);
-        }
-    }
 }

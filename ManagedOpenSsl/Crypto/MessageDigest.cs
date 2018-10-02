@@ -83,14 +83,14 @@ namespace OpenSSL.Crypto
         /// Calls OBJ_NAME_do_all_sorted(OBJ_NAME_TYPE_CIPHER_METH)
         /// </summary>
         public static string[] AllNamesSorted {
-            get { return new NameCollector(NativeMethods.OBJ_NAME_TYPE_MD_METH, true).Result.ToArray(); }
+            get { return new NameCollector(ObjNameType.MD_METH, true).Result.ToArray(); }
         }
 
         /// <summary>
         /// Calls OBJ_NAME_do_all(OBJ_NAME_TYPE_CIPHER_METH)
         /// </summary>
         public static string[] AllNames {
-            get { return new NameCollector(NativeMethods.OBJ_NAME_TYPE_MD_METH, false).Result.ToArray(); }
+            get { return new NameCollector(ObjNameType.MD_METH, false).Result.ToArray(); }
         }
 
         #region MessageDigests

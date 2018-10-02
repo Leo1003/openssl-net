@@ -112,6 +112,10 @@
     <Compile Include="Core\Crypto.cs" />
     <Compile Include="Core\MemoryTracker.cs" />
     <Compile Include="Crypto\Cipher.cs" />
+    <Compile Include="Native\NameCollector.cs" />
+    <Compile Include="Native\ObjNameType.cs" />
+    <Compile Include="Native\OpenSSLHandshakeState.cs" />
+    <Compile Include="Native\OpenSSLInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="X509\Configuration.cs" />
     <Compile Include="Crypto\CryptoKey.cs" />
