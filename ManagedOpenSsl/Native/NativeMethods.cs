@@ -26,6 +26,7 @@
 using OpenSSL.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -183,7 +184,8 @@ namespace OpenSSL.Native
         /// <returns></returns>
         public static IntPtr OPENSSL_malloc(int cbSize)
         {
-            return CRYPTO_malloc(cbSize, Assembly.GetExecutingAssembly().FullName, 0);
+            StackFrame callStack = new StackFrame(1, true);
+            return CRYPTO_malloc(cbSize, callStack.GetFileName(), callStack.GetFileLineNumber());
         }
 
         /// <summary>
