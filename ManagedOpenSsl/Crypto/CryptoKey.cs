@@ -435,10 +435,6 @@ namespace OpenSSL.Crypto
             }
         }
 
-        internal override CryptoLockTypes LockType {
-            get { return CryptoLockTypes.CRYPTO_LOCK_EVP_PKEY; }
-        }
-
         internal override Type RawReferenceType {
             get { return typeof(EVP_PKEY); }
         }

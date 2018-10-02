@@ -172,7 +172,7 @@ namespace OpenSSL.Core
     }
 
     /// <summary>
-    /// Derived classes must implement the <code>LockType</code> and <code>RawReferenceType</code> properties
+    /// Derived classes must implement the <code>RawReferenceType</code> properties
     /// </summary>
     public abstract class BaseReferenceImpl : BaseReference
     {
@@ -206,8 +206,6 @@ namespace OpenSSL.Core
         {
             // Native.CRYPTO_add_lock(refPtr, 1, LockType, "Base.cs", 0);
         }
-
-        internal abstract CryptoLockTypes LockType { get; }
 
         internal abstract Type RawReferenceType { get; }
 

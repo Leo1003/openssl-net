@@ -614,10 +614,6 @@ namespace OpenSSL.X509
             return Issuer.OneLine.GetHashCode() ^ SerialNumber;
         }
 
-        internal override CryptoLockTypes LockType {
-            get { return CryptoLockTypes.CRYPTO_LOCK_X509; }
-        }
-
         internal override Type RawReferenceType {
             get { return typeof(X509); }
         }

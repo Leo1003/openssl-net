@@ -45,51 +45,6 @@ namespace OpenSSL.Native
         public static bool Enabled { get; set; }
     }
 
-    internal enum CryptoLockTypes
-    {
-        CRYPTO_LOCK_ERR = 1,
-        CRYPTO_LOCK_EX_DATA = 2,
-        CRYPTO_LOCK_X509 = 3,
-        CRYPTO_LOCK_X509_INFO = 4,
-        CRYPTO_LOCK_X509_PKEY = 5,
-        CRYPTO_LOCK_X509_CRL = 6,
-        CRYPTO_LOCK_X509_REQ = 7,
-        CRYPTO_LOCK_DSA = 8,
-        CRYPTO_LOCK_RSA = 9,
-        CRYPTO_LOCK_EVP_PKEY = 10,
-        CRYPTO_LOCK_X509_STORE = 11,
-        CRYPTO_LOCK_SSL_CTX = 12,
-        CRYPTO_LOCK_SSL_CERT = 13,
-        CRYPTO_LOCK_SSL_SESSION = 14,
-        CRYPTO_LOCK_SSL_SESS_CERT = 15,
-        CRYPTO_LOCK_SSL = 16,
-        CRYPTO_LOCK_SSL_METHOD = 17,
-        CRYPTO_LOCK_RAND = 18,
-        CRYPTO_LOCK_RAND2 = 19,
-        CRYPTO_LOCK_MALLOC = 20,
-        CRYPTO_LOCK_BIO = 21,
-        CRYPTO_LOCK_GETHOSTBYNAME = 22,
-        CRYPTO_LOCK_GETSERVBYNAME = 23,
-        CRYPTO_LOCK_READDIR = 24,
-        CRYPTO_LOCK_RSA_BLINDING = 25,
-        CRYPTO_LOCK_DH = 26,
-        CRYPTO_LOCK_MALLOC2 = 27,
-        CRYPTO_LOCK_DSO = 28,
-        CRYPTO_LOCK_DYNLOCK = 29,
-        CRYPTO_LOCK_ENGINE = 30,
-        CRYPTO_LOCK_UI = 31,
-        CRYPTO_LOCK_ECDSA = 32,
-        CRYPTO_LOCK_EC = 33,
-        CRYPTO_LOCK_ECDH = 34,
-        CRYPTO_LOCK_BN = 35,
-        CRYPTO_LOCK_EC_PRE_COMP = 36,
-        CRYPTO_LOCK_STORE = 37,
-        CRYPTO_LOCK_COMP = 38,
-        CRYPTO_LOCK_FIPS = 39,
-        CRYPTO_LOCK_FIPS2 = 40,
-        CRYPTO_NUM_LOCKS = 41,
-    }
-
     /// <summary>
     /// This is the low-level C-style interface to the crypto API.
     /// Use this interface with caution.
