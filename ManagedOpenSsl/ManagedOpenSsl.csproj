@@ -40,7 +40,7 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>NativeFunction.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
@@ -112,6 +112,7 @@
     <Compile Include="Core\Crypto.cs" />
     <Compile Include="Core\MemoryTracker.cs" />
     <Compile Include="Crypto\Cipher.cs" />
+    <Compile Include="Native\FIPS.cs" />
     <Compile Include="Native\NameCollector.cs" />
     <Compile Include="Native\ObjNameType.cs" />
     <Compile Include="Native\OpenSSLHandshakeState.cs" />

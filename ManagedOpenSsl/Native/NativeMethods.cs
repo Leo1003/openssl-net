@@ -36,17 +36,6 @@ using System.Threading;
 namespace OpenSSL.Native
 {
     /// <summary>
-    ///
-    /// </summary>
-    public static class FIPS
-    {
-        /// <summary>
-        ///
-        /// </summary>
-        public static bool Enabled { get; set; }
-    }
-
-    /// <summary>
     /// This is the low-level C-style interface to the crypto API.
     /// Use this interface with caution.
     /// </summary>
