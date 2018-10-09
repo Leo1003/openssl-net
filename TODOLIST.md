@@ -1,9 +1,9 @@
 - [ ] Add new thread locking api
 - [ ] Add X25519 support
 - [ ] Rewrite SslStream
-- [ ] Add SHA-3 support
+- [x] Add SHA-3 support
 - [ ] Work with new SSL/TLS state machine
 - [ ] Add TLSv1.3 ciphersuites
-- [ ] Add SHA512/224 and SHA512/256
+- [x] Add SHA512/224 and SHA512/256
 - [ ] Add pkey support
 - [ ] Fix size_t problem in 32bits and 64 bits

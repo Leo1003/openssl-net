@@ -1453,6 +1453,30 @@ namespace OpenSSL.Native
         public extern static IntPtr EVP_sha512();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_sha512_224();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_sha512_256();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_sha3_224();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_sha3_256();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_sha3_384();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_sha3_512();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_shake128();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EVP_shake256();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EVP_mdc2();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]

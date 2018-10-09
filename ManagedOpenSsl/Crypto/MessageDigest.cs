@@ -95,49 +95,89 @@ namespace OpenSSL.Crypto
 
         #region MessageDigests
         /// <summary>
-        /// EVP_md_null()
+        /// Null
         /// </summary>
-        public static MessageDigest Null = new MessageDigest(NativeMethods.EVP_md_null(), false);
+        public readonly static MessageDigest Null = new MessageDigest(NativeMethods.EVP_md_null(), false);
 
         /// <summary>
-        /// EVP_md4()
+        /// MD4
         /// </summary>
-        public static MessageDigest MD4 = new MessageDigest(NativeMethods.EVP_md4(), false);
+        public readonly static MessageDigest MD4 = new MessageDigest(NativeMethods.EVP_md4(), false);
 
         /// <summary>
-        /// EVP_md5()
+        /// MD5
         /// </summary>
-        public static MessageDigest MD5 = new MessageDigest(NativeMethods.EVP_md5(), false);
+        public readonly static MessageDigest MD5 = new MessageDigest(NativeMethods.EVP_md5(), false);
 
         /// <summary>
-        /// EVP_sha1()
+        /// SHA-1
         /// </summary>
-        public static MessageDigest SHA1 = new MessageDigest(NativeMethods.EVP_sha1(), false);
+        public readonly static MessageDigest SHA1 = new MessageDigest(NativeMethods.EVP_sha1(), false);
 
         /// <summary>
-        /// EVP_sha224()
+        /// SHA-224
         /// </summary>
-        public static MessageDigest SHA224 = new MessageDigest(NativeMethods.EVP_sha224(), false);
+        public readonly static MessageDigest SHA224 = new MessageDigest(NativeMethods.EVP_sha224(), false);
 
         /// <summary>
-        /// EVP_sha256()
+        /// SHA-256
         /// </summary>
-        public static MessageDigest SHA256 = new MessageDigest(NativeMethods.EVP_sha256(), false);
+        public readonly static MessageDigest SHA256 = new MessageDigest(NativeMethods.EVP_sha256(), false);
 
         /// <summary>
-        /// EVP_sha384()
+        /// SHA-384
         /// </summary>
-        public static MessageDigest SHA384 = new MessageDigest(NativeMethods.EVP_sha384(), false);
+        public readonly static MessageDigest SHA384 = new MessageDigest(NativeMethods.EVP_sha384(), false);
 
         /// <summary>
-        /// EVP_sha512()
+        /// SHA-512
         /// </summary>
-        public static MessageDigest SHA512 = new MessageDigest(NativeMethods.EVP_sha512(), false);
+        public readonly static MessageDigest SHA512 = new MessageDigest(NativeMethods.EVP_sha512(), false);
+
+        /// <summary>
+        /// SHA-512/224
+        /// </summary>
+        public readonly static MessageDigest SHA512_224 = new MessageDigest(NativeMethods.EVP_sha512_224(), false);
+
+        /// <summary>
+        /// SHA-512/256
+        /// </summary>
+        public readonly static MessageDigest SHA512_256 = new MessageDigest(NativeMethods.EVP_sha512_256(), false);
+
+        /// <summary>
+        /// SHA3-224
+        /// </summary>
+        public readonly static MessageDigest SHA3_224 = new MessageDigest(NativeMethods.EVP_sha3_224(), false);
+
+        /// <summary>
+        /// SHA3-256
+        /// </summary>
+        public readonly static MessageDigest SHA3_256 = new MessageDigest(NativeMethods.EVP_sha3_256(), false);
+
+        /// <summary>
+        /// SHA3-384
+        /// </summary>
+        public readonly static MessageDigest SHA3_384 = new MessageDigest(NativeMethods.EVP_sha3_384(), false);
+
+        /// <summary>
+        /// SHA3-512
+        /// </summary>
+        public readonly static MessageDigest SHA3_512 = new MessageDigest(NativeMethods.EVP_sha3_512(), false);
+
+        /// <summary>
+        /// SHAKE128
+        /// </summary>
+        public readonly static MessageDigest SHAKE128 = new MessageDigest(NativeMethods.EVP_shake128(), false);
+
+        /// <summary>
+        /// SHAKE256
+        /// </summary>
+        public readonly static MessageDigest SHAKE256 = new MessageDigest(NativeMethods.EVP_shake256(), false);
 
         /// <summary>
         /// EVP_ripemd160()
         /// </summary>
-        public static MessageDigest RipeMD160 = new MessageDigest(NativeMethods.EVP_ripemd160(), false);
+        public readonly static MessageDigest RipeMD160 = new MessageDigest(NativeMethods.EVP_ripemd160(), false);
         #endregion
 
         #region Properties
