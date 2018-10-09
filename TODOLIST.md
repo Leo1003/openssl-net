@@ -1,4 +1,4 @@
-- [ ] Add new thread locking api
+- [x] Add new thread locking api
 - [ ] Add X25519 support
 - [ ] Rewrite SslStream
 - [x] Add SHA-3 support

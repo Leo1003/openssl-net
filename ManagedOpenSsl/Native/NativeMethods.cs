@@ -198,6 +198,22 @@ namespace OpenSSL.Native
             ReallocFunctionPtr r,
             FreeFunctionPtr f
         );
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr CRYPTO_THREAD_lock_new();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int CRYPTO_THREAD_read_lock(IntPtr lck);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int CRYPTO_THREAD_write_lock(IntPtr lck);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int CRYPTO_THREAD_unlock(IntPtr lck);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void CRYPTO_THREAD_lock_free(IntPtr lck);
+
         #endregion
 
         #region OBJ
