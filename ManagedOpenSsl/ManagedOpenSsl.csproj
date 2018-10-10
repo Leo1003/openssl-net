@@ -122,6 +122,7 @@
     <Compile Include="Native\Methods\dh.cs" />
     <Compile Include="Native\Methods\DLL.cs" />
     <Compile Include="Native\Methods\dsa.cs" />
+    <Compile Include="Native\Methods\err.cs" />
     <Compile Include="Native\Methods\objects.cs" />
     <Compile Include="Native\Methods\rand.cs" />
     <Compile Include="Native\Methods\rsa.cs" />
