@@ -119,6 +119,16 @@ namespace OpenSSL.Core
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Calls BIO_get_close() / BIO_set_close()
+        /// </summary>
+        /// <param name="opt"></param>
+        public BIO_Close CloseOption {
+            get { return NativeMethods.BIO_get_close(ptr); }
+            set { NativeMethods.BIO_set_close(ptr, value); }
+        }
+
         /// <summary>
         /// Returns BIO_number_read()
         /// </summary>
@@ -143,30 +153,6 @@ namespace OpenSSL.Core
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// BIO Close Options
-        /// </summary>
-        public enum CloseOption
-        {
-            /// <summary>
-            /// Don't close on free
-            /// </summary>
-            NoClose = 0,
-            /// <summary>
-            /// Close on free
-            /// </summary>
-            Close = 1
-        }
-
-        /// <summary>
-        /// Calls BIO_set_close()
-        /// </summary>
-        /// <param name="opt"></param>
-        public void SetClose(CloseOption opt)
-        {
-            NativeMethods.BIO_set_close(ptr, (int)opt);
-        }
 
         /// <summary>
         /// Calls BIO_push()

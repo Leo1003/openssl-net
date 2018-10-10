@@ -25,6 +25,7 @@
 
 using OpenSSL;
 using OpenSSL.Core;
+using OpenSSL.Native;
 using OpenSSL.X509;
 using System;
 using System.IO;
@@ -67,8 +68,8 @@ namespace OpenSSL.SSL
             write_bio = BIO.MemoryBuffer(false);
             // Set the read/write bio's into the the Ssl object
             ssl.SetBIO(read_bio, write_bio);
-            read_bio.SetClose(BIO.CloseOption.Close);
-            write_bio.SetClose(BIO.CloseOption.Close);
+            read_bio.CloseOption = BIO_Close.Close;
+            write_bio.CloseOption = BIO_Close.Close;
             // Set the Ssl object into server mode
             ssl.SetAcceptState();
         }

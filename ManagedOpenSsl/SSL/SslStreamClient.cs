@@ -27,6 +27,7 @@ using OpenSSL;
 using OpenSSL.Core;
 using OpenSSL.Crypto;
 using OpenSSL.Extensions;
+using OpenSSL.Native;
 using OpenSSL.X509;
 using System;
 using System.IO;
@@ -118,8 +119,8 @@ namespace OpenSSL.SSL
             sniExt.AttachSniExtensionClient(ssl.Handle, sslContext.Handle, sniCb);
 
             ssl.SetBIO(read_bio, write_bio);
-            read_bio.SetClose(BIO.CloseOption.Close);
-            write_bio.SetClose(BIO.CloseOption.Close);
+            read_bio.CloseOption = BIO_Close.Close;
+            write_bio.CloseOption = BIO_Close.Close;
             // Set the Ssl object into Client mode
             ssl.SetConnectState();
         }

@@ -30,6 +30,7 @@ using NUnit.Framework;
 using OpenSSL;
 using OpenSSL.Core;
 using OpenSSL.Crypto;
+using OpenSSL.Native;
 using OpenSSL.X509;
 
 namespace UnitTests
@@ -59,7 +60,7 @@ namespace UnitTests
 			CryptoKey key = new CryptoKey(new DSA(true));
 			BIO output = BIO.MemoryBuffer();
 			key.WritePrivateKey(output, Cipher.Null, "password");
-			output.SetClose(BIO.CloseOption.Close);
+			output.CloseOption = BIO_Close.Close;
 			Console.WriteLine(output.ReadString());
 		}
 

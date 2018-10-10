@@ -113,10 +113,13 @@
     <Compile Include="Core\ThreadLock.cs" />
     <Compile Include="Core\MemoryTracker.cs" />
     <Compile Include="Crypto\Cipher.cs" />
+    <Compile Include="Native\BIO_Close.cs" />
+    <Compile Include="Native\BIO_Ctrl.cs" />
     <Compile Include="Native\EncOperation.cs" />
     <Compile Include="Native\FIPS.cs" />
     <Compile Include="Native\Methods\aes.cs" />
     <Compile Include="Native\Methods\asn1.cs" />
+    <Compile Include="Native\Methods\bio.cs" />
     <Compile Include="Native\Methods\blowfish.cs" />
     <Compile Include="Native\Methods\bn.cs" />
     <Compile Include="Native\Methods\dh.cs" />
