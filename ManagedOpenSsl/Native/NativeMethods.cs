@@ -834,34 +834,7 @@ namespace OpenSSL.Native
 
         #region HMAC
 
-        public const int HMAC_MAX_MD_CBLOCK = 128;
-
-        //!!void HMAC_CTX_init(HMAC_CTX *ctx);
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr HMAC_CTX_new();
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int HMAC_CTX_reset(IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_CTX_set_flags(IntPtr ctx, uint flags);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_CTX_free(IntPtr ctx);
-        /* deprecated */
-
-        //!!public extern static void HMAC_Init_ex(IntPtr ctx, const void *key, int len, const EVP_MD *md, ENGINE *impl);
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_Init_ex(IntPtr ctx, byte[] key, int len, IntPtr md, IntPtr engine_impl);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_Update(IntPtr ctx, byte[] data, int len);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_Final(IntPtr ctx, byte[] md, ref uint len);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr HMAC(IntPtr evp_md, byte[] key, int key_len, byte[] d, int n, byte[] md, ref uint md_len);
+        
 
         #endregion
 
