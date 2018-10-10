@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -60,5 +60,11 @@ namespace OpenSSL.Native
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int DHparams_print(IntPtr bp, IntPtr x);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr d2i_DHparams(out IntPtr a, IntPtr pp, int length);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int i2d_DHparams(IntPtr a, IntPtr pp);
     }
 }

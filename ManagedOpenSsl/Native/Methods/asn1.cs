@@ -56,5 +56,11 @@ namespace OpenSSL.Native
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void ASN1_OBJECT_free(IntPtr obj);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr ASN1_d2i_bio(IntPtr xnew, IntPtr d2i, IntPtr bp, IntPtr x);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int ASN1_i2d_bio(IntPtr i2d, IntPtr bp, IntPtr x);
     }
 }

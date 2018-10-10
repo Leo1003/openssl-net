@@ -542,50 +542,6 @@ namespace OpenSSL.Native
 
         #endregion
 
-        #region DH
-
-        
-
-        #endregion
-
-        #region DER
-
-        //#define d2i_DHparams_bio(bp,x) ASN1_d2i_bio_of(DH,DH_new,d2i_DHparams,bp,x)
-        //#define i2d_DHparams_bio(bp,x) ASN1_i2d_bio_of_const(DH,i2d_DHparams,bp,x)
-        //
-        //#define ASN1_d2i_bio_of(type,xnew,d2i,in,x) \
-        //    ((type*)ASN1_d2i_bio( CHECKED_NEW_OF(type, xnew), \
-        //              CHECKED_D2I_OF(type, d2i), \
-        //              in, \
-        //              CHECKED_PPTR_OF(type, x)))
-        //
-        //#define ASN1_i2d_bio_of_const(type,i2d,out,x) \
-        //    (ASN1_i2d_bio(CHECKED_I2D_OF(const type, i2d), \
-        //          out, \
-        //          CHECKED_PTR_OF(const type, x)))
-        //
-        //#define CHECKED_I2D_OF(type, i2d) \
-        //    ((i2d_of_void*) (1 ? i2d : ((I2D_OF(type))0)))
-        //
-        //#define I2D_OF(type) int (*)(type *,byte[] *)
-        //
-        //#define CHECKED_PTR_OF(type, p) \
-        //    ((void*) (1 ? p : (type*)0))
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr d2i_DHparams(out IntPtr a, IntPtr pp, int length);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int i2d_DHparams(IntPtr a, IntPtr pp);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr ASN1_d2i_bio(IntPtr xnew, IntPtr d2i, IntPtr bp, IntPtr x);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ASN1_i2d_bio(IntPtr i2d, IntPtr bp, IntPtr x);
-
-        #endregion
-
         #region PEM
 
         #region X509
