@@ -119,6 +119,7 @@
     <Compile Include="Native\Methods\asn1.cs" />
     <Compile Include="Native\Methods\blowfish.cs" />
     <Compile Include="Native\Methods\bn.cs" />
+    <Compile Include="Native\Methods\dh.cs" />
     <Compile Include="Native\Methods\DLL.cs" />
     <Compile Include="Native\Methods\dsa.cs" />
     <Compile Include="Native\Methods\objects.cs" />

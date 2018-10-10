@@ -116,8 +116,14 @@ namespace OpenSSL.Crypto
         /// <param name="primeLen"></param>
         /// <param name="generator"></param>
         public DH(int primeLen, int generator)
-            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_generate_parameters(primeLen, generator, IntPtr.Zero, IntPtr.Zero)), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
         {
+            NativeMethods.ExpectSuccess(NativeMethods.DH_generate_parameters_ex(
+                ptr,
+                primeLen,
+                generator,
+                null)
+            );
         }
 
         /// <summary>
