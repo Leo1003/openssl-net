@@ -40,10 +40,9 @@ namespace OpenSSL.Crypto
         /// Calls HMAC_CTX_new()
         /// </summary>
         public HMAC()
-            : base(IntPtr.Zero, true)
+            : base(NativeMethods.HMAC_CTX_new(), true)
         {
-            // Allocate the context
-            ptr = NativeMethods.HMAC_CTX_new();
+
         }
         #endregion
 
@@ -84,7 +83,7 @@ namespace OpenSSL.Crypto
         public void Update(byte[] data)
         {
             if (!initialized) {
-                throw new Exception("Failed to call Initialize before calling Update");
+                throw new InvalidOperationException("Failed to call Initialize before calling Update");
             }
 
             NativeMethods.HMAC_Update(ptr, data, data.Length);
@@ -99,7 +98,7 @@ namespace OpenSSL.Crypto
         public void Update(byte[] data, int offset, int count)
         {
             if (!initialized) {
-                throw new Exception("Failed to call Initialize before calling Update");
+                throw new InvalidOperationException("Failed to call Initialize before calling Update");
             }
             if (data == null) {
                 throw new ArgumentNullException("data");
@@ -125,7 +124,7 @@ namespace OpenSSL.Crypto
         public byte[] DigestFinal()
         {
             if (!initialized) {
-                throw new Exception("Failed to call Initialize before calling DigestFinal");
+                throw new InvalidOperationException("Failed to call Initialize before calling DigestFinal");
             }
 
             var hash_value = new byte[digest_size];
@@ -133,6 +132,19 @@ namespace OpenSSL.Crypto
 
             NativeMethods.HMAC_Final(ptr, hash_value, ref hash_value_length);
             return hash_value;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public MessageDigest MessageDigest {
+            get {
+                if (!initialized) {
+                    throw new InvalidOperationException("Failed to call Initialize before getting MessageDigest");
+                }
+                return new MessageDigest(NativeMethods.HMAC_CTX_get_md(ptr), false);
+            }
         }
 
         #endregion
