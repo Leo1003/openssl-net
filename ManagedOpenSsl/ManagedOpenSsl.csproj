@@ -123,6 +123,7 @@
     <Compile Include="Native\Methods\DLL.cs" />
     <Compile Include="Native\Methods\dsa.cs" />
     <Compile Include="Native\Methods\err.cs" />
+    <Compile Include="Native\Methods\evp.cs" />
     <Compile Include="Native\Methods\hmac.cs" />
     <Compile Include="Native\Methods\objects.cs" />
     <Compile Include="Native\Methods\rand.cs" />
