@@ -23,9 +23,6 @@ namespace OpenSSL.Native
         public extern static IntPtr ERR_reason_error_string(uint e);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ERR_remove_thread_state(IntPtr tid);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void ERR_clear_error();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
