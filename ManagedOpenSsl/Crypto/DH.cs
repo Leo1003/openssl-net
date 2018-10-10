@@ -46,7 +46,6 @@ namespace OpenSSL.Crypto
         public const int Generator5 = 5;
 
         private const int FlagCacheMont_P = 0x01;
-        private const int FlagNoExpConstTime = 0x02;
 
         /// <summary>
         /// Flags for the return value of DH_check().
@@ -76,37 +75,6 @@ namespace OpenSSL.Crypto
         }
 
         private BigNumber.GeneratorThunk thunk = null;
-
-        #region dh_st
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct dh_st
-        {
-            public int pad;
-            public int version;
-            public IntPtr p;
-            public IntPtr g;
-            public int length;
-            public IntPtr pub_key;
-            public IntPtr priv_key;
-
-            public int flags;
-            public IntPtr method_mont_p;
-            public IntPtr q;
-            public IntPtr j;
-            public IntPtr seed;
-            public int seedlen;
-            public IntPtr counter;
-
-            public int references;
-            #region CRYPTO_EX_DATA ex_data;
-            public IntPtr ex_data_sk;
-            public int ex_data_dummy;
-            #endregion
-            public IntPtr meth;
-            public IntPtr engine;
-        }
-        #endregion
 
         #region Initialization
         internal DH(IntPtr ptr, bool owner) : base(ptr, owner) { }
@@ -149,12 +117,9 @@ namespace OpenSSL.Crypto
         /// Calls DH_new().
         /// </summary>
         public DH()
-            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
+            : this(BigNumber.One, BigNumber.One)
         {
-            var raw = Raw;
-            raw.p = NativeMethods.BN_dup(BigNumber.One.Handle);
-            raw.g = NativeMethods.BN_dup(BigNumber.One.Handle);
-            Raw = raw;
+
         }
 
         /// <summary>
@@ -165,10 +130,7 @@ namespace OpenSSL.Crypto
         public DH(BigNumber p, BigNumber g)
                 : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
         {
-            var raw = Raw;
-            raw.p = NativeMethods.BN_dup(p.Handle);
-            raw.g = NativeMethods.BN_dup(g.Handle);
-            Raw = raw;
+            NativeMethods.ExpectSuccess(NativeMethods.DH_set0_pqg(ptr, NativeMethods.BN_dup(p.Handle), IntPtr.Zero, NativeMethods.BN_dup(g.Handle)));
         }
 
         /// <summary>
@@ -179,14 +141,9 @@ namespace OpenSSL.Crypto
         /// <param name="pub_key"></param>
         /// <param name="priv_key"></param>
         public DH(BigNumber p, BigNumber g, BigNumber pub_key, BigNumber priv_key)
-            : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
+            : this(p, g)
         {
-            var raw = Raw;
-            raw.p = NativeMethods.BN_dup(p.Handle);
-            raw.g = NativeMethods.BN_dup(g.Handle);
-            raw.pub_key = NativeMethods.BN_dup(pub_key.Handle);
-            raw.priv_key = NativeMethods.BN_dup(priv_key.Handle);
-            Raw = raw;
+            NativeMethods.ExpectSuccess(NativeMethods.DH_set0_key(ptr, NativeMethods.BN_dup(pub_key.Handle), NativeMethods.BN_dup(priv_key.Handle)));
         }
 
         /// <summary>
@@ -330,20 +287,14 @@ namespace OpenSSL.Crypto
         #endregion
 
         #region Properties
-        private dh_st Raw {
-            get { return (dh_st)Marshal.PtrToStructure(ptr, typeof(dh_st)); }
-            set { Marshal.StructureToPtr(value, ptr, false); }
-        }
 
         /// <summary>
         /// Accessor for the p value.
         /// </summary>
         public BigNumber P {
-            get { return new BigNumber(Raw.p, false); }
+            get { return new BigNumber(NativeMethods.DH_get0_p(ptr), false); }
             set {
-                var raw = Raw;
-                raw.p = NativeMethods.BN_dup(value.Handle);
-                Raw = raw;
+                NativeMethods.ExpectSuccess(NativeMethods.DH_set0_pqg(ptr, NativeMethods.BN_dup(value.Handle), IntPtr.Zero, IntPtr.Zero));
             }
         }
 
@@ -351,11 +302,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the g value.
         /// </summary>
         public BigNumber G {
-            get { return new BigNumber(Raw.g, false); }
+            get { return new BigNumber(NativeMethods.DH_get0_g(ptr), false); }
             set {
-                var raw = Raw;
-                raw.g = NativeMethods.BN_dup(value.Handle);
-                Raw = raw;
+                NativeMethods.ExpectSuccess(NativeMethods.DH_set0_pqg(ptr, IntPtr.Zero, IntPtr.Zero, NativeMethods.BN_dup(value.Handle)));
             }
         }
 
@@ -363,11 +312,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the pub_key value.
         /// </summary>
         public BigNumber PublicKey {
-            get { return new BigNumber(Raw.pub_key, false); }
+            get { return new BigNumber(NativeMethods.DH_get0_pub_key(ptr), false); }
             set {
-                var raw = Raw;
-                raw.pub_key = NativeMethods.BN_dup(value.Handle);
-                Raw = raw;
+                NativeMethods.ExpectSuccess(NativeMethods.DH_set0_key(ptr, NativeMethods.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -375,11 +322,9 @@ namespace OpenSSL.Crypto
         /// Accessor for the priv_key value.
         /// </summary>
         public BigNumber PrivateKey {
-            get { return new BigNumber(Raw.priv_key, false); }
+            get { return new BigNumber(NativeMethods.DH_get0_priv_key(ptr), false); }
             set {
-                var raw = Raw;
-                raw.priv_key = NativeMethods.BN_dup(value.Handle);
-                Raw = raw;
+                NativeMethods.ExpectSuccess(NativeMethods.DH_set0_key(ptr, IntPtr.Zero, NativeMethods.BN_dup(value.Handle)));
             }
         }
 
@@ -406,22 +351,6 @@ namespace OpenSSL.Crypto
                     WriteParametersDER(bio);
                     return bio.ReadBytes((int)bio.NumberWritten).Array;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Sets or clears the FlagNoExpConstTime bit in the flags field.
-        /// </summary>
-        public bool NoExpConstantTime {
-            get { return (Raw.flags & FlagNoExpConstTime) != 0; }
-            set {
-                var raw = Raw;
-                if (value)
-                    raw.flags |= FlagNoExpConstTime;
-                else
-                    raw.flags &= ~FlagNoExpConstTime;
-
-                Raw = raw;
             }
         }
 

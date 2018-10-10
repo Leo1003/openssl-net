@@ -59,9 +59,6 @@ namespace UnitTests
 
 			DH b = new DH(a.P, a.G);
 
-			a.NoExpConstantTime = false;
-			b.NoExpConstantTime = true;
-
 			a.GenerateKeys();
 			Console.WriteLine("pri 1={0}", a.PrivateKey);
 			Console.WriteLine("pub 1={0}", a.PublicKey);
