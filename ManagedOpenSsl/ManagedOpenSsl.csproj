@@ -134,6 +134,8 @@
     <Compile Include="Native\Methods\rand.cs" />
     <Compile Include="Native\Methods\rsa.cs" />
     <Compile Include="Native\Methods\stack.cs" />
+    <Compile Include="Native\Methods\x509.cs" />
+    <Compile Include="Native\Methods\x509v3.cs" />
     <Compile Include="Native\NameCollector.cs" />
     <Compile Include="Native\ObjNameType.cs" />
     <Compile Include="Native\OpenSSLHandshakeState.cs" />
