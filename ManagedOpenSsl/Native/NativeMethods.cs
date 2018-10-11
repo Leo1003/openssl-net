@@ -1038,19 +1038,6 @@ namespace OpenSSL.Native
         #region NCONF
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr NCONF_new(IntPtr meth);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void NCONF_free(IntPtr conf);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        //!!public extern static int NCONF_load(IntPtr conf, byte[] file, ref int eline);
-        public extern static int NCONF_load(IntPtr conf, string file, ref int eline);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr NCONF_get_string(IntPtr conf, byte[] group, byte[] name);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void X509V3_set_ctx(
             IntPtr ctx,
             IntPtr issuer,
