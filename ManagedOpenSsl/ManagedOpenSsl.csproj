@@ -137,6 +137,7 @@
     <Compile Include="Native\Methods\pkcs7.cs" />
     <Compile Include="Native\Methods\rand.cs" />
     <Compile Include="Native\Methods\rsa.cs" />
+    <Compile Include="Native\Methods\ssl.cs" />
     <Compile Include="Native\Methods\stack.cs" />
     <Compile Include="Native\Methods\x509.cs" />
     <Compile Include="Native\Methods\x509v3.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Native\ObjNameType.cs" />
     <Compile Include="Native\OpenSSLHandshakeState.cs" />
     <Compile Include="Native\OpenSSLInit.cs" />
+    <Compile Include="Native\SSLCtrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="X509\Configuration.cs" />
     <Compile Include="Crypto\CryptoKey.cs" />

@@ -88,7 +88,7 @@ namespace OpenSSL.SSL
         ///     Calls SSL_CTX_set_options
         /// </summary>
         public SslOptions Options {
-            set { NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_set_options(ptr, (int)value)); }
+            set { NativeMethods.SSL_CTX_set_options(ptr, (int)value); }
             get { return (SslOptions)NativeMethods.SSL_CTX_get_options(ptr); }
         }
 

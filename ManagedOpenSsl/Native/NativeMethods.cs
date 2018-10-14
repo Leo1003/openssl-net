@@ -127,46 +127,7 @@ namespace OpenSSL.Native
 
         #region SSL Routines
 
-        #region Initialization
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int OPENSSL_init_ssl(OpenSSL_Init opts, IntPtr settings);
-
-        #endregion
-
-        #region SSL Methods
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLS_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLS_server_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr TLS_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLS_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLS_client_method();
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr DTLS_server_method();
-        #endregion
-
         #region SSL_CTX
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSL_CTX_new(IntPtr sslMethod);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_free(IntPtr ctx);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_ctrl(IntPtr ctx, int cmd, int arg, IntPtr parg);
-
-        public const int SSL_CTRL_OPTIONS = 32;
-        public const int SSL_CTRL_MODE = 33;
 
         public const int SSL_OP_MICROSOFT_SESS_ID_BUG = 0x00000001;
         public const int SSL_OP_NETSCAPE_CHALLENGE_BUG = 0x00000002;
@@ -232,105 +193,14 @@ namespace OpenSSL.Native
         /* Don't attempt to automatically build certificate chain */
         public const int SSL_MODE_NO_AUTO_CHAIN = 0x00000008;
 
-        /// <summary>
-        /// #define SSL_CTX_ctrl in ssl.h - calls SSL_CTX_ctrl()
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="op"></param>
-        /// <returns></returns>
-        public static int SSL_CTX_set_mode(IntPtr ctx, int op)
-        {
-            return SSL_CTX_ctrl(ctx, SSL_CTRL_MODE, op, IntPtr.Zero);
-        }
 
-        /// <summary>
-        /// #define SSL_CTX_get_mode in ssl.h - calls SSL_CTX_ctrl
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public static int SSL_CTX_get_mode(IntPtr ctx)
-        {
-            return SSL_CTX_ctrl(ctx, SSL_CTRL_MODE, 0, IntPtr.Zero);
-        }
-
-        /// <summary>
-        /// #define SSL_CTX_set_options in ssl.h - calls SSL_CTX_ctrl
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="op"></param>
-        /// <returns></returns>
-        public static int SSL_CTX_set_options(IntPtr ctx, int op)
-        {
-            return SSL_CTX_ctrl(ctx, SSL_CTRL_OPTIONS, op, IntPtr.Zero);
-        }
-
-        /// <summary>
-        /// #define SSL_CTX_get_options in ssl.h - calls SSL_CTX_ctrl
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <returns>Int32 representation of options set in the context</returns>
-        public static int SSL_CTX_get_options(IntPtr ctx)
-        {
-            return SSL_CTX_ctrl(ctx, SSL_CTRL_OPTIONS, 0, IntPtr.Zero);
-        }
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_cert_store(IntPtr ctx, IntPtr cert_store);
 
         public const int SSL_VERIFY_NONE = 0x00;
         public const int SSL_VERIFY_PEER = 0x01;
         public const int SSL_VERIFY_FAIL_IF_NO_PEER_CERT = 0x02;
         public const int SSL_VERIFY_CLIENT_ONCE = 0x04;
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_verify(IntPtr ctx, int mode, VerifyCertCallback callback);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_verify_depth(IntPtr ctx, int depth);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_client_CA_list(IntPtr ctx, IntPtr name_list);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr SSL_CTX_get_client_CA_list(IntPtr ctx);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_load_verify_locations(IntPtr ctx, string file, string path);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_set_default_verify_paths(IntPtr ctx);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_set_cipher_list(IntPtr ctx, string cipher_string);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_use_certificate_chain_file(IntPtr ctx, string file);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_use_certificate(IntPtr ctx, IntPtr cert);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_use_PrivateKey(IntPtr ctx, IntPtr pkey);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_use_PrivateKey_file(IntPtr ctx, string file, int type);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_check_private_key(IntPtr ctx);
-
         public const int SSL_MAX_SID_CTX_LENGTH = 32;
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_set_session_id_context(IntPtr ctx, byte[] sid_ctx, uint sid_ctx_len);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_default_passwd_cb_userdata(IntPtr ssl, IntPtr data);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_default_passwd_cb(IntPtr ssl, pem_password_cb callback);
-
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_client_cert_cb(IntPtr ssl_ctx, client_cert_cb callback);
 
         #endregion
 
