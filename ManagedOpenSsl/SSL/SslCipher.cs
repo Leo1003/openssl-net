@@ -84,7 +84,7 @@ namespace OpenSSL.SSL
             }
 
             if ((sslProtocols == SslProtocols.Default) ||
-                (sslProtocols == SslProtocols.Tls) ||
+                (sslProtocols == SslProtocols.Tls1) ||
                 (sslProtocols == SslProtocols.Ssl3)) {
                 parts.Add("!SSLv2");
             }

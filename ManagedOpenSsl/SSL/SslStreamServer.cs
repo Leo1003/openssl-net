@@ -137,8 +137,20 @@ namespace OpenSSL.SSL
                 options |= SSL_Options.NO_SSLv3;
             }
 
-            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls)) {
+            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1)) {
                 options |= SSL_Options.NO_TLSv1;
+            }
+
+            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1_1)) {
+                options |= SSL_Options.NO_TLSv1_1;
+            }
+
+            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1_2)) {
+                options |= SSL_Options.NO_TLSv1_2;
+            }
+
+            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1_3)) {
+                options |= SSL_Options.NO_TLSv1_3;
             }
 
             // Set the workaround options

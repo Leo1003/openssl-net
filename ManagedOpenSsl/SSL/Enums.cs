@@ -165,11 +165,23 @@ namespace OpenSSL.SSL
         /// <summary>
         ///
         /// </summary>
-        Tls = 4,
+        Tls1 = 4,
         /// <summary>
         ///
         /// </summary>
-        Default = 16
+        Tls1_1 = 8,
+        /// <summary>
+        ///
+        /// </summary>
+        Tls1_2 = 16,
+        /// <summary>
+        ///
+        /// </summary>
+        Tls1_3 = 32,
+        /// <summary>
+        ///
+        /// </summary>
+        Default = 1024
     }
 
     /// <summary>

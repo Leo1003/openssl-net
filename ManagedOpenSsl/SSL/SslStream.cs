@@ -397,7 +397,7 @@ namespace OpenSSL.SSL
         /// <param name="targetHost"></param>
         public virtual void AuthenticateAsClient(string targetHost)
         {
-            AuthenticateAsClient(targetHost, null, null, SslProtocols.Tls, SslStrength.All, false);
+            AuthenticateAsClient(targetHost, null, null, SslProtocols.Tls1, SslStrength.All, false);
         }
 
         /// <summary>
@@ -444,7 +444,7 @@ namespace OpenSSL.SSL
                 targetHost,
                 null,
                 null,
-                SslProtocols.Tls,
+                SslProtocols.Tls1,
                 SslStrength.All,
                 false,
                 asyncCallback,
@@ -516,7 +516,7 @@ namespace OpenSSL.SSL
         /// <param name="serverCertificate"></param>
         public virtual void AuthenticateAsServer(X509Certificate serverCertificate)
         {
-            AuthenticateAsServer(serverCertificate, false, null, SslProtocols.Tls, SslStrength.All, false);
+            AuthenticateAsServer(serverCertificate, false, null, SslProtocols.Tls1, SslStrength.All, false);
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace OpenSSL.SSL
                 serverCertificate,
                 false,
                 null,
-                SslProtocols.Tls,
+                SslProtocols.Tls1,
                 SslStrength.All,
                 false,
                 asyncCallback,

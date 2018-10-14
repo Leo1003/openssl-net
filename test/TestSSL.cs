@@ -326,7 +326,7 @@ namespace UnitTests
 						_ctx.ServerCertificate,
 						true,
 						_ctx.CAChain,
-						SslProtocols.Tls,
+						SslProtocols.Tls1,
 						SslStrength.All,
 						true
 					);
@@ -367,7 +367,7 @@ namespace UnitTests
 						"localhost",
 						_ctx.ClientCertificateList,
 						_ctx.CAChain,
-						SslProtocols.Tls,
+						SslProtocols.Tls1,
 						SslStrength.All,
 						true
 					);
