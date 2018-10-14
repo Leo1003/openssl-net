@@ -87,9 +87,9 @@ namespace OpenSSL.SSL
         /// <summary>
         ///     Calls SSL_CTX_set_options
         /// </summary>
-        public SslOptions Options {
-            set { NativeMethods.SSL_CTX_set_options(ptr, (int)value); }
-            get { return (SslOptions)NativeMethods.SSL_CTX_get_options(ptr); }
+        public SSL_Options Options {
+            set { NativeMethods.SSL_CTX_set_options(ptr, value); }
+            get { return NativeMethods.SSL_CTX_get_options(ptr); }
         }
 
         public SslMode Mode {

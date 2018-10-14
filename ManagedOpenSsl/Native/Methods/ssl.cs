@@ -65,13 +65,13 @@ namespace OpenSSL.Native
         }
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static uint SSL_CTX_get_options(IntPtr ctx);
+        public extern static SSL_Options SSL_CTX_get_options(IntPtr ctx);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static uint SSL_CTX_set_options(IntPtr ctx, int op);
+        public extern static SSL_Options SSL_CTX_set_options(IntPtr ctx, SSL_Options op);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static uint SSL_CTX_clear_options(IntPtr ctx, int op);
+        public extern static SSL_Options SSL_CTX_clear_options(IntPtr ctx, SSL_Options op);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void SSL_CTX_set_cert_store(IntPtr ctx, IntPtr cert_store);

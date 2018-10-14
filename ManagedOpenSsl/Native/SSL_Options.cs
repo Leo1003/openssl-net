@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace OpenSSL.Native
+{
+    /// <summary>
+    /// Options enumeration for Options property
+    /// </summary>
+    [Flags]
+    public enum SSL_Options : uint
+    {
+        LEGACY_SERVER_CONNECT = 0x00000004,
+        TLSEXT_PADDING = 0x00000010,
+        SAFARI_ECDHE_ECDSA_BUG = 0x00000040,
+        ALLOW_NO_DHE_KEX = 0x00000400,
+        DONT_INSERT_EMPTY_FRAGMENTS = 0x00000800,
+        NO_QUERY_MTU = 0x00001000,
+        COOKIE_EXCHANGE = 0x00002000,
+        NO_TICKET = 0x00004000,
+        CISCO_ANYCONNECT = 0x00008000,
+        NO_SESSION_RESUMPTION_ON_RENEGOTIATION = 0x00010000,
+        NO_COMPRESSION = 0x00020000,
+        ALLOW_UNSAFE_LEGACY_RENEGOTIATION = 0x00040000,
+        NO_ENCRYPT_THEN_MAC = 0x00080000,
+        ENABLE_MIDDLEBOX_COMPAT = 0x00100000,
+        PRIORITIZE_CHACHA = 0x00200000,
+        CIPHER_SERVER_PREFERENCE = 0x00400000,
+        TLS_ROLLBACK_BUG = 0x00800000,
+        NO_ANTI_REPLAY = 0x01000000,
+        NO_SSLv3 = 0x02000000,
+        NO_TLSv1 = 0x04000000,
+        NO_TLSv1_2 = 0x08000000,
+        NO_TLSv1_1 = 0x10000000,
+        NO_TLSv1_3 = 0x20000000,
+        NO_DTLSv1 = 0x04000000,
+        NO_DTLSv1_2 = 0x08000000,
+        NO_RENEGOTIATION = 0x40000000,
+        CRYPTOPRO_TLSEXT_BUG = 0x80000000,
+
+        #region Special Flags
+        NO_SSL_MASK = (NO_SSLv3 | NO_TLSv1 | NO_TLSv1_1 | NO_TLSv1_2 | NO_TLSv1_3),
+        NO_DTLS_MASK = (NO_DTLSv1 | NO_DTLSv1_2),
+        ALL = (CRYPTOPRO_TLSEXT_BUG | DONT_INSERT_EMPTY_FRAGMENTS | LEGACY_SERVER_CONNECT | TLSEXT_PADDING | SAFARI_ECDHE_ECDSA_BUG),
+        #endregion
+    }
+}

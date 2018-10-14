@@ -133,20 +133,16 @@ namespace OpenSSL.SSL
             var options = sslContext.Options;
 
             // Remove support for protocols not specified in the enabledSslProtocols
-            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Ssl2)) {
-                options |= SslOptions.SSL_OP_NO_SSLv2;
-            }
-
             if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Ssl3)) {
-                options |= SslOptions.SSL_OP_NO_SSLv3;
+                options |= SSL_Options.NO_SSLv3;
             }
 
             if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls)) {
-                options |= SslOptions.SSL_OP_NO_TLSv1;
+                options |= SSL_Options.NO_TLSv1;
             }
 
             // Set the workaround options
-            sslContext.Options = options | SslOptions.SSL_OP_ALL;
+            sslContext.Options = options | SSL_Options.ALL;
 
             // Set the context mode
             sslContext.Mode = SslMode.SSL_MODE_AUTO_RETRY;
