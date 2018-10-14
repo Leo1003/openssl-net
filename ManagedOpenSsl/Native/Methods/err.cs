@@ -7,6 +7,9 @@ namespace OpenSSL.Native
 {
     internal partial class NativeMethods
     {
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int err_cb(IntPtr str, uint len, IntPtr u);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static uint ERR_get_error();
 

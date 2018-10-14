@@ -222,6 +222,10 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_pseudo_rand_range(IntPtr rnd, IntPtr range);
 
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int GeneratorHandler(int p, int n, IntPtr arg);
+
         [StructLayout(LayoutKind.Sequential)]
         public class bn_gencb_st
         {

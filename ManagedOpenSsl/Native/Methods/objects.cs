@@ -9,6 +9,9 @@ namespace OpenSSL.Native
 
         public const int OBJ_undef = 0;
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void ObjectNameHandler(IntPtr name, IntPtr arg);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void OBJ_NAME_do_all(int type, ObjectNameHandler fn, IntPtr arg);
 

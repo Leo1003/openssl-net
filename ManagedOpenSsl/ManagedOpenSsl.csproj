@@ -132,6 +132,9 @@
     <Compile Include="Native\Methods\evp.cs" />
     <Compile Include="Native\Methods\hmac.cs" />
     <Compile Include="Native\Methods\objects.cs" />
+    <Compile Include="Native\Methods\pem.cs" />
+    <Compile Include="Native\Methods\pkcs12.cs" />
+    <Compile Include="Native\Methods\pkcs7.cs" />
     <Compile Include="Native\Methods\rand.cs" />
     <Compile Include="Native\Methods\rsa.cs" />
     <Compile Include="Native\Methods\stack.cs" />
