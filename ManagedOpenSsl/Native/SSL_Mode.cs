@@ -7,6 +7,7 @@ namespace OpenSSL.Native
     [Flags]
     public enum SSL_Mode : uint
     {
+        NONE = 0x00000000,
         /// <summary>
         /// Allow SSL_write(..., n) to return r with 0 &lt; r &lt; n (i.e. report success
         /// when just a single record has been written):

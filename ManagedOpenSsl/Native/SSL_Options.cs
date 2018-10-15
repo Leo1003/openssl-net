@@ -10,6 +10,7 @@ namespace OpenSSL.Native
     [Flags]
     public enum SSL_Options : uint
     {
+        NONE = 0x00000000,
         LEGACY_SERVER_CONNECT = 0x00000004,
         TLSEXT_PADDING = 0x00000010,
         SAFARI_ECDHE_ECDSA_BUG = 0x00000040,
