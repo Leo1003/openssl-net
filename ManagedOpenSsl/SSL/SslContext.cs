@@ -88,13 +88,21 @@ namespace OpenSSL.SSL
         ///     Calls SSL_CTX_set_options
         /// </summary>
         public SSL_Options Options {
-            set { NativeMethods.SSL_CTX_set_options(ptr, value); }
             get { return NativeMethods.SSL_CTX_get_options(ptr); }
+            set {
+                // Because SSL_CTX_set_options() only OR the value, we should clear other bits first
+                NativeMethods.SSL_CTX_clear_options(ptr, (SSL_Options)uint.MaxValue);
+                NativeMethods.SSL_CTX_set_options(ptr, value);
+            }
         }
 
-        public SslMode Mode {
-            set { NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_set_mode(ptr, (int)value)); }
-            get { return (SslMode)NativeMethods.SSL_CTX_get_mode(ptr); }
+        public SSL_Mode Mode {
+            get { return NativeMethods.SSL_CTX_get_mode(ptr); }
+            set {
+                // Because SSL_CTX_set_mode() only OR the value, we should clear other bits first
+                NativeMethods.SSL_CTX_clear_mode(ptr, (SSL_Mode)uint.MaxValue);
+                NativeMethods.SSL_CTX_set_mode(ptr, value);
+            }
         }
 
         #endregion

@@ -157,7 +157,7 @@ namespace OpenSSL.SSL
             sslContext.Options = options | SSL_Options.ALL;
 
             // Set the context mode
-            sslContext.Mode = SslMode.SSL_MODE_AUTO_RETRY;
+            sslContext.Mode = SSL_Mode.AUTO_RETRY;
 
             // Set the client certificate verification callback if we are requiring client certs
             if (clientCertificateRequired) {

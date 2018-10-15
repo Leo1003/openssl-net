@@ -44,14 +44,25 @@ namespace OpenSSL.Native
         public extern static int SSL_CTX_ctrl(IntPtr ctx, SSLCtrl cmd, int arg, IntPtr parg);
 
         /// <summary>
+        /// #define SSL_CTX_clear_mode in ssl.h - calls SSL_CTX_ctrl()
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="op"></param>
+        /// <returns></returns>
+        public static SSL_Mode SSL_CTX_clear_mode(IntPtr ctx, SSL_Mode op)
+        {
+            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSLCtrl.CLEAR_MODE, unchecked((int)op), IntPtr.Zero);
+        }
+
+        /// <summary>
         /// #define SSL_CTX_ctrl in ssl.h - calls SSL_CTX_ctrl()
         /// </summary>
         /// <param name="ctx"></param>
         /// <param name="op"></param>
         /// <returns></returns>
-        public static int SSL_CTX_set_mode(IntPtr ctx, int op)
+        public static SSL_Mode SSL_CTX_set_mode(IntPtr ctx, SSL_Mode op)
         {
-            return SSL_CTX_ctrl(ctx, SSLCtrl.MODE, op, IntPtr.Zero);
+            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSLCtrl.MODE, unchecked((int)op), IntPtr.Zero);
         }
 
         /// <summary>
@@ -59,9 +70,9 @@ namespace OpenSSL.Native
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        public static int SSL_CTX_get_mode(IntPtr ctx)
+        public static SSL_Mode SSL_CTX_get_mode(IntPtr ctx)
         {
-            return SSL_CTX_ctrl(ctx, SSLCtrl.MODE, 0, IntPtr.Zero);
+            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSLCtrl.MODE, 0, IntPtr.Zero);
         }
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]

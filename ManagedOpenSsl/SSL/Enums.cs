@@ -242,34 +242,6 @@ namespace OpenSSL.SSL
         Complete
     }
 
-    enum SslMode
-    {
-        /// <summary>
-        /// Allow SSL_write(..., n) to return r with 0 &lt; r &lt; n (i.e. report success
-        /// when just a single record has been written):
-        /// </summary>
-        SSL_MODE_ENABLE_PARTIAL_WRITE = 0x00000001,
-
-        /// <summary>
-        /// Make it possible to retry SSL_write() with changed buffer location
-        /// (buffer contents must stay the same!); this is not the default to avoid
-        /// the misconception that non-blocking SSL_write() behaves like
-        /// non-blocking write():
-        /// </summary>
-        SSL_MODE_ACCEPT_MOVING_WRITE_BUFFER = 0x00000002,
-
-        /// <summary>
-        /// Never bother the application with retries if the transport
-        /// is blocking:
-        /// </summary>
-        SSL_MODE_AUTO_RETRY = 0x00000004,
-
-        /// <summary>
-        /// Don't attempt to automatically build certificate chain
-        /// </summary>
-        SSL_MODE_NO_AUTO_CHAIN = 0x00000008
-    }
-
     [Flags]
     enum VerifyMode
     {
