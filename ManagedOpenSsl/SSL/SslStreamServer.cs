@@ -161,9 +161,9 @@ namespace OpenSSL.SSL
 
             // Set the client certificate verification callback if we are requiring client certs
             if (clientCertificateRequired) {
-                sslContext.SetVerify(VerifyMode.SSL_VERIFY_PEER | VerifyMode.SSL_VERIFY_FAIL_IF_NO_PEER_CERT, OnRemoteCertificate);
+                sslContext.SetVerify(SSL_Verify.PEER | SSL_Verify.FAIL_IF_NO_PEER_CERT, OnRemoteCertificate);
             } else {
-                sslContext.SetVerify(VerifyMode.SSL_VERIFY_NONE, null);
+                sslContext.SetVerify(SSL_Verify.NONE, null);
             }
 
             // Set the client certificate max verification depth

@@ -127,17 +127,6 @@ namespace OpenSSL.Native
 
         #region SSL Routines
 
-        #region SSL_CTX
-
-        public const int SSL_VERIFY_NONE = 0x00;
-        public const int SSL_VERIFY_PEER = 0x01;
-        public const int SSL_VERIFY_FAIL_IF_NO_PEER_CERT = 0x02;
-        public const int SSL_VERIFY_CLIENT_ONCE = 0x04;
-
-        public const int SSL_MAX_SID_CTX_LENGTH = 32;
-
-        #endregion
-
         #region SSL functions
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]

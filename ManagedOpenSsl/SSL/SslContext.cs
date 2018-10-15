@@ -170,10 +170,10 @@ namespace OpenSSL.SSL
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="callback"></param>
-        public void SetVerify(VerifyMode mode, RemoteCertificateValidationHandler callback)
+        public void SetVerify(SSL_Verify mode, RemoteCertificateValidationHandler callback)
         {
             OnVerifyCert = callback;
-            NativeMethods.SSL_CTX_set_verify(ptr, (int)mode, callback == null ? null : _ptrOnVerifyCertThunk);
+            NativeMethods.SSL_CTX_set_verify(ptr, mode, callback == null ? null : _ptrOnVerifyCertThunk);
         }
 
         /// <summary>

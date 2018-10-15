@@ -241,14 +241,4 @@ namespace OpenSSL.SSL
         RenegotiateInProcess,
         Complete
     }
-
-    [Flags]
-    enum VerifyMode
-    {
-        SSL_VERIFY_NONE = 0x00,
-        SSL_VERIFY_PEER = 0x01,
-        SSL_VERIFY_FAIL_IF_NO_PEER_CERT = 0x02,
-        SSL_VERIFY_CLIENT_ONCE = 0x04,
-    }
-
 }

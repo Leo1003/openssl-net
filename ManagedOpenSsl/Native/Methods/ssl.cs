@@ -88,7 +88,7 @@ namespace OpenSSL.Native
         public extern static void SSL_CTX_set_cert_store(IntPtr ctx, IntPtr cert_store);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void SSL_CTX_set_verify(IntPtr ctx, int mode, VerifyCertCallback callback);
+        public extern static void SSL_CTX_set_verify(IntPtr ctx, SSL_Verify mode, VerifyCertCallback callback);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void SSL_CTX_set_verify_depth(IntPtr ctx, int depth);
