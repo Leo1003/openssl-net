@@ -300,94 +300,194 @@ namespace OpenSSL.Crypto
 #endif
 
         /// <summary>
-        /// EVP_aes_128_ecb()
+        /// AES 128bits Electronic Codebook Mode
         /// </summary>
         public static Cipher AES_128_ECB = new Cipher(NativeMethods.EVP_aes_128_ecb(), false);
 
         /// <summary>
-        /// EVP_aes_128_cbc()
+        /// AES 128bits Cipher-block Chaining Mode
         /// </summary>
         public static Cipher AES_128_CBC = new Cipher(NativeMethods.EVP_aes_128_cbc(), false);
 
         /// <summary>
-        /// EVP_aes_128_cfb1()
+        /// AES 128bits Cipher Feedback 1 Mode
         /// </summary>
         public static Cipher AES_128_CFB1 = new Cipher(NativeMethods.EVP_aes_128_cfb1(), false);
 
         /// <summary>
-        /// EVP_aes_128_cfb8()
+        /// AES 128bits Cipher Feedback 8 Mode
         /// </summary>
         public static Cipher AES_128_CFB8 = new Cipher(NativeMethods.EVP_aes_128_cfb8(), false);
 
         /// <summary>
-        /// EVP_aes_128_cfb128()
+        /// AES 128bits Cipher Feedback 128 Mode
         /// </summary>
         public static Cipher AES_128_CFB128 = new Cipher(NativeMethods.EVP_aes_128_cfb128(), false);
 
         /// <summary>
-        /// EVP_aes_128_ofb()
+        /// AES 128bits Output Feedback Mode
         /// </summary>
         public static Cipher AES_128_OFB = new Cipher(NativeMethods.EVP_aes_128_ofb(), false);
 
         /// <summary>
-        /// EVP_aes_192_ecb()
+        /// AES 128bits Counter Mode
+        /// </summary>
+        public static Cipher AES_128_CTR = new Cipher(NativeMethods.EVP_aes_128_ctr(), false);
+
+        /// <summary>
+        /// AES 128bits Counter with CBC-MAC Mode
+        /// </summary>
+        public static Cipher AES_128_CCM = new Cipher(NativeMethods.EVP_aes_128_ccm(), false);
+
+        /// <summary>
+        /// AES 128bits Galois/Counter Mode
+        /// </summary>
+        public static Cipher AES_128_GCM = new Cipher(NativeMethods.EVP_aes_128_gcm(), false);
+
+        /// <summary>
+        /// AES 128bits XEX-based Tweaked-codebook Mode with Ciphertext Stealing
+        /// </summary>
+        public static Cipher AES_128_XTS = new Cipher(NativeMethods.EVP_aes_128_xts(), false);
+
+        /// <summary>
+        /// AES 128bits Key Wrapping
+        /// </summary>
+        public static Cipher AES_128_Wrap = new Cipher(NativeMethods.EVP_aes_128_wrap(), false);
+
+        /// <summary>
+        /// AES 128bits Key Wrapping with Padding
+        /// </summary>
+        public static Cipher AES_128_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_128_wrap_pad(), false);
+
+        /// <summary>
+        /// AES 128bits Offset Codebook Mode
+        /// </summary>
+        public static Cipher AES_128_OCB = new Cipher(NativeMethods.EVP_aes_128_ocb(), false);
+
+        /// <summary>
+        /// AES 192bits Electronic Codebook Mode
         /// </summary>
         public static Cipher AES_192_ECB = new Cipher(NativeMethods.EVP_aes_192_ecb(), false);
 
         /// <summary>
-        /// EVP_aes_192_cbc()
+        /// AES 192bits Cipher-block Chaining Mode
         /// </summary>
         public static Cipher AES_192_CBC = new Cipher(NativeMethods.EVP_aes_192_cbc(), false);
 
         /// <summary>
-        /// EVP_aes_192_cfb1()
+        /// AES 192bits Cipher Feedback 1 Mode
         /// </summary>
         public static Cipher AES_192_CFB1 = new Cipher(NativeMethods.EVP_aes_192_cfb1(), false);
 
         /// <summary>
-        /// EVP_aes_192_cfb8()
+        /// AES 192bits Cipher Feedback 8 Mode
         /// </summary>
         public static Cipher AES_192_CFB8 = new Cipher(NativeMethods.EVP_aes_192_cfb8(), false);
 
         /// <summary>
-        /// EVP_aes_192_cfb128()
+        /// AES 192bits Cipher Feedback 128 Mode
         /// </summary>
         public static Cipher AES_192_CFB128 = new Cipher(NativeMethods.EVP_aes_192_cfb128(), false);
 
         /// <summary>
-        /// EVP_aes_192_ofb()
+        /// AES 192bits Output Feedback Mode
         /// </summary>
         public static Cipher AES_192_OFB = new Cipher(NativeMethods.EVP_aes_192_ofb(), false);
 
         /// <summary>
-        /// EVP_aes_256_ecb()
+        /// AES 192bits Counter Mode
+        /// </summary>
+        public static Cipher AES_192_CTR = new Cipher(NativeMethods.EVP_aes_192_ctr(), false);
+
+        /// <summary>
+        /// AES 192bits Counter with CBC-MAC Mode
+        /// </summary>
+        public static Cipher AES_192_CCM = new Cipher(NativeMethods.EVP_aes_192_ccm(), false);
+
+        /// <summary>
+        /// AES 192bits Galois/Counter Mode
+        /// </summary>
+        public static Cipher AES_192_GCM = new Cipher(NativeMethods.EVP_aes_192_gcm(), false);
+
+        /// <summary>
+        /// AES 192bits Key Wrapping
+        /// </summary>
+        public static Cipher AES_192_Wrap = new Cipher(NativeMethods.EVP_aes_192_wrap(), false);
+
+        /// <summary>
+        /// AES 192bits Key Wrapping with Padding
+        /// </summary>
+        public static Cipher AES_192_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_192_wrap_pad(), false);
+
+        /// <summary>
+        /// AES 192bits Offset Codebook Mode
+        /// </summary>
+        public static Cipher AES_192_OCB = new Cipher(NativeMethods.EVP_aes_192_ocb(), false);
+
+        /// <summary>
+        /// AES 256bits Electronic Codebook Mode
         /// </summary>
         public static Cipher AES_256_ECB = new Cipher(NativeMethods.EVP_aes_256_ecb(), false);
 
         /// <summary>
-        /// EVP_aes_256_cbc()
+        /// AES 256bits Cipher-block Chaining Mode
         /// </summary>
         public static Cipher AES_256_CBC = new Cipher(NativeMethods.EVP_aes_256_cbc(), false);
 
         /// <summary>
-        /// EVP_aes_256_cfb1()
+        /// AES 256bits Cipher Feedback 1 Mode
         /// </summary>
         public static Cipher AES_256_CFB1 = new Cipher(NativeMethods.EVP_aes_256_cfb1(), false);
 
         /// <summary>
-        /// EVP_aes_256_cfb8()
+        /// AES 256bits Cipher Feedback 8 Mode
         /// </summary>
         public static Cipher AES_256_CFB8 = new Cipher(NativeMethods.EVP_aes_256_cfb8(), false);
 
         /// <summary>
-        /// EVP_aes_256_cfb128()
+        /// AES 256bits Cipher Feedback 128 Mode
         /// </summary>
         public static Cipher AES_256_CFB128 = new Cipher(NativeMethods.EVP_aes_256_cfb128(), false);
 
         /// <summary>
-        /// EVP_aes_256_ofb()
+        /// AES 256bits Output Feedback Mode
         /// </summary>
         public static Cipher AES_256_OFB = new Cipher(NativeMethods.EVP_aes_256_ofb(), false);
+
+        /// <summary>
+        /// AES 256bits Counter Mode
+        /// </summary>
+        public static Cipher AES_256_CTR = new Cipher(NativeMethods.EVP_aes_256_ctr(), false);
+
+        /// <summary>
+        /// AES 256bits Counter with CBC-MAC Mode
+        /// </summary>
+        public static Cipher AES_256_CCM = new Cipher(NativeMethods.EVP_aes_256_ccm(), false);
+
+        /// <summary>
+        /// AES 256bits Galois/Counter Mode
+        /// </summary>
+        public static Cipher AES_256_GCM = new Cipher(NativeMethods.EVP_aes_256_gcm(), false);
+
+        /// <summary>
+        /// AES 256bits XEX-based Tweaked-codebook Mode with Ciphertext Stealing
+        /// </summary>
+        public static Cipher AES_256_XTS = new Cipher(NativeMethods.EVP_aes_256_xts(), false);
+
+        /// <summary>
+        /// AES 256bits Key Wrapping
+        /// </summary>
+        public static Cipher AES_256_Wrap = new Cipher(NativeMethods.EVP_aes_256_wrap(), false);
+
+        /// <summary>
+        /// AES 256bits Key Wrapping with Padding
+        /// </summary>
+        public static Cipher AES_256_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_256_wrap_pad(), false);
+
+        /// <summary>
+        /// AES 256bits Offset Codebook Mode
+        /// </summary>
+        public static Cipher AES_256_OCB = new Cipher(NativeMethods.EVP_aes_256_ocb(), false);
 
         #endregion
 
