@@ -200,6 +200,22 @@ namespace OpenSSL.Core
         public int Bytes {
             get { return (Bits + 7) / 8; }
         }
+
+        public bool IsZero {
+            get { return Convert.ToBoolean(NativeMethods.BN_is_zero(ptr)); }
+        }
+
+        public bool IsOne {
+            get { return Convert.ToBoolean(NativeMethods.BN_is_one(ptr)); }
+        }
+
+        public bool IsOdd {
+            get { return Convert.ToBoolean(NativeMethods.BN_is_odd(ptr)); }
+        }
+
+        public bool IsNegative {
+            get { return Convert.ToBoolean(NativeMethods.BN_is_negative(ptr)); }
+        }
         #endregion
 
         #region Methods
@@ -209,6 +225,16 @@ namespace OpenSSL.Core
         public void Clear()
         {
             NativeMethods.BN_clear(ptr);
+        }
+
+        public void CopyTo(BigNumber to)
+        {
+            NativeMethods.ExpectNonNull(NativeMethods.BN_copy(to.Handle, ptr));
+        }
+
+        public static void Swap(BigNumber a, BigNumber b)
+        {
+            NativeMethods.BN_swap(a.Handle, b.Handle);
         }
 
         /// <summary>
@@ -250,6 +276,78 @@ namespace OpenSSL.Core
 
             return bn;
         }
+
+        public BigNumber Sqrt()
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_sqr(ret.Handle, ptr, ctx.Handle));
+            }
+            return ret;
+        }
+
+        public BigNumber Gcd(BigNumber b)
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_gcd(ret.Handle, ptr, b.Handle, ctx.Handle));
+            }
+            return ret;
+        }
+
+        public BigNumber NNMod(BigNumber m)
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_nnmod(ret.Handle, ptr, m.Handle, ctx.Handle));
+            }
+            return ret;
+        }
+
+        public BigNumber ModAdd(BigNumber b, BigNumber m)
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_add(ret.Handle, ptr, b.Handle, m.Handle, ctx.Handle));
+            }
+            return ret;
+        }
+
+        public BigNumber ModSub(BigNumber b, BigNumber m)
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_sub(ret.Handle, ptr, b.Handle, m.Handle, ctx.Handle));
+            }
+            return ret;
+        }
+
+        public BigNumber ModMul(BigNumber b, BigNumber m)
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_mul(ret.Handle, ptr, b.Handle, m.Handle, ctx.Handle));
+            }
+            return ret;
+        }
+
+        public BigNumber ModSqrt(BigNumber m)
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_sqr(ret.Handle, ptr, m.Handle, ctx.Handle));
+            }
+            return ret;
+        }
+
+        public BigNumber ModExp(BigNumber p, BigNumber m)
+        {
+            var ret = new BigNumber();
+            using (Context ctx = new Context()) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_exp(ret.Handle, ptr, p.Handle, m.Handle, ctx.Handle));
+            }
+            return ret;
+        }
         #endregion
 
         #region Operators
@@ -267,6 +365,31 @@ namespace OpenSSL.Core
             return ret;
         }
 
+        public static BigNumber operator +(BigNumber lhs, uint rhs)
+        {
+            var ret = new BigNumber(lhs);
+            NativeMethods.ExpectSuccess(NativeMethods.BN_add_word(ret.Handle, rhs));
+            return ret;
+        }
+
+        public static BigNumber operator +(BigNumber lhs, int rhs)
+        {
+            var ret = new BigNumber(lhs);
+            if (rhs >= 0) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_add_word(ret.Handle, (uint)rhs));
+            } else {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_sub_word(ret.Handle, (uint)Math.Abs(rhs)));
+            }
+            return ret;
+        }
+
+        public static BigNumber operator ++(BigNumber lhs)
+        {
+            var ret = new BigNumber(lhs);
+            NativeMethods.ExpectSuccess(NativeMethods.BN_add_word(ret.Handle, 1));
+            return ret;
+        }
+
         /// <summary>
         /// Calls BN_sub()
         /// </summary>
@@ -278,6 +401,114 @@ namespace OpenSSL.Core
             var ret = new BigNumber();
             NativeMethods.ExpectSuccess(NativeMethods.BN_sub(ret.Handle, lhs.Handle, rhs.Handle));
 
+            return ret;
+        }
+
+        public static BigNumber operator -(BigNumber lhs, uint rhs)
+        {
+            var ret = new BigNumber(lhs);
+            NativeMethods.ExpectSuccess(NativeMethods.BN_sub_word(ret.Handle, rhs));
+            return ret;
+        }
+
+        public static BigNumber operator -(BigNumber lhs, int rhs)
+        {
+            var ret = new BigNumber(lhs);
+            if (rhs >= 0) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_sub_word(ret.Handle, (uint)rhs));
+            } else {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_add_word(ret.Handle, (uint)Math.Abs(rhs)));
+            }
+            return ret;
+        }
+
+        public static BigNumber operator --(BigNumber lhs)
+        {
+            var ret = new BigNumber(lhs);
+            NativeMethods.ExpectSuccess(NativeMethods.BN_sub_word(ret.Handle, 1));
+            return ret;
+        }
+
+        public static BigNumber operator *(BigNumber lhs, BigNumber rhs)
+        {
+            using (Context ctx = new Context()) {
+                BigNumber ret = new BigNumber();
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mul(ret.Handle, lhs.Handle, rhs.Handle, ctx.Handle));
+                return ret;
+            }
+        }
+
+        public static BigNumber operator *(BigNumber lhs, uint rhs)
+        {
+            var ret = new BigNumber(lhs);
+            NativeMethods.ExpectSuccess(NativeMethods.BN_mul_word(ret.Handle, rhs));
+            return ret;
+        }
+
+        public static BigNumber operator /(BigNumber lhs, BigNumber rhs)
+        {
+            using (Context ctx = new Context()) {
+                BigNumber ret = new BigNumber();
+                NativeMethods.ExpectSuccess(NativeMethods.BN_div(ret.Handle, IntPtr.Zero, lhs.Handle, rhs.Handle, ctx.Handle));
+                return ret;
+            }
+        }
+
+        public static uint operator /(BigNumber lhs, uint rhs)
+        {
+            var ret = NativeMethods.BN_div_word(lhs.Handle, rhs);
+            if (unchecked((int)ret) == -1) {
+                throw new OpenSslException();
+            }
+            return ret;
+        }
+
+        public static BigNumber operator %(BigNumber lhs, BigNumber rhs)
+        {
+            using (Context ctx = new Context()) {
+                BigNumber ret = new BigNumber();
+                NativeMethods.ExpectSuccess(NativeMethods.BN_div(IntPtr.Zero, ret.Handle, lhs.Handle, rhs.Handle, ctx.Handle));
+                return ret;
+            }
+        }
+
+        public static uint operator %(BigNumber lhs, uint rhs)
+        {
+            var ret = NativeMethods.BN_mod_word(lhs.Handle, rhs);
+            if (unchecked((int)ret) == -1) {
+                throw new OpenSslException();
+            }
+            return ret;
+        }
+
+        public static BigNumber operator ^(BigNumber lhs, BigNumber rhs)
+        {
+            using (Context ctx = new Context()) {
+                BigNumber ret = new BigNumber();
+                NativeMethods.ExpectSuccess(NativeMethods.BN_exp(ret.Handle, lhs.Handle, rhs.Handle, ctx.Handle));
+                return ret;
+            }
+        }
+
+        public static BigNumber operator <<(BigNumber lhs, int rhs)
+        {
+            BigNumber ret = new BigNumber();
+            if (rhs == 1) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_lshift1(ret.Handle, lhs.Handle));
+            } else {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_lshift(ret.Handle, lhs.Handle, rhs));
+            }
+            return ret;
+        }
+
+        public static BigNumber operator >>(BigNumber lhs, int rhs)
+        {
+            BigNumber ret = new BigNumber();
+            if (rhs == 1) {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_rshift1(ret.Handle, lhs.Handle));
+            } else {
+                NativeMethods.ExpectSuccess(NativeMethods.BN_rshift(ret.Handle, lhs.Handle, rhs));
+            }
             return ret;
         }
 
@@ -307,6 +538,27 @@ namespace OpenSSL.Core
         {
             return !(lhs == rhs);
         }
+
+        public static bool operator <(BigNumber lhs, BigNumber rhs)
+        {
+            return lhs.CompareTo(rhs) == -1;
+        }
+
+        public static bool operator <=(BigNumber lhs, BigNumber rhs)
+        {
+            return lhs.CompareTo(rhs) != 1;
+        }
+
+        public static bool operator >(BigNumber lhs, BigNumber rhs)
+        {
+            return lhs.CompareTo(rhs) == 1;
+        }
+
+        public static bool operator >=(BigNumber lhs, BigNumber rhs)
+        {
+            return lhs.CompareTo(rhs) != -1;
+        }
+
         #endregion
 
         #region Overrides

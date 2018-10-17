@@ -100,7 +100,7 @@ namespace OpenSSL.Native
         public extern static int BN_num_bits_word(uint l);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int BN_div(IntPtr dv, IntPtr rem, IntPtr m, IntPtr d, IntPtr ctx);
+        public extern static int BN_div(IntPtr dv, IntPtr rem, IntPtr a, IntPtr d, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_nnmod(IntPtr r, IntPtr m, IntPtr d, IntPtr ctx);
