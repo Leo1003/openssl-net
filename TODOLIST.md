@@ -7,4 +7,4 @@
 - [x] Add SHA512/224 and SHA512/256
 - [ ] Add pkey support
 - [ ] Fix size_t problem in 32bits and 64 bits
-- [ ] Check if OpenSSL will auto deinitialize in C#
+- [x] Check if OpenSSL will auto deinitialize in C#
