@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OpenSSL.Native
 {
-    public enum OpenSSL_HandshakeState
+    public enum SSL_HandshakeState
     {
         TLS_ST_BEFORE,
         TLS_ST_OK,

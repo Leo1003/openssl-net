@@ -143,9 +143,9 @@
     <Compile Include="Native\Methods\x509v3.cs" />
     <Compile Include="Native\NameCollector.cs" />
     <Compile Include="Native\ObjNameType.cs" />
-    <Compile Include="Native\OpenSSLHandshakeState.cs" />
-    <Compile Include="Native\OpenSSLInit.cs" />
-    <Compile Include="Native\SSLCtrl.cs" />
+    <Compile Include="Native\OpenSSL_Init.cs" />
+    <Compile Include="Native\SSL_HandshakeState.cs" />
+    <Compile Include="Native\SSL_Ctrl.cs" />
     <Compile Include="Native\SSL_Mode.cs" />
     <Compile Include="Native\SSL_Options.cs" />
     <Compile Include="Native\SSL_Verify.cs" />

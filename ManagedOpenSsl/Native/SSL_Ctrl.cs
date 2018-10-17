@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OpenSSL.Native
 {
-    public enum SSLCtrl : int
+    public enum SSL_Ctrl : int
     {
         SET_TMP_DH = 3,
         SET_TMP_ECDH = 4,

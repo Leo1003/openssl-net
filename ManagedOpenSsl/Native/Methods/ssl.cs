@@ -41,7 +41,7 @@ namespace OpenSSL.Native
         public extern static void SSL_CTX_free(IntPtr ctx);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_CTX_ctrl(IntPtr ctx, SSLCtrl cmd, int arg, IntPtr parg);
+        public extern static int SSL_CTX_ctrl(IntPtr ctx, SSL_Ctrl cmd, int arg, IntPtr parg);
 
         /// <summary>
         /// #define SSL_CTX_clear_mode in ssl.h - calls SSL_CTX_ctrl()
@@ -51,7 +51,7 @@ namespace OpenSSL.Native
         /// <returns></returns>
         public static SSL_Mode SSL_CTX_clear_mode(IntPtr ctx, SSL_Mode op)
         {
-            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSLCtrl.CLEAR_MODE, unchecked((int)op), IntPtr.Zero);
+            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSL_Ctrl.CLEAR_MODE, unchecked((int)op), IntPtr.Zero);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace OpenSSL.Native
         /// <returns></returns>
         public static SSL_Mode SSL_CTX_set_mode(IntPtr ctx, SSL_Mode op)
         {
-            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSLCtrl.MODE, unchecked((int)op), IntPtr.Zero);
+            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSL_Ctrl.MODE, unchecked((int)op), IntPtr.Zero);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace OpenSSL.Native
         /// <returns></returns>
         public static SSL_Mode SSL_CTX_get_mode(IntPtr ctx)
         {
-            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSLCtrl.MODE, 0, IntPtr.Zero);
+            return (SSL_Mode)SSL_CTX_ctrl(ctx, SSL_Ctrl.MODE, 0, IntPtr.Zero);
         }
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -136,7 +136,7 @@ namespace OpenSSL.Native
         public extern static void SSL_CTX_set_client_cert_cb(IntPtr ssl_ctx, client_cert_cb callback);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int SSL_CTX_callback_ctrl(IntPtr ctx, SSLCtrl cmd, IntPtr cb);
+        public static extern int SSL_CTX_callback_ctrl(IntPtr ctx, SSL_Ctrl cmd, IntPtr cb);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern int SSL_CTX_set_alpn_protos(IntPtr ctx, byte[] protos, UInt32 protos_len);
@@ -215,7 +215,7 @@ namespace OpenSSL.Native
         public extern static void SSL_free(IntPtr ssl);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static OpenSSL_HandshakeState SSL_get_state(IntPtr ssl);
+        public extern static SSL_HandshakeState SSL_get_state(IntPtr ssl);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void SSL_set_bio(IntPtr ssl, IntPtr read_bio, IntPtr write_bio);
@@ -248,7 +248,7 @@ namespace OpenSSL.Native
         public extern static int SSL_use_PrivateKey(IntPtr ssl, IntPtr evp_pkey);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int SSL_ctrl(IntPtr ssl, SSLCtrl cmd, int larg, IntPtr parg);
+        public static extern int SSL_ctrl(IntPtr ssl, SSL_Ctrl cmd, int larg, IntPtr parg);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern int SSL_session_reused(IntPtr ssl);

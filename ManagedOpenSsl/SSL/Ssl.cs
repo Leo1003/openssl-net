@@ -72,7 +72,7 @@ namespace OpenSSL.SSL
 
         #region Properties
 
-        internal OpenSSL_HandshakeState State {
+        internal SSL_HandshakeState State {
             get { return NativeMethods.SSL_get_state(Handle); }
         }
 

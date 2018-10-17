@@ -32,7 +32,7 @@ namespace OpenSSL.Extensions
         {
             SSL_CTX_set_tlsext_servername_callback(cb, sslCtx);
 
-            NativeMethods.SSL_CTX_ctrl(sslCtx, SSLCtrl.SET_TLSEXT_SERVERNAME_ARG, 0, _serverNamePtr);
+            NativeMethods.SSL_CTX_ctrl(sslCtx, SSL_Ctrl.SET_TLSEXT_SERVERNAME_ARG, 0, _serverNamePtr);
             SSL_set_tlsext_host_name(ssl);
         }
 
@@ -49,7 +49,7 @@ namespace OpenSSL.Extensions
 
         private int SSL_set_tlsext_host_name(IntPtr s)
         {
-            return NativeMethods.SSL_ctrl(s, SSLCtrl.SET_TLSEXT_HOSTNAME,
+            return NativeMethods.SSL_ctrl(s, SSL_Ctrl.SET_TLSEXT_HOSTNAME,
                 TLSEXT_NAMETYPE_host_name,
                 _serverNamePtr);
         }
@@ -57,7 +57,7 @@ namespace OpenSSL.Extensions
         private int SSL_CTX_set_tlsext_servername_callback(SniCallback cb, IntPtr ctx)
         {
             var cbPtr = Marshal.GetFunctionPointerForDelegate(cb);
-            return NativeMethods.SSL_CTX_callback_ctrl(ctx, SSLCtrl.SET_TLSEXT_SERVERNAME_CB, cbPtr);
+            return NativeMethods.SSL_CTX_callback_ctrl(ctx, SSL_Ctrl.SET_TLSEXT_SERVERNAME_CB, cbPtr);
         }
 
         //This callback just checks was session reused or not.
