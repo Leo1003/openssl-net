@@ -63,6 +63,9 @@ namespace OpenSSL.Native
 
         #region Initialization
 
+        //Suppress the CA1812 warning
+        private NativeMethods() { }
+
         static NativeMethods()
         {
             var lib = Core.Version.Library;
