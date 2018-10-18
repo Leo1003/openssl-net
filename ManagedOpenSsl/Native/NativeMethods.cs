@@ -41,26 +41,6 @@ namespace OpenSSL.Native
     /// </summary>
     internal partial class NativeMethods
     {
-        #region Delegates
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int VerifyCertCallback(int ok, IntPtr x509_store_ctx);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int client_cert_cb(IntPtr ssl, out IntPtr x509, out IntPtr pkey);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int alpn_cb(
-            IntPtr ssl,
-            out string selProto,
-            out byte selProtoLen,
-            IntPtr inProtos,
-            int inProtosLen,
-            IntPtr arg
-        );
-
-        #endregion
-
         #region Initialization
 
         //Suppress the CA1812 warning
