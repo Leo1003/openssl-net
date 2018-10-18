@@ -48,6 +48,18 @@ namespace OpenSSL.Crypto
 
         #region Methods
 
+        public void Reset()
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.HMAC_CTX_reset(ptr));
+            initialized = false;
+        }
+
+        public void CopyTo(HMAC to)
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.HMAC_CTX_copy(to.ptr, ptr));
+            to.initialized = initialized;
+        }
+
         /// <summary>
         /// Calls HMAC()
         /// </summary>
@@ -72,7 +84,6 @@ namespace OpenSSL.Crypto
         public void Init(byte[] key, MessageDigest digest)
         {
             NativeMethods.HMAC_Init_ex(ptr, key, key.Length, digest.Handle, IntPtr.Zero);
-            digest_size = digest.Size;
             initialized = true;
         }
 
@@ -127,7 +138,7 @@ namespace OpenSSL.Crypto
                 throw new InvalidOperationException("Failed to call Initialize before calling DigestFinal");
             }
 
-            var hash_value = new byte[digest_size];
+            var hash_value = new byte[Size];
             uint hash_value_length = NativeMethods.EVP_MAX_MD_SIZE;
 
             NativeMethods.HMAC_Final(ptr, hash_value, ref hash_value_length);
@@ -137,6 +148,16 @@ namespace OpenSSL.Crypto
         #endregion
 
         #region Properties
+
+        public ulong Size {
+            get {
+                ulong ret = NativeMethods.HMAC_size(ptr);
+                if (ret == 0) {
+                    throw new OpenSslException();
+                }
+                return ret;
+            }
+        }
 
         public MessageDigest MessageDigest {
             get {
@@ -162,7 +183,6 @@ namespace OpenSSL.Crypto
 
         #region Fields
         private bool initialized = false;
-        private int digest_size = 0;
         #endregion
     }
 }

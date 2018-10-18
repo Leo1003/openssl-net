@@ -36,8 +36,5 @@ namespace OpenSSL.Native
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr HMAC_CTX_get_md(IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_CTX_set_flags(IntPtr ctx, uint flags);
     }
 }
