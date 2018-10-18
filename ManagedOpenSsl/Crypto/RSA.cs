@@ -144,15 +144,6 @@ namespace OpenSSL.Crypto
         }
 
         /// <summary>
-        /// Not finished
-        /// </summary>
-        public bool ConstantTime {
-            get { return false; }
-            set {
-            }
-        }
-
-        /// <summary>
         /// Accessor for the e field
         /// </summary>
         public BigNumber PublicExponent {

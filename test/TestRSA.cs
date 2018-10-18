@@ -257,9 +257,6 @@ namespace UnitTests
 				case 2: ctext_ex = Key3(key); break;
 			}
 
-			if (v / 3 >= 1)
-				key.ConstantTime = false;
-
 			byte[] ctext = key.PublicEncrypt(ptext_ex, RSA.Padding.PKCS1);
 			Assert.AreEqual(ctext_ex.Length, ctext.Length);
 
