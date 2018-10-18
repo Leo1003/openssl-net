@@ -133,6 +133,15 @@ namespace OpenSSL.Crypto
             return new RSA(NativeMethods.ExpectNonNull(ptr), true);
         }
 
+        public static BigNumber GetRSA_3()
+        {
+            return new BigNumber((uint)0x3);
+        }
+
+        public static BigNumber GetRSA_F4()
+        {
+            return new BigNumber((uint)0x10001);
+        }
         #endregion
 
         #region Properties

@@ -62,12 +62,11 @@ namespace UnitTests
 			using (Configuration cfg = new Configuration("openssl.cnf"))
 			{
 				// Test RSA/SHA1 with other SelfSigned method
-				BigNumber bn = 0x10001;
 				CryptoKey key;
 
 				using (RSA rsa = new RSA())
 				{
-					rsa.GenerateKeys(2048, bn, new BigNumber.GeneratorCallback(OnGenerator, null));
+					rsa.GenerateKeys(2048, RSA.GetRSA_F4(), new BigNumber.GeneratorCallback(OnGenerator, null));
 					key = new CryptoKey(rsa);
 					// rsa is assigned, we no longer need this instance
 				}
@@ -89,11 +88,10 @@ namespace UnitTests
 		[Test]
 		public void TestWithoutCfg()
 		{
-			BigNumber bn = 0x10001;
 			CryptoKey key;
 			using (RSA rsa = new RSA())
 			{
-				rsa.GenerateKeys(2048, bn, new BigNumber.GeneratorCallback(OnGenerator, null));
+				rsa.GenerateKeys(2048, RSA.GetRSA_F4(), new BigNumber.GeneratorCallback(OnGenerator, null));
 				key = new CryptoKey(rsa);
 				// rsa is assigned, we no longer need this instance
 			}

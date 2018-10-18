@@ -19,11 +19,12 @@ namespace UnitTests
 		{
 			const int numKeys = 10;
 			Keys = new CryptoKey[numKeys];
+            BigNumber e = RSA.GetRSA_F4();
 			for (int i = 0; i < numKeys; i++)
 			{
 				using (var rsa = new RSA())
 				{
-					rsa.GenerateKeys(1024, BigNumber.One, null);
+					rsa.GenerateKeys(1024, e, null);
 					Keys[i] = new CryptoKey(rsa);
 				}
 			}

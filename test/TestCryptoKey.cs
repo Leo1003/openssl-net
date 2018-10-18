@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2009-2011 Frank Laub
+// Copyright (c) 2009-2011 Frank Laub
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ namespace UnitTests
 		{
 			using (var rsa = new RSA())
 			{
-				rsa.GenerateKeys(1024, BigNumber.One, null);
+				rsa.GenerateKeys(1024, RSA.GetRSA_F4(), null);
 				using (var lhs = new CryptoKey(rsa))
 				{
 					Assert.AreEqual(lhs, lhs);
@@ -57,7 +57,7 @@ namespace UnitTests
 
 					using (var rsa2 = new RSA())
 					{
-						rsa2.GenerateKeys(1024, BigNumber.One, null);
+						rsa2.GenerateKeys(1024, RSA.GetRSA_F4(), null);
 						using (var other = new CryptoKey(rsa2))
 						{
 							Assert.AreNotEqual(lhs, other);
@@ -172,7 +172,7 @@ namespace UnitTests
 		{
 			using (var rsa = new RSA())
 			{
-				rsa.GenerateKeys(1024, BigNumber.One, null);
+				rsa.GenerateKeys(1024, RSA.GetRSA_F4(), null);
 				using (var key = new CryptoKey(rsa))
 				{
 					Assert.AreEqual(CryptoKey.KeyType.RSA, key.Type);
