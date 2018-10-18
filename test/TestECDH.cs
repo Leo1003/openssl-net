@@ -61,19 +61,27 @@ namespace UnitTests
 				
 				a.GenerateKey();
 				if (a.Group.Method.FieldType == Objects.NID.X9_62_prime_field.NID) {
-					a.PublicKey.GetAffineCoordinates(x_a, y_a, ctx);
+					AffineCoordinate c = a.PublicKey.AffineCoordinates;
+                    x_a = c.X;
+                    y_a = c.Y;
 				}
 				else {
-					a.PublicKey.GetAffineCoordinates(x_a, y_a, ctx);
+                    AffineCoordinate c = a.PublicKey.AffineCoordinates;
+                    x_a = c.X;
+                    y_a = c.Y;
 				}
 				Console.Write(".");
 				
 				b.GenerateKey();
 				if (b.Group.Method.FieldType == Objects.NID.X9_62_prime_field.NID) {
-					b.PublicKey.GetAffineCoordinates(x_b, y_b, ctx);
+                    AffineCoordinate c = b.PublicKey.AffineCoordinates;
+                    x_b = c.X;
+                    y_b = c.Y;
 				}
 				else {
-					b.PublicKey.GetAffineCoordinates(x_b, y_b, ctx);
+                    AffineCoordinate c = b.PublicKey.AffineCoordinates;
+                    x_b = c.X;
+                    y_b = c.Y;
 				}
 				Console.Write(".");
 				
