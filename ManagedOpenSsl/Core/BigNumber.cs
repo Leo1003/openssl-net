@@ -628,37 +628,39 @@ namespace OpenSSL.Core
         /// Generator callback. Used mostly for status indications for long-
         /// running generator functions.
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="n"></param>
-        /// <param name="arg"></param>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="cb"></param>
         /// <returns></returns>
-        public delegate int GeneratorHandler(int p, int n, object arg);
+        public delegate int GeneratorHandler(int a, int b, GeneratorCallback cb);
 
-        internal class GeneratorThunk
+        public class GeneratorCallback : Base
         {
-            private NativeMethods.bn_gencb_st gencb = new NativeMethods.bn_gencb_st();
-            private GeneratorHandler OnGenerator;
+            private GeneratorHandler callback;
             private object arg;
 
-            public NativeMethods.bn_gencb_st CallbackStruct {
-                get { return gencb; }
+            public GeneratorCallback() : this(null, null)
+            {
+
             }
 
-            public GeneratorThunk(GeneratorHandler client, object arg)
+            public GeneratorCallback(GeneratorHandler handler, object arg) : base(NativeMethods.ExpectNonNull(NativeMethods.BN_GENCB_new()), true)
             {
-                OnGenerator = client;
+                callback = handler;
                 this.arg = arg;
-
-                gencb.ver = 2;
-                gencb.arg = IntPtr.Zero;
-                gencb.cb = OnGeneratorThunk;
+                NativeMethods.BN_GENCB_set(ptr, OnGeneratorThunk, IntPtr.Zero);
             }
 
-            internal int OnGeneratorThunk(int p, int n, IntPtr arg)
+            public void SetCallback(GeneratorHandler handler)
             {
-                if (OnGenerator != null) {
+                callback = handler;
+            }
+
+            private int OnGeneratorThunk(int a, int b, IntPtr arg)
+            {
+                if (callback != null) {
                     try {
-                        return OnGenerator(p, n, this.arg);
+                        return callback(a, b, this);
                     } catch (Exception) {
                         return 0;
                     }
@@ -667,6 +669,20 @@ namespace OpenSSL.Core
                     // no user callback
                     return 1;
                 }
+            }
+
+            public object Argument {
+                get {
+                    return arg;
+                }
+                set {
+                    arg = value;
+                }
+            }
+
+            protected override void OnDispose()
+            {
+                NativeMethods.BN_GENCB_free(ptr);
             }
         }
 

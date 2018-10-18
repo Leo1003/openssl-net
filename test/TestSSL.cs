@@ -70,7 +70,7 @@ namespace UnitTests
 			using (var subject = new X509Name(name))
 			using (var rsa = new RSA())
 			{
-				rsa.GenerateKeys(1024, BigNumber.One, null, null);
+				rsa.GenerateKeys(1024, BigNumber.One, null);
 				using (var key = new CryptoKey(rsa))
 				{
 					var request = new X509Request(1, subject, key);

@@ -222,20 +222,21 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_pseudo_rand_range(IntPtr rnd, IntPtr range);
 
+        #region BN_GENCB
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int GeneratorHandler(int p, int n, IntPtr arg);
 
-        [StructLayout(LayoutKind.Sequential)]
-        public class bn_gencb_st
-        {
-            /// To handle binary (in)compatibility
-            public uint ver;
-            /// callback-specific data
-            public IntPtr arg;
-            public GeneratorHandler cb;
-        }
-        //TODO: bn_gencb_st became an opaque structure
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr BN_GENCB_new();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BN_GENCB_free(IntPtr cb);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BN_GENCB_set(IntPtr gencb, GeneratorHandler callback, IntPtr cb_arg);
+
+        #endregion
         //TODO: Add generate prime & callback support
     }
 }

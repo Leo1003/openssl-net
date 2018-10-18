@@ -26,7 +26,7 @@ namespace OpenSSL.Native
         public extern static int DH_security_bits(IntPtr dh);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int DH_generate_parameters_ex(IntPtr dh, int prime_len, int generator, bn_gencb_st cb);
+        public extern static int DH_generate_parameters_ex(IntPtr dh, int prime_len, int generator, IntPtr cb);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int DH_generate_key(IntPtr dh);

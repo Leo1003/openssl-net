@@ -93,7 +93,8 @@ namespace OpenSSL.CLI
             Console.Error.WriteLine("Generating RSA private key, {0} bit long modulus", bits);
 
             var rsa = new RSA();
-            rsa.GenerateKeys(bits, e, Program.OnGenerator, null);
+            BigNumber.GeneratorCallback cb = new BigNumber.GeneratorCallback(Program.OnGenerator, null);
+            rsa.GenerateKeys(bits, e, cb);
 
             Console.Error.WriteLine("e is {0} (0x{1})", e.ToDecimalString(), e.ToHexString());
 

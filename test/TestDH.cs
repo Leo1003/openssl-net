@@ -40,8 +40,8 @@ namespace UnitTests
 		{
 			OpenSSL.Core.Random.Seed(rnd_seed);
 
-			BigNumber.GeneratorHandler cb = new BigNumber.GeneratorHandler(this.OnStatus);
-			DH a = new DH(64, DH.Generator5, cb, Console.Out);
+			BigNumber.GeneratorCallback cb = new BigNumber.GeneratorCallback(OnStatus, Console.Out);
+			DH a = new DH(64, DH.Generator5, cb);
 
 			DH.CheckCode check = a.Check();
 			if ((check & DH.CheckCode.CheckP_NotPrime) != 0)
@@ -82,9 +82,9 @@ namespace UnitTests
 			b.Dispose();
 		}
 
-		private int OnStatus(int p, int n, object arg)
+		private int OnStatus(int p, int n, BigNumber.GeneratorCallback arg)
 		{
-			TextWriter cout = (TextWriter)arg;
+			TextWriter cout = (TextWriter)arg.Argument;
 
 			switch (p) {
 				case 0: cout.Write('.'); break;

@@ -23,7 +23,7 @@ namespace UnitTests
 			{
 				using (var rsa = new RSA())
 				{
-					rsa.GenerateKeys(1024, BigNumber.One, null, null);
+					rsa.GenerateKeys(1024, BigNumber.One, null);
 					Keys[i] = new CryptoKey(rsa);
 				}
 			}

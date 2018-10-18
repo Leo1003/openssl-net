@@ -203,7 +203,7 @@ namespace OpenSSL.CLI
             cmd.Execute(args);
         }
 
-        public static int OnGenerator(int p, int n, object arg)
+        public static int OnGenerator(int p, int n, BigNumber.GeneratorCallback arg)
         {
             var cout = Console.Error;
 

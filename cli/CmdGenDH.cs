@@ -23,6 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using OpenSSL.Core;
 using OpenSSL.Crypto;
 using System;
 using System.IO;
@@ -81,7 +82,8 @@ namespace OpenSSL.CLI
             Console.Error.WriteLine("Generating DH parameters, {0} bit long safe prime, generator {1}", bits, g);
             Console.Error.WriteLine("This is going to take a long time");
 
-            var dh = new DH(bits, g, Program.OnGenerator, null);
+            BigNumber.GeneratorCallback cb = new BigNumber.GeneratorCallback(Program.OnGenerator, null);
+            var dh = new DH(bits, g, cb);
 
             var outfile = options["out"] as string;
             if (string.IsNullOrEmpty(outfile)) {

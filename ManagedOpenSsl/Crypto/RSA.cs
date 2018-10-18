@@ -263,10 +263,10 @@ namespace OpenSSL.Crypto
         /// <param name="e"></param>
         /// <param name="callback"></param>
         /// <param name="arg"></param>
-        public void GenerateKeys(int bits, BigNumber e, BigNumber.GeneratorHandler callback, object arg)
+        public void GenerateKeys(int bits, BigNumber e, BigNumber.GeneratorCallback callback)
         {
-            thunk = new BigNumber.GeneratorThunk(callback, arg);
-            NativeMethods.ExpectSuccess(NativeMethods.RSA_generate_key_ex(ptr, bits, e.Handle, thunk.CallbackStruct));
+            IntPtr cbptr = (callback == null) ? IntPtr.Zero : callback.Handle;
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_generate_key_ex(ptr, bits, e.Handle, cbptr));
         }
 
         /// <summary>
@@ -455,9 +455,5 @@ namespace OpenSSL.Crypto
         {
             NativeMethods.RSA_up_ref(ptr);
         }
-
-        #region Fields
-        private BigNumber.GeneratorThunk thunk = null;
-        #endregion
     }
 }

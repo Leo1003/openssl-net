@@ -15,7 +15,7 @@ namespace OpenSSL.Native
             int seed_len,
             out int counter_ret,
             out IntPtr h_ret,
-            bn_gencb_st callback);
+            IntPtr callback);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int DSA_generate_key(IntPtr dsa);

@@ -37,7 +37,6 @@ namespace OpenSSL.Crypto
     {
         private int counter = 0;
         private IntPtr h;
-        private BigNumber.GeneratorThunk thunk = null;
 
         #region Initialization
 
@@ -55,7 +54,7 @@ namespace OpenSSL.Crypto
                 null, 0,
                 out counter,
                 out h,
-                null)
+                IntPtr.Zero)
             );
 
             if (generateKeys)
@@ -68,18 +67,17 @@ namespace OpenSSL.Crypto
         /// <param name="bits"></param>
         /// <param name="callback"></param>
         /// <param name="arg"></param>
-        public DSA(int bits, BigNumber.GeneratorHandler callback, object arg)
+        public DSA(int bits, BigNumber.GeneratorCallback callback, object arg)
             : base(NativeMethods.ExpectNonNull(NativeMethods.DSA_new()), true)
         {
-            thunk = new BigNumber.GeneratorThunk(callback, arg);
-
+            IntPtr cbptr = (callback == null) ? IntPtr.Zero : callback.Handle;
             NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_parameters_ex(
                 ptr,
                 bits,
                 null, 0,
                 out counter,
                 out h,
-                thunk.CallbackStruct)
+                cbptr)
             );
         }
 
@@ -91,19 +89,18 @@ namespace OpenSSL.Crypto
         /// <param name="counter"></param>
         /// <param name="callback"></param>
         /// <param name="arg"></param>
-        public DSA(int bits, byte[] seed, int counter, BigNumber.GeneratorHandler callback, object arg)
+        public DSA(int bits, byte[] seed, int counter, BigNumber.GeneratorCallback callback)
             : base(NativeMethods.ExpectNonNull(NativeMethods.DSA_new()), true)
         {
+            IntPtr cbptr = (callback == null) ? IntPtr.Zero : callback.Handle;
             this.counter = counter;
-            thunk = new BigNumber.GeneratorThunk(callback, arg);
-
             NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_parameters_ex(
                 ptr,
                 bits,
                 seed, seed.Length,
                 out this.counter,
                 out h,
-                thunk.CallbackStruct)
+                cbptr)
             );
         }
 

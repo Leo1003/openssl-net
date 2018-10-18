@@ -46,7 +46,7 @@ namespace UnitTests
 		{
 			using (var rsa = new RSA())
 			{
-				rsa.GenerateKeys(1024, BigNumber.One, null, null);
+				rsa.GenerateKeys(1024, BigNumber.One, null);
 				using (var lhs = new CryptoKey(rsa))
 				{
 					Assert.AreEqual(lhs, lhs);
@@ -57,7 +57,7 @@ namespace UnitTests
 
 					using (var rsa2 = new RSA())
 					{
-						rsa2.GenerateKeys(1024, BigNumber.One, null, null);
+						rsa2.GenerateKeys(1024, BigNumber.One, null);
 						using (var other = new CryptoKey(rsa2))
 						{
 							Assert.AreNotEqual(lhs, other);
@@ -172,7 +172,7 @@ namespace UnitTests
 		{
 			using (var rsa = new RSA())
 			{
-				rsa.GenerateKeys(1024, BigNumber.One, null, null);
+				rsa.GenerateKeys(1024, BigNumber.One, null);
 				using (var key = new CryptoKey(rsa))
 				{
 					Assert.AreEqual(CryptoKey.KeyType.RSA, key.Type);

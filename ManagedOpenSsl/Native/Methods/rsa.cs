@@ -26,7 +26,7 @@ namespace OpenSSL.Native
         public extern static int RSA_security_bits(IntPtr rsa);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int RSA_generate_key_ex(IntPtr rsa, int bits, IntPtr e, bn_gencb_st cb);
+        public extern static int RSA_generate_key_ex(IntPtr rsa, int bits, IntPtr e, IntPtr cb);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int RSA_check_key(IntPtr rsa);

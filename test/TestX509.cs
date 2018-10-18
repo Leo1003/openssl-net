@@ -67,7 +67,7 @@ namespace UnitTests
 
 				using (RSA rsa = new RSA())
 				{
-					rsa.GenerateKeys(2048, bn, OnGenerator, null);
+					rsa.GenerateKeys(2048, bn, new BigNumber.GeneratorCallback(OnGenerator, null));
 					key = new CryptoKey(rsa);
 					// rsa is assigned, we no longer need this instance
 				}
@@ -93,7 +93,7 @@ namespace UnitTests
 			CryptoKey key;
 			using (RSA rsa = new RSA())
 			{
-				rsa.GenerateKeys(2048, bn, OnGenerator, null);
+				rsa.GenerateKeys(2048, bn, new BigNumber.GeneratorCallback(OnGenerator, null));
 				key = new CryptoKey(rsa);
 				// rsa is assigned, we no longer need this instance
 			}
@@ -124,7 +124,7 @@ namespace UnitTests
 			}
 		}
 
-		private static int OnGenerator(int p, int n, object arg)
+		private static int OnGenerator(int p, int n, BigNumber.GeneratorCallback arg)
 		{
 			TextWriter cout = Console.Error;
 

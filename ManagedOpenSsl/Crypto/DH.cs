@@ -74,8 +74,6 @@ namespace OpenSSL.Crypto
             NotSuitableGenerator = 8,
         }
 
-        private BigNumber.GeneratorThunk thunk = null;
-
         #region Initialization
         internal DH(IntPtr ptr, bool owner) : base(ptr, owner) { }
         /// <summary>
@@ -90,7 +88,7 @@ namespace OpenSSL.Crypto
                 ptr,
                 primeLen,
                 generator,
-                null)
+                IntPtr.Zero)
             );
         }
 
@@ -101,15 +99,15 @@ namespace OpenSSL.Crypto
         /// <param name="generator"></param>
         /// <param name="callback"></param>
         /// <param name="arg"></param>
-        public DH(int primeLen, int generator, BigNumber.GeneratorHandler callback, object arg)
+        public DH(int primeLen, int generator, BigNumber.GeneratorCallback callback)
             : base(NativeMethods.ExpectNonNull(NativeMethods.DH_new()), true)
         {
-            thunk = new BigNumber.GeneratorThunk(callback, arg);
+            IntPtr cbptr = (callback == null) ? IntPtr.Zero : callback.Handle;
             NativeMethods.ExpectSuccess(NativeMethods.DH_generate_parameters_ex(
                 ptr,
                 primeLen,
                 generator,
-                thunk.CallbackStruct)
+                cbptr)
             );
         }
 

@@ -112,7 +112,8 @@ namespace UnitTests
 		
 			Console.WriteLine("test generation of DSA parameters");
 
-			using (DSA dsa = new DSA(512, seed, 0, new BigNumber.GeneratorHandler(this.OnStatus), null)) {
+            BigNumber.GeneratorCallback cb = new BigNumber.GeneratorCallback(OnStatus, null);
+            using (DSA dsa = new DSA(512, seed, 0, cb)) {
 				DoTest(dsa);
 			}
 		}
@@ -120,7 +121,7 @@ namespace UnitTests
 		private int ok = 0;
 		private int num = 0;
 
-		private int OnStatus(int p, int n, object arg)
+		private int OnStatus(int p, int n, BigNumber.GeneratorCallback arg)
 		{
 			TextWriter cout = Console.Out;
 
