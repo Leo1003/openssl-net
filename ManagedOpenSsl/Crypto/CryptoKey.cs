@@ -33,7 +33,7 @@ namespace OpenSSL.Crypto
     /// <summary>
     /// Wraps the native OpenSSL EVP_PKEY object
     /// </summary>
-    public class CryptoKey : BaseReferenceImpl
+    public class CryptoKey : BaseReference
     {
         /// <summary>
         /// Set of types that this CryptoKey can be.
@@ -41,34 +41,101 @@ namespace OpenSSL.Crypto
         public enum KeyType
         {
             /// <summary>
-            /// EVP_PKEY_RSA
+            /// undefined
+            /// </summary>
+            None = 0,
+            /// <summary>
+            /// rsaEncryption
             /// </summary>
             RSA = 6,
             /// <summary>
-            /// EVP_PKEY_DSA
+            /// rsa
+            /// </summary>
+            RSA2 = 19,
+            /// <summary>
+            /// rsassaPss
+            /// </summary>
+            RSA_PSS = 912,
+            /// <summary>
+            /// dsaEncryption
             /// </summary>
             DSA = 116,
             /// <summary>
-            /// EVP_PKEY_DH
+            /// dsaEncryption-old
+            /// </summary>
+            DSA1 = 67,
+            /// <summary>
+            /// dsaWithSHA
+            /// </summary>
+            DSA2 = 66,
+            /// <summary>
+            /// dsaWithSHA1
+            /// </summary>
+            DSA3 = 113,
+            /// <summary>
+            /// dsaWithSHA1-old
+            /// </summary>
+            DSA4 = 70,
+            /// <summary>
+            /// dhKeyAgreement
             /// </summary>
             DH = 28,
             /// <summary>
-            /// EVP_PKEY_EC
+            /// X9.42 DH
             /// </summary>
-            EC = 408
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct EVP_PKEY
-        {
-            public int type;
-            public int save_type;
-            public int references;
-            public IntPtr ameth;
-            public IntPtr engine;
-            public IntPtr pkey;
-            public int save_parameters;
-            public IntPtr attributes;
+            DHX = 920,
+            /// <summary>
+            /// ecPublicKey
+            /// </summary>
+            EC = 408,
+            /// <summary>
+            /// sm2
+            /// </summary>
+            SM2 = 1172,
+            /// <summary>
+            /// hmac
+            /// </summary>
+            HMAC = 855,
+            /// <summary>
+            /// cmac
+            /// </summary>
+            CMAC = 894,
+            /// <summary>
+            /// scrypt
+            /// </summary>
+            SCRYPT = 973,
+            /// <summary>
+            /// tls1-prf
+            /// </summary>
+            TLS1_PRF = 1021,
+            /// <summary>
+            /// hkdf
+            /// </summary>
+            HKDF = 1036,
+            /// <summary>
+            /// poly1305
+            /// </summary>
+            POLY1305 = 1061,
+            /// <summary>
+            /// siphash
+            /// </summary>
+            SIPHASH = 1062,
+            /// <summary>
+            /// X25519
+            /// </summary>
+            X25519 = 1034,
+            /// <summary>
+            /// ED25519
+            /// </summary>
+            ED25519 = 1087,
+            /// <summary>
+            /// X448
+            /// </summary>
+            X448 = 1035,
+            /// <summary>
+            /// ED448
+            /// </summary>
+            ED448 = 1088,
         }
 
         #region Initialization
@@ -235,15 +302,11 @@ namespace OpenSSL.Crypto
 
         #region Properties
 
-        private EVP_PKEY Raw {
-            get { return (EVP_PKEY)Marshal.PtrToStructure(ptr, typeof(EVP_PKEY)); }
-        }
-
         /// <summary>
         /// Returns EVP_PKEY_type()
         /// </summary>
         public KeyType Type {
-            get { return (KeyType)NativeMethods.EVP_PKEY_type(Raw.type); }
+            get { return (KeyType)NativeMethods.EVP_PKEY_base_id(ptr); }
         }
 
         /// <summary>
@@ -435,8 +498,9 @@ namespace OpenSSL.Crypto
             }
         }
 
-        internal override Type RawReferenceType {
-            get { return typeof(EVP_PKEY); }
+        internal override void AddRef()
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_PKEY_up_ref(ptr));
         }
 
         #endregion

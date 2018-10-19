@@ -355,6 +355,12 @@ namespace OpenSSL.Native
         public extern static int EVP_PKEY_encrypt_old(byte[] enc_key, byte[] key, int key_len, IntPtr pub_key);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_PKEY_id(IntPtr pkey);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int EVP_PKEY_base_id(IntPtr pkey);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_PKEY_type(int type);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
