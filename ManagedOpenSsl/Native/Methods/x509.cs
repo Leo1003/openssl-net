@@ -123,11 +123,6 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void X509_PUBKEY_free(IntPtr pkey);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_OBJECT_up_ref_count(IntPtr a);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void X509_OBJECT_free(IntPtr a);
 
         #endregion
 

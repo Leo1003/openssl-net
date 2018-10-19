@@ -62,5 +62,33 @@ namespace OpenSSL.Native
         public extern static void X509_STORE_CTX_set_error(IntPtr x509_store_ctx, int error);
 
         #endregion
+
+        #region X509_OBJECT
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr X509_OBJECT_new();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_OBJECT_up_ref_count(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void X509_OBJECT_free(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static X509_LookupType X509_OBJECT_get_type(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr X509_OBJECT_get0_X509(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_OBJECT_set1_X509(IntPtr a, IntPtr obj);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr X509_OBJECT_get0_X509_CRL(IntPtr a);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_OBJECT_set1_X509_CRL(IntPtr a, IntPtr obj);
+
+        #endregion
     }
 }

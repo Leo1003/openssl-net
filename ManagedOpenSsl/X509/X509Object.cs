@@ -36,23 +36,6 @@ namespace OpenSSL.X509
     /// </summary>
     public class X509Object : BaseReference, IStackable
     {
-        #region X509_OBJECT
-        const int X509_LU_RETRY = -1;
-        const int X509_LU_FAIL = 0;
-        const int X509_LU_X509 = 1;
-        const int X509_LU_CRL = 2;
-        const int X509_LU_PKEY = 3;
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct X509_OBJECT
-        {
-            /* one of the above types */
-            public int type;
-            public IntPtr ptr;
-        }
-
-        #endregion
-
         #region Initialization
 
         internal X509Object(IStack stack, IntPtr ptr)
@@ -60,37 +43,40 @@ namespace OpenSSL.X509
         {
         }
 
+        public X509Object() : base(NativeMethods.ExpectNonNull(NativeMethods.X509_OBJECT_new()), true)
+        {
+
+        }
+
         #endregion
 
         #region Properties
+
+        public X509_LookupType Type {
+            get {
+                return NativeMethods.X509_OBJECT_get_type(ptr);
+            }
+        }
 
         /// <summary>
         /// Returns a Certificate if the type is X509_LU_X509
         /// </summary>
         public X509Certificate Certificate {
             get {
-                if (raw.type == X509_LU_X509)
-                    return new X509Certificate(raw.ptr, false);
-
-                return null;
+                IntPtr retptr = NativeMethods.X509_OBJECT_get0_X509(ptr);
+                if (retptr == IntPtr.Zero)
+                    return null;
+                else
+                    return new X509Certificate(retptr, false);
+            }
+            set {
+                NativeMethods.ExpectSuccess(NativeMethods.X509_OBJECT_set1_X509(ptr, value.Handle));
             }
         }
 
-        /// <summary>
-        /// Returns the PrivateKey if the type is X509_LU_PKEY
-        /// </summary>
-        public CryptoKey PrivateKey {
-            get {
-                if (raw.type == X509_LU_PKEY)
-                    return new CryptoKey(raw.ptr, false);
-
-                return null;
-            }
-        }
+        //TODO: Add support for CRL
 
         #endregion
-
-        //!! TODO - Add support for CRL
 
         #region Overrides
 
@@ -110,15 +96,6 @@ namespace OpenSSL.X509
             NativeMethods.X509_OBJECT_free(ptr);
         }
 
-        internal override void OnNewHandle(IntPtr ptr)
-        {
-            raw = (X509_OBJECT)Marshal.PtrToStructure(this.ptr, typeof(X509_OBJECT));
-        }
-
-        #endregion
-
-        #region Fields
-        private X509_OBJECT raw;
         #endregion
     }
 }
