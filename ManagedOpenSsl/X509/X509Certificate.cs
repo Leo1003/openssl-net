@@ -34,7 +34,7 @@ namespace OpenSSL.X509
     /// <summary>
     /// Wraps the X509 object
     /// </summary>
-    public class X509Certificate : BaseReferenceImpl, IComparable<X509Certificate>, IStackable
+    public class X509Certificate : BaseReference, IComparable<X509Certificate>, IStackable
     {
         #region Initialization
 
@@ -172,94 +172,7 @@ namespace OpenSSL.X509
 
         #endregion
 
-        #region Raw Structures
-
-        #region X509_VAL
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct X509_VAL
-        {
-            public IntPtr notBefore;
-            public IntPtr notAfter;
-        }
-
-        #endregion
-
-        #region X509_CINF
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct X509_CINF
-        {
-            public IntPtr version;
-            public IntPtr serialNumber;
-            public IntPtr signature;
-            public IntPtr issuer;
-            public IntPtr validity;
-            public IntPtr subject;
-            public IntPtr key;
-            public IntPtr issuerUID;
-            public IntPtr subjectUID;
-            public IntPtr extensions;
-            public Asn1Encoding enc;
-        }
-
-        #endregion
-
-        #region X509
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct X509
-        {
-            public IntPtr cert_info;
-            public IntPtr sig_alg;
-            public IntPtr signature;
-            public int valid;
-            public int references;
-            public IntPtr name;
-
-            #region CRYPTO_EX_DATA ex_data
-
-            public IntPtr ex_data_sk;
-            public int ex_data_dummy;
-
-            #endregion
-
-            public int ex_pathlen;
-            public int ex_pcpathlen;
-            public uint ex_flags;
-            public uint ex_kusage;
-            public uint ex_xkusage;
-            public uint ex_nscert;
-            public IntPtr skid;
-            public IntPtr akid;
-            public IntPtr policy_cache;
-            public IntPtr crldp;
-            public IntPtr altname;
-            public IntPtr nc;
-            public IntPtr rfc3779_addr;
-            public IntPtr rfc3779_asid;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = NativeMethods.SHA_DIGEST_LENGTH)]
-            public byte[] sha1_hash;
-            public IntPtr aux;
-        }
-
-        #endregion
-
-        #endregion
-
         #region Properties
-
-        private X509 Raw {
-            get { return (X509)Marshal.PtrToStructure(ptr, typeof(X509)); }
-        }
-
-        private X509_CINF RawCertInfo {
-            get { return (X509_CINF)Marshal.PtrToStructure(Raw.cert_info, typeof(X509_CINF)); }
-        }
-
-        private X509_VAL RawValidity {
-            get { return (X509_VAL)Marshal.PtrToStructure(RawCertInfo.validity, typeof(X509_VAL)); }
-        }
 
         /// <summary>
         /// Uses X509_get_subject_name() and X509_set_issuer_name()
@@ -307,7 +220,7 @@ namespace OpenSSL.X509
         /// Uses the notBefore field and X509_set_notBefore()
         /// </summary>
         public DateTime NotBefore {
-            get { return Asn1DateTime.ToDateTime(RawValidity.notBefore); }
+            get { return Asn1DateTime.ToDateTime(NativeMethods.X509_get0_notBefore(ptr)); }
             set {
                 using (var asnDateTime = new Asn1DateTime(value)) {
                     NativeMethods.ExpectSuccess(NativeMethods.X509_set1_notBefore(ptr, asnDateTime.Handle));
@@ -319,7 +232,7 @@ namespace OpenSSL.X509
         /// Uses the notAfter field and X509_set_notAfter()
         /// </summary>
         public DateTime NotAfter {
-            get { return Asn1DateTime.ToDateTime(RawValidity.notAfter); }
+            get { return Asn1DateTime.ToDateTime(NativeMethods.X509_get0_notAfter(ptr)); }
             set {
                 using (var asnDateTime = new Asn1DateTime(value)) {
                     NativeMethods.ExpectSuccess(NativeMethods.X509_set1_notAfter(ptr, asnDateTime.Handle));
@@ -331,7 +244,7 @@ namespace OpenSSL.X509
         /// Uses the version field and X509_set_version()
         /// </summary>
         public int Version {
-            get { return NativeMethods.ASN1_INTEGER_get(RawCertInfo.version); }
+            get { return NativeMethods.X509_get_version(ptr); }
             set { NativeMethods.ExpectSuccess(NativeMethods.X509_set_version(ptr, value)); }
         }
 
@@ -555,10 +468,11 @@ namespace OpenSSL.X509
         /// </summary>
         public Core.Stack<X509Extension> Extensions {
             get {
-                if (RawCertInfo.extensions != IntPtr.Zero) {
-                    return new Core.Stack<X509Extension>(RawCertInfo.extensions, false);
+                IntPtr extptr = NativeMethods.X509_get0_extensions(ptr);
+                if (extptr == IntPtr.Zero) {
+                    return null;
                 }
-                return new Core.Stack<X509Extension>();
+                return new Core.Stack<X509Extension>(extptr, false);
             }
         }
 
@@ -614,8 +528,9 @@ namespace OpenSSL.X509
             return Issuer.OneLine.GetHashCode() ^ SerialNumber;
         }
 
-        internal override Type RawReferenceType {
-            get { return typeof(X509); }
+        internal override void AddRef()
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.X509_up_ref(ptr));
         }
 
         #endregion

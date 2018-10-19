@@ -13,6 +13,12 @@ namespace OpenSSL.Native
         public extern static IntPtr X509_new();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_up_ref(IntPtr x);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void X509_free(IntPtr x);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr X509_dup(IntPtr x509);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -34,6 +40,12 @@ namespace OpenSSL.Native
         public extern static int X509_digest(IntPtr data, IntPtr type, byte[] md, ref uint len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr X509_get0_extensions(IntPtr x);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_get_version(IntPtr x);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int X509_set_version(IntPtr x, int version);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -52,22 +64,25 @@ namespace OpenSSL.Native
         public extern static int X509_set_subject_name(IntPtr x, IntPtr name);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr X509_get_subject_name(IntPtr a);
+        public extern static IntPtr X509_get_subject_name(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int X509_set1_notBefore(IntPtr x, IntPtr tm);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr X509_get0_notBefore(IntPtr x);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int X509_set1_notAfter(IntPtr x, IntPtr tm);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr X509_get0_notAfter(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int X509_set_pubkey(IntPtr x, IntPtr pkey);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr X509_get_pubkey(IntPtr x);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void X509_free(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int X509_verify_cert(IntPtr ctx);

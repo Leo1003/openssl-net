@@ -44,7 +44,7 @@ namespace UnitTests
 		{
 			using (var cert = new X509Certificate())
 			{
-				cert.PrintRefCount();
+                Assert.AreNotEqual(IntPtr.Zero, cert.Handle);
 			}
 		}
 
