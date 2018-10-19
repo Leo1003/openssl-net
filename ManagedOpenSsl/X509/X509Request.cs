@@ -85,55 +85,13 @@ namespace OpenSSL.X509
 
         #endregion
 
-        #region X509_REQ_INFO
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct X509_REQ_INFO
-        {
-            #region ASN1_ENCODING enc;
-
-            public IntPtr enc_enc;
-            public int enc_len;
-            public int enc_modified;
-
-            #endregion
-
-            public IntPtr version;
-            public IntPtr subject;
-            public IntPtr pubkey;
-            public IntPtr attributes;
-        }
-
-        #endregion
-
-        #region X509_REQ
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct X509_REQ
-        {
-            public IntPtr req_info;
-            public IntPtr sig_alg;
-            public IntPtr signature;
-            public int references;
-        }
-
-        #endregion
-
         #region Properties
-
-        private X509_REQ Raw {
-            get { return (X509_REQ)Marshal.PtrToStructure(ptr, typeof(X509_REQ)); }
-        }
-
-        private X509_REQ_INFO RawInfo {
-            get { return (X509_REQ_INFO)Marshal.PtrToStructure(Raw.req_info, typeof(X509_REQ_INFO)); }
-        }
 
         /// <summary>
         /// Accessor to the version field. The settor calls X509_REQ_set_version().
         /// </summary>
         public int Version {
-            get { return NativeMethods.ASN1_INTEGER_get(RawInfo.version); }
+            get { return NativeMethods.X509_REQ_get_version(ptr); }
             set { NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_set_version(ptr, value)); }
         }
 
@@ -141,7 +99,7 @@ namespace OpenSSL.X509
         /// Accessor to the pubkey field. Uses X509_REQ_get_pubkey() and X509_REQ_set_pubkey()
         /// </summary>
         public CryptoKey PublicKey {
-            get { return new CryptoKey(NativeMethods.ExpectNonNull(NativeMethods.X509_REQ_get_pubkey(ptr)), true); }
+            get { return new CryptoKey(NativeMethods.ExpectNonNull(NativeMethods.X509_REQ_get0_pubkey(ptr)), false); }
             set { NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_set_pubkey(ptr, value.Handle)); }
         }
 
@@ -149,7 +107,7 @@ namespace OpenSSL.X509
         /// Accessor to the subject field. Setter calls X509_REQ_set_subject_name().
         /// </summary>
         public X509Name Subject {
-            get { return new X509Name(NativeMethods.X509_NAME_dup(RawInfo.subject), true); }
+            get { return new X509Name(NativeMethods.X509_REQ_get_subject_name(ptr), false); }
             set { NativeMethods.ExpectSuccess(NativeMethods.X509_REQ_set_subject_name(ptr, value.Handle)); }
         }
 

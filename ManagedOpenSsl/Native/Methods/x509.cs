@@ -137,37 +137,46 @@ namespace OpenSSL.Native
         public extern static IntPtr X509_REQ_new();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void X509_REQ_free(IntPtr a);
+        public extern static void X509_REQ_free(IntPtr req);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_set_version(IntPtr x, int version);
+        public extern static int X509_REQ_set_version(IntPtr req, int version);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_set_pubkey(IntPtr x, IntPtr pkey);
+        public extern static int X509_REQ_get_version(IntPtr req);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_REQ_set_pubkey(IntPtr req, IntPtr pkey);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr X509_REQ_get_pubkey(IntPtr req);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_set_subject_name(IntPtr x, IntPtr name);
+        public extern static IntPtr X509_REQ_get0_pubkey(IntPtr req);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_sign(IntPtr x, IntPtr pkey, IntPtr md);
+        public extern static int X509_REQ_set_subject_name(IntPtr req, IntPtr name);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_verify(IntPtr x, IntPtr pkey);
+        public extern static IntPtr X509_REQ_get_subject_name(IntPtr req);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_digest(IntPtr data, IntPtr type, byte[] md, ref uint len);
+        public extern static int X509_REQ_sign(IntPtr req, IntPtr pkey, IntPtr md);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr X509_REQ_to_X509(IntPtr r, int days, IntPtr pkey);
+        public extern static int X509_REQ_verify(IntPtr req, IntPtr pkey);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_print_ex(IntPtr bp, IntPtr x, uint nmflag, uint cflag);
+        public extern static int X509_REQ_digest(IntPtr req, IntPtr type, byte[] md, ref uint len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_REQ_print(IntPtr bp, IntPtr x);
+        public extern static IntPtr X509_REQ_to_X509(IntPtr req, int days, IntPtr pkey);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_REQ_print_ex(IntPtr bp, IntPtr req, uint nmflag, uint cflag);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int X509_REQ_print(IntPtr bp, IntPtr req);
 
         #endregion
 
