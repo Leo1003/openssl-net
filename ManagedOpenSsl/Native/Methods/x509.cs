@@ -226,6 +226,9 @@ namespace OpenSSL.Native
         #region X509_INFO
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr X509_INFO_new();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void X509_INFO_free(IntPtr a);
 
         #endregion
