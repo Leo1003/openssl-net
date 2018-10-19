@@ -46,17 +46,8 @@ namespace OpenSSL.Crypto
         /// Calls DSA_new() then DSA_generate_parameters_ex()
         /// </summary>
         public DSA(bool generateKeys)
-            : base(NativeMethods.ExpectNonNull(NativeMethods.DSA_new()), true)
+            : this (512, null, 0, null)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_parameters_ex(
-                ptr,
-                512,
-                null, 0,
-                out counter,
-                out h,
-                IntPtr.Zero)
-            );
-
             if (generateKeys)
                 GenerateKeys();
         }
@@ -67,18 +58,9 @@ namespace OpenSSL.Crypto
         /// <param name="bits"></param>
         /// <param name="callback"></param>
         /// <param name="arg"></param>
-        public DSA(int bits, BigNumber.GeneratorCallback callback, object arg)
-            : base(NativeMethods.ExpectNonNull(NativeMethods.DSA_new()), true)
+        public DSA(int bits, BigNumber.GeneratorCallback callback)
+            : this (bits, null, 0, callback)
         {
-            IntPtr cbptr = (callback == null) ? IntPtr.Zero : callback.Handle;
-            NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_parameters_ex(
-                ptr,
-                bits,
-                null, 0,
-                out counter,
-                out h,
-                cbptr)
-            );
         }
 
         /// <summary>
@@ -97,7 +79,7 @@ namespace OpenSSL.Crypto
             NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_parameters_ex(
                 ptr,
                 bits,
-                seed, seed.Length,
+                seed, (seed != null ? seed.Length : 0),
                 out this.counter,
                 out h,
                 cbptr)
