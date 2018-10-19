@@ -102,7 +102,7 @@ namespace UnitTests
 						Assert.AreEqual(lhs, rhs);
 					}
 
-					using (var dh2 = new DH(1, 5))
+					using (var dh2 = new DH())
 					{
 						dh2.GenerateKeys();
 						using (var other = new CryptoKey(dh2))

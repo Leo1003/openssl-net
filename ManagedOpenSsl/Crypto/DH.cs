@@ -112,10 +112,10 @@ namespace OpenSSL.Crypto
         }
 
         /// <summary>
-        /// Calls DH_new().
+        /// Generate parameters with the minimal setting.
         /// </summary>
         public DH()
-            : this(BigNumber.One, BigNumber.One)
+            : this(3, Generator5)
         {
 
         }
