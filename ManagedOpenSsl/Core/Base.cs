@@ -172,47 +172,6 @@ namespace OpenSSL.Core
     }
 
     /// <summary>
-    /// Derived classes must implement the <code>RawReferenceType</code> properties
-    /// </summary>
-    public abstract class BaseReferenceImpl : BaseReference
-    {
-        internal BaseReferenceImpl(IntPtr ptr, bool takeOwnership)
-            : base(ptr, takeOwnership)
-        {
-            var offset = Marshal.OffsetOf(RawReferenceType, "references");
-            refPtr = new IntPtr((long)ptr + (long)offset);
-        }
-
-        /// <summary>
-        /// Prints the current underlying reference count
-        /// </summary>
-        public void PrintRefCount()
-        {
-            var count = Marshal.ReadInt32(refPtr);
-            Console.WriteLine("{0} ptr: {1}, ref_count: {2}",
-                this.GetType().Name, this.ptr, count
-            );
-        }
-
-        /// <summary>
-        /// Gets the reference count.
-        /// </summary>
-        /// <value>The reference count.</value>
-        public int RefCount {
-            get { return Marshal.ReadInt32(refPtr); }
-        }
-
-        internal override void AddRef()
-        {
-            // Native.CRYPTO_add_lock(refPtr, 1, LockType, "Base.cs", 0);
-        }
-
-        internal abstract Type RawReferenceType { get; }
-
-        private IntPtr refPtr;
-    }
-
-    /// <summary>
     /// Helper base class that handles the AddRef() method by using a _dup() method.
     /// </summary>
     public abstract class BaseValue : BaseReference
