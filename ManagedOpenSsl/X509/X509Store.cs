@@ -33,35 +33,8 @@ namespace OpenSSL.X509
     /// <summary>
     /// Wraps the X509_STORE object
     /// </summary>
-    public class X509Store : BaseReferenceImpl
+    public class X509Store : BaseReference
     {
-        #region X509_STORE
-        [StructLayout(LayoutKind.Sequential)]
-        struct X509_STORE
-        {
-            public int cache;
-            public IntPtr objs;
-            public IntPtr get_cert_methods;
-            public IntPtr param;
-            public IntPtr verify;
-            public IntPtr verify_cb;
-            public IntPtr get_issuer;
-            public IntPtr check_issued;
-            public IntPtr check_revocation;
-            public IntPtr get_crl;
-            public IntPtr check_crl;
-            public IntPtr cert_crl;
-            public IntPtr lookup_certs;
-            public IntPtr lookup_crls;
-            public IntPtr cleanup;
-            #region CRYPTO_EX_DATA ex_data;
-            public IntPtr ex_data_sk;
-            public int ex_data_dummy;
-            #endregion
-            public int references;
-        }
-        #endregion
-
         #region Initialization
 
         /// <summary>
@@ -106,12 +79,11 @@ namespace OpenSSL.X509
         #region Properties
 
         /// <summary>
-        /// Wraps the <code>objs</code> member on the raw X509_STORE structure
+        /// Get the store's X509 object cache
         /// </summary>
         public Core.Stack<X509Object> Objects {
             get {
-                var raw = (X509_STORE)Marshal.PtrToStructure(ptr, typeof(X509_STORE));
-                return new Core.Stack<X509Object>(raw.objs, false);
+                return new Core.Stack<X509Object>(NativeMethods.X509_STORE_get0_objects(ptr), false);
             }
         }
 
@@ -194,8 +166,9 @@ namespace OpenSSL.X509
             }
         }
 
-        internal override Type RawReferenceType {
-            get { return typeof(X509_STORE); }
+        internal override void AddRef()
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.X509_STORE_up_ref(ptr));
         }
 
         #endregion
