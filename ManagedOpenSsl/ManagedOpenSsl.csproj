@@ -146,6 +146,7 @@
     <Compile Include="Native\NameCollector.cs" />
     <Compile Include="Native\ObjNameType.cs" />
     <Compile Include="Native\OpenSSL_Init.cs" />
+    <Compile Include="Native\PointConversionForm.cs" />
     <Compile Include="Native\SSL_HandshakeState.cs" />
     <Compile Include="Native\SSL_Ctrl.cs" />
     <Compile Include="Native\SSL_Mode.cs" />

@@ -41,6 +41,15 @@ namespace OpenSSL.Native
         public extern static void EC_GROUP_clear_free(IntPtr group);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EC_GROUP_new_curve_GFp(IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EC_GROUP_new_curve_GF2m(IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EC_GROUP_new_by_curve_name(int nid);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_GROUP_copy(IntPtr dst, IntPtr src);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -59,7 +68,13 @@ namespace OpenSSL.Native
         public extern static int EC_GROUP_get_order(IntPtr group, IntPtr order, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EC_GROUP_get0_order(IntPtr group);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_GROUP_get_cofactor(IntPtr group, IntPtr cofactor, IntPtr ctx);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr EC_GROUP_get0_cofactor(IntPtr group);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void EC_GROUP_set_curve_name(IntPtr group, int nid);
@@ -74,16 +89,16 @@ namespace OpenSSL.Native
         public extern static int EC_GROUP_get_asn1_flag(IntPtr group);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void EC_GROUP_set_point_conversion_form(IntPtr x, int y);
+        public extern static void EC_GROUP_set_point_conversion_form(IntPtr x, PointConversionForm y);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_GROUP_get_point_conversion_form(IntPtr x);
+        public extern static PointConversionForm EC_GROUP_get_point_conversion_form(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static byte[] EC_GROUP_get0_seed(IntPtr x);
+        public extern static IntPtr EC_GROUP_get0_seed(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_GROUP_get_seed_len(IntPtr x);
+        public extern static ulong EC_GROUP_get_seed_len(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_GROUP_set_seed(IntPtr x, byte[] buf, int len);
@@ -105,15 +120,6 @@ namespace OpenSSL.Native
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_GROUP_cmp(IntPtr a, IntPtr b, IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EC_GROUP_new_curve_GFp(IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EC_GROUP_new_curve_GF2m(IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EC_GROUP_new_by_curve_name(int nid);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_GROUP_precompute_mult(IntPtr group, IntPtr ctx);
@@ -179,19 +185,19 @@ namespace OpenSSL.Native
             IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_point2oct(IntPtr group, IntPtr p, int form, byte[] buf, int len, IntPtr ctx);
+        public extern static int EC_POINT_point2oct(IntPtr group, IntPtr p, PointConversionForm form, byte[] buf, int len, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_POINT_oct2point(IntPtr group, IntPtr p, byte[] buf, int len, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr EC_POINT_point2bn(IntPtr a, IntPtr b, int form, IntPtr c, IntPtr d);
+        public extern static IntPtr EC_POINT_point2bn(IntPtr a, IntPtr b, PointConversionForm form, IntPtr c, IntPtr d);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EC_POINT_bn2point(IntPtr a, IntPtr b, IntPtr c, IntPtr d);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static string EC_POINT_point2hex(IntPtr a, IntPtr b, int form, IntPtr c);
+        public extern static string EC_POINT_point2hex(IntPtr a, IntPtr b, PointConversionForm form, IntPtr c);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EC_POINT_hex2point(IntPtr a, string s, IntPtr b, IntPtr c);

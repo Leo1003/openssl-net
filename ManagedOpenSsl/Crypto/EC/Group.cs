@@ -26,13 +26,20 @@
 using OpenSSL.Core;
 using OpenSSL.Native;
 using System;
+using System.Runtime.InteropServices;
 
 namespace OpenSSL.Crypto.EC
 {
+    public struct Curve
+    {
+        public BigNumber p;
+        public BigNumber a;
+        public BigNumber b;
+    }
     /// <summary>
     ///
     /// </summary>
-    public class Group : Base
+    public class Group : Base, IEquatable<Group>
     {
         #region Initialization
         internal Group(IntPtr ptr, bool owner)
@@ -49,6 +56,11 @@ namespace OpenSSL.Crypto.EC
         {
         }
 
+        public Group(Group src)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.EC_GROUP_dup(src.Handle)), true)
+        {
+        }
+
         /// <summary>
         /// Calls EC_GROUP_new_by_curve_name()
         /// </summary>
@@ -58,14 +70,90 @@ namespace OpenSSL.Crypto.EC
         {
             return new Group(NativeMethods.ExpectNonNull(NativeMethods.EC_GROUP_new_by_curve_name(obj.NID)), true);
         }
+
+        public static Group NewCurveGFp(Curve args)
+        {
+            IntPtr p = NativeMethods.ExpectNonNull(NativeMethods.EC_GROUP_new_curve_GFp(args.p.Handle, args.a.Handle, args.b.Handle, IntPtr.Zero));
+            return new Group(p, true);
+        }
+
+        public static Group NewCurveGF2m(Curve args)
+        {
+            IntPtr p = NativeMethods.ExpectNonNull(NativeMethods.EC_GROUP_new_curve_GF2m(args.p.Handle, args.a.Handle, args.b.Handle, IntPtr.Zero));
+            return new Group(p, true);
+        }
         #endregion
 
         #region Properties
+        public BigNumber Cofactor {
+            get {
+                return new BigNumber(NativeMethods.EC_GROUP_get0_cofactor(ptr), false);
+            }
+        }
+
+        public int CurveNID {
+            get {
+                return NativeMethods.EC_GROUP_get_curve_name(ptr);
+            }
+            set {
+                NativeMethods.EC_GROUP_set_curve_name(ptr, value);
+            }
+        }
+
         /// <summary>
         /// Calls EC_GROUP_get_degree()
         /// </summary>
         public int Degree {
             get { return NativeMethods.EC_GROUP_get_degree(ptr); }
+        }
+
+        public Point Generator {
+            get {
+                IntPtr ret = NativeMethods.EC_GROUP_get0_generator(ptr);
+                if (ret == IntPtr.Zero) {
+                    return null;
+                } else {
+                    return new Point(this, ret, false);
+                }
+            }
+        }
+
+        public BigNumber Order {
+            get {
+                return new BigNumber(NativeMethods.EC_GROUP_get0_order(ptr), false);
+            }
+        }
+        public Curve Curve {
+            get {
+                Curve ret = new Curve();
+                NativeMethods.ExpectSuccess(NativeMethods.EC_GROUP_get_curve(ptr, ret.p.Handle, ret.a.Handle, ret.b.Handle, IntPtr.Zero));
+                return ret;
+            }
+            set {
+                NativeMethods.ExpectSuccess(NativeMethods.EC_GROUP_set_curve(ptr, value.p.Handle, value.a.Handle, value.b.Handle, IntPtr.Zero));
+            }
+        }
+
+        public PointConversionForm ConversionForm {
+            get {
+                return NativeMethods.EC_GROUP_get_point_conversion_form(ptr);
+            }
+            set {
+                NativeMethods.EC_GROUP_set_point_conversion_form(ptr, value);
+            }
+        }
+
+        public byte[] Seed {
+            get {
+                ulong len = NativeMethods.EC_GROUP_get_seed_len(ptr);
+                byte[] ret = new byte[len];
+                IntPtr p = NativeMethods.EC_GROUP_get0_seed(ptr);
+                Marshal.Copy(p, ret, 0, (int)len);
+                return ret;
+            }
+            set {
+                NativeMethods.ExpectSuccess(NativeMethods.EC_GROUP_set_seed(ptr, value, value.Length));
+            }
         }
 
         /// <summary>
@@ -74,9 +162,38 @@ namespace OpenSSL.Crypto.EC
         public Method Method {
             get { return new Method(NativeMethods.EC_GROUP_method_of(ptr), false); }
         }
+
+        public bool Isvalid {
+            get {
+                return NativeMethods.EC_GROUP_check(ptr, IntPtr.Zero) != 0;
+            }
+        }
+
+        public bool IsvalidDiscriminant {
+            get {
+                return NativeMethods.EC_GROUP_check_discriminant(ptr, IntPtr.Zero) != 0;
+            }
+        }
+
+        /// <summary>
+        /// Whether to clear the data when disposed
+        /// </summary>
+        public bool ClearFree {
+            get;
+            set;
+        }
         #endregion
 
         #region Methods
+        public void SetGenerator(Point generator, BigNumber order, BigNumber cofactor)
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.EC_GROUP_set_generator(ptr, generator.Handle, order.Handle, cofactor.Handle));
+        }
+
+        public void CopyTo(Group to)
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.EC_GROUP_copy(to.Handle, ptr));
+        }
         #endregion
 
         #region Overrides
@@ -85,7 +202,20 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         protected override void OnDispose()
         {
-            NativeMethods.EC_GROUP_free(this.ptr);
+            if (ClearFree) {
+                NativeMethods.EC_GROUP_clear_free(this.ptr);
+            } else {
+                NativeMethods.EC_GROUP_free(this.ptr);
+            }
+        }
+
+        public bool Equals(Group other)
+        {
+            int ret = NativeMethods.EC_GROUP_cmp(ptr, other.Handle, IntPtr.Zero);
+            if (ret < 0) {
+                throw new OpenSslException();
+            }
+            return (ret == 0);
         }
         #endregion
     }
