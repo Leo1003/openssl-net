@@ -277,6 +277,39 @@ namespace OpenSSL.Core
             return bn;
         }
 
+        public static BigNumber Generate(int bits, bool safe, GeneratorCallback callback = null)
+        {
+            return Generate(bits, safe, null, null, callback);
+        }
+
+        public static BigNumber Generate(int bits, bool safe, BigNumber add, BigNumber rem, GeneratorCallback callback = null)
+        {
+            IntPtr addptr = (add != null ? add.Handle : IntPtr.Zero);
+            IntPtr remptr = (rem != null ? rem.Handle : IntPtr.Zero);
+            IntPtr cbptr = (callback != null ? callback.Handle : IntPtr.Zero);
+            BigNumber ret = new BigNumber();
+            NativeMethods.ExpectSuccess(
+                NativeMethods.BN_generate_prime_ex(ret.Handle, bits, (safe ? 1 : 0), addptr, remptr, cbptr)
+            );
+            return ret;
+        }
+
+        /// <summary>
+        /// Test if this instance is a prime number by performing a Miller-Rabin test.
+        /// </summary>
+        /// <param name="ncheck">Specify the iterations, 0 to automatic select by OpenSSL</param>
+        /// <param name="callback">Callback function</param>
+        /// <returns></returns>
+        public bool IsPrime(int ncheck = 0, GeneratorCallback callback = null)
+        {
+            IntPtr cbptr = (callback != null ? callback.Handle : IntPtr.Zero);
+            int ret = NativeMethods.BN_is_prime_ex(ptr, ncheck, IntPtr.Zero, cbptr);
+            if (ret < 0) {
+                throw new OpenSslException();
+            }
+            return (ret == 0 ? false : true);
+        }
+
         public BigNumber Sqrt()
         {
             var ret = new BigNumber();

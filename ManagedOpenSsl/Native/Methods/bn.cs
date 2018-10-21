@@ -222,6 +222,17 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BN_pseudo_rand_range(IntPtr rnd, IntPtr range);
 
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_generate_prime_ex(IntPtr ret, int bits, int safe, IntPtr add,
+                         IntPtr rem, IntPtr cb);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_is_prime_ex(IntPtr p, int nchecks, IntPtr ctx, IntPtr cb);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BN_is_prime_fasttest_ex(IntPtr p, int nchecks, IntPtr ctx,
+                            int do_trial_division, IntPtr cb);
+
         #region BN_GENCB
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -237,6 +248,5 @@ namespace OpenSSL.Native
         public extern static void BN_GENCB_set(IntPtr gencb, GeneratorHandler callback, IntPtr cb_arg);
 
         #endregion
-        //TODO: Add generate prime & callback support
     }
 }
