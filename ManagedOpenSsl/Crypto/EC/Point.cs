@@ -56,7 +56,7 @@ namespace OpenSSL.Crypto.EC
         public Point(Point point)
             : base(NativeMethods.ExpectNonNull(NativeMethods.EC_POINT_dup(point.Handle, point.group.Handle)), true)
         {
-            this.group = group;
+            this.group = point.group;
         }
         #endregion
 

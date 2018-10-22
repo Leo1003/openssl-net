@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project Files", "Project Fi
 		release.cmd = release.cmd
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedOpenSsl", "ManagedOpenSsl\ManagedOpenSsl.csproj", "{73DCC218-655B-485F-8EAC-0CE5F2F7343D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagedOpenSsl", "ManagedOpenSsl\ManagedOpenSsl.csproj", "{73DCC218-655B-485F-8EAC-0CE5F2F7343D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cli", "cli\cli.csproj", "{F50628FD-5AE4-4A16-A062-4687B2EAD7EE}"
 EndProject
