@@ -186,8 +186,8 @@ namespace OpenSSL.Core
                     file = file,
                     line = line,
                     stack = new StackTrace(1, true),
-                    bytes = (uint)num,
-                    ptr = Marshal.AllocHGlobal((int)num),
+                    bytes = num.ToUInt32(),
+                    ptr = Marshal.AllocHGlobal(num.ToInt32()),
                 };
                 _memory.Add(block.ptr, block);
                 return block.ptr;
@@ -220,8 +220,8 @@ namespace OpenSSL.Core
                     stack = new StackTrace(1, true),
                     file = file,
                     line = line,
-                    bytes = (uint)num,
-                    ptr = Marshal.ReAllocHGlobal(addr, checked((IntPtr)num.ToUInt64())),
+                    bytes = num.ToUInt32(),
+                    ptr = Marshal.ReAllocHGlobal(addr, num.ToIntPtr()),
                 };
 
                 _memory.Add(block.ptr, block);

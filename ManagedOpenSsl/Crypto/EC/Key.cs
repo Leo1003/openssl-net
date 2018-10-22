@@ -203,7 +203,7 @@ namespace OpenSSL.Crypto.EC
             public IntPtr Wrapper(byte[] pin, UIntPtr inlen, IntPtr pout, ref UIntPtr outlen)
             {
                 var result = kdf(pin);
-                int len = (int)outlen;
+                int len = outlen.ToInt32();
 
                 if (result.Length > len)
                     return IntPtr.Zero;
