@@ -43,13 +43,13 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void CRYPTO_free(IntPtr p);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static IntPtr CRYPTO_malloc(UIntPtr num, string file, int line);
 
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate IntPtr MallocFunctionPtr(UIntPtr num, string file, int line);
 
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate IntPtr ReallocFunctionPtr(IntPtr addr, UIntPtr num, string file, int line);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

@@ -119,16 +119,16 @@ namespace OpenSSL.Native
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr SSL_CTX_get_client_CA_list(IntPtr ctx);
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int SSL_CTX_load_verify_locations(IntPtr ctx, string file, string path);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int SSL_CTX_set_default_verify_paths(IntPtr ctx);
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int SSL_CTX_set_cipher_list(IntPtr ctx, string cipher_string);
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int SSL_CTX_use_certificate_chain_file(IntPtr ctx, string file);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -137,7 +137,7 @@ namespace OpenSSL.Native
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int SSL_CTX_use_PrivateKey(IntPtr ctx, IntPtr pkey);
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int SSL_CTX_use_PrivateKey_file(IntPtr ctx, string file, int type);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -168,7 +168,7 @@ namespace OpenSSL.Native
 
         #region SSL
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static string SSL_CIPHER_description(IntPtr ssl_cipher, byte[] buf, int buf_len);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -240,16 +240,16 @@ namespace OpenSSL.Native
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void SSL_set_bio(IntPtr ssl, IntPtr read_bio, IntPtr write_bio);
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int SSL_use_certificate_file(IntPtr ssl, string file, int type);
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int SSL_use_PrivateKey_file(IntPtr ssl, string file, int type);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int SSL_clear(IntPtr ssl);
 
-        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static IntPtr SSL_load_client_CA_file(string file);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]

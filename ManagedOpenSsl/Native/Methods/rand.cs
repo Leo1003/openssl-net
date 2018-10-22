@@ -25,13 +25,13 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void RAND_add(byte[] buf, int num, double entropy);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int RAND_load_file(string file, int max_bytes);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int RAND_write_file(string file);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static string RAND_file_name(byte[] file, UIntPtr num);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]

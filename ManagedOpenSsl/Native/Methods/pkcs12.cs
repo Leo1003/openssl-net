@@ -13,7 +13,7 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int i2d_PKCS12_bio(IntPtr bp, IntPtr p12);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static IntPtr PKCS12_create(
             string pass,
             string name,
@@ -26,7 +26,7 @@ namespace OpenSSL.Native
             int mac_iter,
             int keytype);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int PKCS12_parse(IntPtr p12, string pass, out IntPtr pkey, out IntPtr cert, out IntPtr ca);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]

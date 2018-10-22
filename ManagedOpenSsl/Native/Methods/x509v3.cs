@@ -28,7 +28,7 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr X509V3_EXT_get_nid(int nid);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static IntPtr X509V3_EXT_conf_nid(IntPtr conf, IntPtr ctx, int ext_nid, string value);
     }
 }

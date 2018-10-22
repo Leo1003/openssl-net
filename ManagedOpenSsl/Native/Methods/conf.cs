@@ -16,12 +16,10 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void NCONF_free_data(IntPtr conf);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static int NCONF_load(IntPtr conf, string file, ref int eline);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr NCONF_get_string(IntPtr conf, byte[] group, byte[] name);
-
-
     }
 }

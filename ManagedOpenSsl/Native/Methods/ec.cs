@@ -199,7 +199,7 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EC_POINT_point2hex(IntPtr a, IntPtr b, PointConversionForm form, IntPtr c);
 
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static IntPtr EC_POINT_hex2point(IntPtr a, string s, IntPtr b, IntPtr c);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]

@@ -7,7 +7,7 @@ namespace OpenSSL.Native
 {
     internal partial class NativeMethods
     {
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static IntPtr BIO_new_file(string filename, string mode);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
