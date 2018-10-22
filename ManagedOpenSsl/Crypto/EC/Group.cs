@@ -203,9 +203,9 @@ namespace OpenSSL.Crypto.EC
         protected override void OnDispose()
         {
             if (ClearFree) {
-                NativeMethods.EC_GROUP_clear_free(this.ptr);
+                NativeMethods.EC_GROUP_clear_free(ptr);
             } else {
-                NativeMethods.EC_GROUP_free(this.ptr);
+                NativeMethods.EC_GROUP_free(ptr);
             }
         }
 
@@ -216,6 +216,11 @@ namespace OpenSSL.Crypto.EC
                 throw new OpenSslException();
             }
             return (ret == 0);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Group);
         }
         #endregion
     }

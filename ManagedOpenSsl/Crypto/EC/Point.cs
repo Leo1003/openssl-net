@@ -114,6 +114,18 @@ namespace OpenSSL.Crypto.EC
                 );
             }
         }
+
+        public Method Method {
+            get { return new Method(NativeMethods.EC_POINT_method_of(ptr), false); }
+        }
+
+        /// <summary>
+        /// Whether to clear the data when disposed
+        /// </summary>
+        public bool ClearFree {
+            get;
+            set;
+        }
         #endregion
 
         #region Methods
@@ -190,7 +202,11 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         protected override void OnDispose()
         {
-            NativeMethods.EC_POINT_free(this.ptr);
+            if (ClearFree) {
+                NativeMethods.EC_POINT_clear_free(ptr);
+            } else {
+                NativeMethods.EC_POINT_free(ptr);
+            }
         }
 
         public bool Equals(Point other)
@@ -200,6 +216,11 @@ namespace OpenSSL.Crypto.EC
                 throw new OpenSslException();
             }
             return !Convert.ToBoolean(ret);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Point);
         }
         #endregion
     }
