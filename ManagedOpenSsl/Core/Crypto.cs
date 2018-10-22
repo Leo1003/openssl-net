@@ -131,7 +131,7 @@ namespace OpenSSL.Core
         public static List<string> GetErrors()
         {
             var errors = new List<string>();
-            NativeMethods.ERR_print_errors_cb((IntPtr str, uint len, IntPtr u) => {
+            NativeMethods.ERR_print_errors_cb((IntPtr str, UIntPtr len, IntPtr u) => {
                 errors.Add(NativeMethods.StaticString(str));
                 return 0;
             }, IntPtr.Zero);

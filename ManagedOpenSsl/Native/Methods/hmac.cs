@@ -17,19 +17,19 @@ namespace OpenSSL.Native
         public extern static void HMAC_CTX_free(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static ulong HMAC_size(IntPtr ctx);
+        public extern static UIntPtr HMAC_size(IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void HMAC_Init_ex(IntPtr ctx, byte[] key, int len, IntPtr md, IntPtr engine_impl);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void HMAC_Update(IntPtr ctx, byte[] data, int len);
+        public extern static void HMAC_Update(IntPtr ctx, byte[] data, UIntPtr len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void HMAC_Final(IntPtr ctx, byte[] md, ref uint len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr HMAC(IntPtr evp_md, byte[] key, int key_len, byte[] d, int n, byte[] md, ref uint md_len);
+        public extern static IntPtr HMAC(IntPtr evp_md, byte[] key, int key_len, byte[] d, UIntPtr n, byte[] md, ref uint md_len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int HMAC_CTX_copy(IntPtr dctx, IntPtr sctx);

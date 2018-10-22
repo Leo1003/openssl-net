@@ -28,7 +28,7 @@ namespace OpenSSL.Native
         public static IntPtr OPENSSL_malloc(int cbSize)
         {
             StackFrame callStack = new StackFrame(1, true);
-            return CRYPTO_malloc(cbSize, callStack.GetFileName(), callStack.GetFileLineNumber());
+            return CRYPTO_malloc((UIntPtr)cbSize, callStack.GetFileName(), callStack.GetFileLineNumber());
         }
 
         /// <summary>
@@ -44,13 +44,13 @@ namespace OpenSSL.Native
         public extern static void CRYPTO_free(IntPtr p);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr CRYPTO_malloc(int num, string file, int line);
+        public extern static IntPtr CRYPTO_malloc(UIntPtr num, string file, int line);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr MallocFunctionPtr(uint num, IntPtr file, int line);
+        public delegate IntPtr MallocFunctionPtr(UIntPtr num, string file, int line);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr ReallocFunctionPtr(IntPtr addr, uint num, IntPtr file, int line);
+        public delegate IntPtr ReallocFunctionPtr(IntPtr addr, UIntPtr num, string file, int line);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void FreeFunctionPtr(IntPtr addr);

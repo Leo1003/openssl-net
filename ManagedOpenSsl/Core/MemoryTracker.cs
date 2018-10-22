@@ -179,14 +179,14 @@ namespace OpenSSL.Core
             return problems;
         }
 
-        static IntPtr malloc(uint num, IntPtr file, int line)
+        static IntPtr malloc(UIntPtr num, string file, int line)
         {
             lock (_memory) {
                 var block = new Block {
-                    file = NativeMethods.StaticString(file),
+                    file = file,
                     line = line,
                     stack = new StackTrace(1, true),
-                    bytes = num,
+                    bytes = (uint)num,
                     ptr = Marshal.AllocHGlobal((int)num),
                 };
                 _memory.Add(block.ptr, block);
@@ -210,7 +210,7 @@ namespace OpenSSL.Core
             }
         }
 
-        static IntPtr realloc(IntPtr addr, uint num, IntPtr file, int line)
+        static IntPtr realloc(IntPtr addr, UIntPtr num, string file, int line)
         {
             lock (_memory) {
                 if (!_memory.Remove(addr))
@@ -218,10 +218,10 @@ namespace OpenSSL.Core
 
                 var block = new Block {
                     stack = new StackTrace(1, true),
-                    file = NativeMethods.StaticString(file),
+                    file = file,
                     line = line,
-                    bytes = num,
-                    ptr = Marshal.ReAllocHGlobal(addr, (IntPtr)num),
+                    bytes = (uint)num,
+                    ptr = Marshal.ReAllocHGlobal(addr, checked((IntPtr)num.ToUInt64())),
                 };
 
                 _memory.Add(block.ptr, block);

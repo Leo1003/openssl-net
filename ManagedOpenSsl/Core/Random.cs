@@ -116,7 +116,7 @@ namespace OpenSSL.Core
         public static string GetFilename()
         {
             var buf = new byte[1024];
-            return NativeMethods.RAND_file_name(buf, (uint)buf.Length);
+            return NativeMethods.RAND_file_name(buf, (UIntPtr)buf.Length);
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace OpenSSL.Native
     internal partial class NativeMethods
     {
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_get_builtin_curves(IntPtr r, int nitems);
+        public extern static UIntPtr EC_get_builtin_curves(IntPtr r, UIntPtr nitems);
 
         #region EC_METHOD
 
@@ -98,10 +98,10 @@ namespace OpenSSL.Native
         public extern static IntPtr EC_GROUP_get0_seed(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static ulong EC_GROUP_get_seed_len(IntPtr x);
+        public extern static UIntPtr EC_GROUP_get_seed_len(IntPtr x);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_GROUP_set_seed(IntPtr x, byte[] buf, int len);
+        public extern static UIntPtr EC_GROUP_set_seed(IntPtr x, byte[] buf, UIntPtr len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_GROUP_set_curve(IntPtr group, IntPtr p, IntPtr a, IntPtr b, IntPtr ctx);
@@ -185,10 +185,10 @@ namespace OpenSSL.Native
             IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_point2oct(IntPtr group, IntPtr p, PointConversionForm form, byte[] buf, int len, IntPtr ctx);
+        public extern static UIntPtr EC_POINT_point2oct(IntPtr group, IntPtr p, PointConversionForm form, byte[] buf, UIntPtr len, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINT_oct2point(IntPtr group, IntPtr p, byte[] buf, int len, IntPtr ctx);
+        public extern static int EC_POINT_oct2point(IntPtr group, IntPtr p, byte[] buf, UIntPtr len, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EC_POINT_point2bn(IntPtr a, IntPtr b, PointConversionForm form, IntPtr c, IntPtr d);
@@ -197,7 +197,7 @@ namespace OpenSSL.Native
         public extern static IntPtr EC_POINT_bn2point(IntPtr a, IntPtr b, IntPtr c, IntPtr d);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static string EC_POINT_point2hex(IntPtr a, IntPtr b, PointConversionForm form, IntPtr c);
+        public extern static IntPtr EC_POINT_point2hex(IntPtr a, IntPtr b, PointConversionForm form, IntPtr c);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr EC_POINT_hex2point(IntPtr a, string s, IntPtr b, IntPtr c);
@@ -224,10 +224,10 @@ namespace OpenSSL.Native
         public extern static int EC_POINT_make_affine(IntPtr a, IntPtr b, IntPtr c);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINTs_make_affine(IntPtr a, int num, IntPtr[] b, IntPtr c);
+        public extern static int EC_POINTs_make_affine(IntPtr a, UIntPtr num, IntPtr[] b, IntPtr c);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EC_POINTs_mul(IntPtr group, IntPtr r, IntPtr n, int num, IntPtr[] p, IntPtr[] m, IntPtr ctx);
+        public extern static int EC_POINTs_mul(IntPtr group, IntPtr r, IntPtr n, UIntPtr num, IntPtr[] p, IntPtr[] m, IntPtr ctx);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EC_POINT_mul(IntPtr group, IntPtr r, IntPtr n, IntPtr q, IntPtr m, IntPtr ctx);
@@ -355,12 +355,12 @@ namespace OpenSSL.Native
         #region ECDH
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate IntPtr ECDH_KDF([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pin,
-                                        int inlen,
+                                        UIntPtr inlen,
                                         IntPtr pout,
-                                        ref int outlen);
+                                        ref UIntPtr outlen);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int ECDH_compute_key(byte[] pout, int outlen, IntPtr pub_key, IntPtr ecdh, ECDH_KDF kdf);
+        public extern static int ECDH_compute_key(byte[] pout, UIntPtr outlen, IntPtr pub_key, IntPtr ecdh, ECDH_KDF kdf);
         #endregion
     }
 }

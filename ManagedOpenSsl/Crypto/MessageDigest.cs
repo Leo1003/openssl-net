@@ -262,7 +262,7 @@ namespace OpenSSL.Crypto
             var digest = new byte[md.Size];
             var len = (uint)digest.Length;
             NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (UIntPtr)msg.Length));
             NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestFinal_ex(ptr, digest, ref len));
             return digest;
         }
@@ -281,7 +281,7 @@ namespace OpenSSL.Crypto
         /// <param name="msg"></param>
         public void Update(byte[] msg)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (UIntPtr)msg.Length));
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace OpenSSL.Crypto
             var sig = new byte[pkey.Size];
             var len = (uint)sig.Length;
             NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (UIntPtr)msg.Length));
             NativeMethods.ExpectSuccess(NativeMethods.EVP_SignFinal(ptr, sig, ref len, pkey.Handle));
 
             var ret = new byte[len];
@@ -383,7 +383,7 @@ namespace OpenSSL.Crypto
         public bool Verify(byte[] msg, byte[] sig, CryptoKey pkey)
         {
             NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestInit_ex(ptr, md.Handle, IntPtr.Zero));
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (uint)msg.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DigestUpdate(ptr, msg, (UIntPtr)msg.Length));
 
             var ret = NativeMethods.ExpectSuccess(NativeMethods.EVP_VerifyFinal(ptr, sig, (uint)sig.Length, pkey.Handle));
             return ret == 1;

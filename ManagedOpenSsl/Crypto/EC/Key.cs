@@ -187,7 +187,7 @@ namespace OpenSSL.Crypto.EC
         {
             ComputeKeyThunk thunk = new ComputeKeyThunk(kdf);
             return NativeMethods.ExpectSuccess(
-                NativeMethods.ECDH_compute_key(buf, buf.Length, b.PublicKey.Handle, ptr, thunk.Wrapper)
+                NativeMethods.ECDH_compute_key(buf, (UIntPtr)buf.Length, b.PublicKey.Handle, ptr, thunk.Wrapper)
             );
         }
 
@@ -200,15 +200,16 @@ namespace OpenSSL.Crypto.EC
                 this.kdf = kdf;
             }
 
-            public IntPtr Wrapper(byte[] pin, int inlen, IntPtr pout, ref int outlen)
+            public IntPtr Wrapper(byte[] pin, UIntPtr inlen, IntPtr pout, ref UIntPtr outlen)
             {
                 var result = kdf(pin);
+                int len = (int)outlen;
 
-                if (result.Length > outlen)
+                if (result.Length > len)
                     return IntPtr.Zero;
 
-                Marshal.Copy(result, 0, pout, Math.Min(outlen, result.Length));
-                outlen = result.Length;
+                Marshal.Copy(result, 0, pout, Math.Min(len, result.Length));
+                outlen = (UIntPtr)result.Length;
 
                 return pout;
             }

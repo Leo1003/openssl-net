@@ -146,8 +146,8 @@ namespace OpenSSL.Core
         /// <summary>
         /// Returns number of bytes buffered in the BIO - calls BIO_ctrl_pending
         /// </summary>
-        public uint BytesPending {
-            get { return NativeMethods.BIO_ctrl_pending(Handle); }
+        public ulong BytesPending {
+            get { return NativeMethods.BIO_ctrl_pending(Handle).ToUInt64(); }
         }
 
         #endregion

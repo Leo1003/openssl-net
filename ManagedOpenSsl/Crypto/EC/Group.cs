@@ -145,14 +145,14 @@ namespace OpenSSL.Crypto.EC
 
         public byte[] Seed {
             get {
-                ulong len = NativeMethods.EC_GROUP_get_seed_len(ptr);
+                ulong len = NativeMethods.EC_GROUP_get_seed_len(ptr).ToUInt64();
                 byte[] ret = new byte[len];
                 IntPtr p = NativeMethods.EC_GROUP_get0_seed(ptr);
                 Marshal.Copy(p, ret, 0, (int)len);
                 return ret;
             }
             set {
-                NativeMethods.ExpectSuccess(NativeMethods.EC_GROUP_set_seed(ptr, value, value.Length));
+                NativeMethods.ExpectSuccess(NativeMethods.EC_GROUP_set_seed(ptr, value, (UIntPtr)value.Length).ToUInt64());
             }
         }
 

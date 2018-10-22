@@ -8,13 +8,13 @@ namespace OpenSSL.Native
     internal partial class NativeMethods
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int err_cb(IntPtr str, uint len, IntPtr u);
+        public delegate int err_cb(IntPtr str, UIntPtr len, IntPtr u);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static uint ERR_get_error();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ERR_error_string_n(uint e, byte[] buf, int len);
+        public extern static void ERR_error_string_n(uint e, byte[] buf, UIntPtr len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr ERR_lib_error_string(uint e);

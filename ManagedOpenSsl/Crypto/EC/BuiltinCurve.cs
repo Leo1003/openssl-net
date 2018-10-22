@@ -67,12 +67,12 @@ namespace OpenSSL.Crypto.EC
         /// <returns></returns>
         public static BuiltinCurve[] Get()
         {
-            var count = NativeMethods.EC_get_builtin_curves(IntPtr.Zero, 0);
+            int count = (int)NativeMethods.EC_get_builtin_curves(IntPtr.Zero, (UIntPtr)0);
             var curves = new BuiltinCurve[count];
             var ptr = NativeMethods.OPENSSL_malloc(Marshal.SizeOf(typeof(EC_builtin_curve)) * count);
 
             try {
-                NativeMethods.ExpectSuccess(NativeMethods.EC_get_builtin_curves(ptr, count));
+                NativeMethods.EC_get_builtin_curves(ptr, (UIntPtr)count);
                 var pItem = ptr;
 
                 for (var i = 0; i < count; i++) {

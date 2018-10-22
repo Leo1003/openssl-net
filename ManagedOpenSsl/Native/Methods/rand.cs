@@ -32,7 +32,7 @@ namespace OpenSSL.Native
         public extern static int RAND_write_file(string file);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static string RAND_file_name(byte[] file, uint num);
+        public extern static string RAND_file_name(byte[] file, UIntPtr num);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int RAND_status();

@@ -346,10 +346,10 @@ namespace OpenSSL.Native
         public extern static int EVP_PKEY_cmp(IntPtr a, IntPtr b);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_PKEY_decrypt(byte[] dec_key, byte[] enc_key, int enc_key_len, IntPtr private_key);
+        public extern static int EVP_PKEY_decrypt(IntPtr ctx, IntPtr output, ref UIntPtr outlen, byte[] input, UIntPtr inlen);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_PKEY_encrypt(byte[] enc_key, byte[] key, int key_len, IntPtr pub_key);
+        public extern static int EVP_PKEY_encrypt(IntPtr ctx, IntPtr output, ref UIntPtr outlen, byte[] input, UIntPtr inlen);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_PKEY_encrypt_old(byte[] enc_key, byte[] key, int key_len, IntPtr pub_key);
@@ -541,13 +541,13 @@ namespace OpenSSL.Native
         public extern static int EVP_DigestInit_ex(IntPtr ctx, IntPtr type, IntPtr impl);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_DigestUpdate(IntPtr ctx, byte[] d, uint cnt);
+        public extern static int EVP_DigestUpdate(IntPtr ctx, byte[] d, UIntPtr cnt);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_DigestFinal_ex(IntPtr ctx, byte[] md, ref uint s);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int EVP_Digest(byte[] data, uint count, byte[] md, ref uint size, IntPtr type, IntPtr impl);
+        public extern static int EVP_Digest(byte[] data, UIntPtr count, byte[] md, ref uint size, IntPtr type, IntPtr impl);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int EVP_SignFinal(IntPtr ctx, byte[] md, ref uint s, IntPtr pkey);

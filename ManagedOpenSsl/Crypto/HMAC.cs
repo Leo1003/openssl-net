@@ -71,7 +71,7 @@ namespace OpenSSL.Crypto
         {
             var hash_value = new byte[digest.Size];
             uint hash_value_length = NativeMethods.EVP_MAX_MD_SIZE;
-            NativeMethods.HMAC(digest.Handle, key, key.Length, data, data.Length, hash_value, ref hash_value_length);
+            NativeMethods.HMAC(digest.Handle, key, key.Length, data, (UIntPtr)data.Length, hash_value, ref hash_value_length);
 
             return hash_value;
         }
@@ -97,7 +97,7 @@ namespace OpenSSL.Crypto
                 throw new InvalidOperationException("Failed to call Initialize before calling Update");
             }
 
-            NativeMethods.HMAC_Update(ptr, data, data.Length);
+            NativeMethods.HMAC_Update(ptr, data, (UIntPtr)data.Length);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace OpenSSL.Crypto
             }
 
             var seg = new ArraySegment<byte>(data, offset, count);
-            NativeMethods.HMAC_Update(ptr, seg.Array, seg.Count);
+            NativeMethods.HMAC_Update(ptr, seg.Array, (UIntPtr)seg.Count);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace OpenSSL.Crypto
 
         public ulong Size {
             get {
-                ulong ret = NativeMethods.HMAC_size(ptr);
+                ulong ret = NativeMethods.HMAC_size(ptr).ToUInt64();
                 if (ret == 0) {
                     throw new OpenSslException();
                 }

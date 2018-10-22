@@ -100,6 +100,6 @@ namespace OpenSSL.Native
         public extern static ulong BIO_number_written(IntPtr bio);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static uint BIO_ctrl_pending(IntPtr bio);
+        public extern static UIntPtr BIO_ctrl_pending(IntPtr bio);
     }
 }

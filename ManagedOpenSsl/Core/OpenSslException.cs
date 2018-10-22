@@ -83,7 +83,7 @@ namespace OpenSSL.Core
                 var buf = new byte[1024];
 
                 buf.Initialize();
-                NativeMethods.ERR_error_string_n(err, buf, buf.Length);
+                NativeMethods.ERR_error_string_n(err, buf, (UIntPtr)buf.Length);
 
                 int len;
                 for (len = 0; len < buf.Length; len++) {

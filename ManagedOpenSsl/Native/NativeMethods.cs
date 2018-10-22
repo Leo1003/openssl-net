@@ -150,6 +150,27 @@ namespace OpenSSL.Native
 
             return ret;
         }
+        public static long ExpectSuccess(long ret)
+        {
+            if (ret <= 0)
+                throw new OpenSslException();
+
+            return ret;
+        }
+        public static uint ExpectSuccess(uint ret)
+        {
+            if (ret == 0)
+                throw new OpenSslException();
+
+            return ret;
+        }
+        public static ulong ExpectSuccess(ulong ret)
+        {
+            if (ret == 0)
+                throw new OpenSslException();
+
+            return ret;
+        }
 
         public static int TextToNID(string text)
         {

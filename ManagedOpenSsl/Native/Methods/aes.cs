@@ -18,41 +18,41 @@ namespace OpenSSL.Native
         public extern static int AES_set_decrypt_key(IntPtr userKey, int bits, IntPtr key);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_encrypt(byte[] input, byte[] output, IntPtr key);
+        public extern static void AES_encrypt(byte[] input, IntPtr output, IntPtr key);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_decrypt(byte[] input, byte[] output, IntPtr key);
+        public extern static void AES_decrypt(byte[] input, IntPtr output, IntPtr key);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_ecb_encrypt(byte[] input, byte[] output, IntPtr key, EncOperation enc);
+        public extern static void AES_ecb_encrypt(byte[] input, IntPtr output, IntPtr key, EncOperation enc);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_cbc_encrypt(byte[] input, byte[] output, ulong length, IntPtr key, byte[] ivec, EncOperation enc);
+        public extern static void AES_cbc_encrypt(byte[] input, IntPtr output, UIntPtr length, IntPtr key, byte[] ivec, EncOperation enc);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_cfb128_encrypt(byte[] input, byte[] output, ulong length, IntPtr key, byte[] ivec, ref int num, EncOperation enc);
+        public extern static void AES_cfb128_encrypt(byte[] input, IntPtr output, UIntPtr length, IntPtr key, byte[] ivec, ref int num, EncOperation enc);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_cfb1_encrypt(byte[] input, byte[] output, ulong length, IntPtr key, byte[] ivec, ref int num, EncOperation enc);
+        public extern static void AES_cfb1_encrypt(byte[] input, IntPtr output, UIntPtr length, IntPtr key, byte[] ivec, ref int num, EncOperation enc);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_cfb8_encrypt(byte[] input, byte[] output, ulong length, IntPtr key, byte[] ivec, ref int num, EncOperation enc);
+        public extern static void AES_cfb8_encrypt(byte[] input, IntPtr output, UIntPtr length, IntPtr key, byte[] ivec, ref int num, EncOperation enc);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_ofb128_encrypt(byte[] input, byte[] output, ulong length, IntPtr key, byte[] ivec, ref int num);
+        public extern static void AES_ofb128_encrypt(byte[] input, IntPtr output, UIntPtr length, IntPtr key, byte[] ivec, ref int num);
 
         /* NB: the IV is _two_ blocks long */
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_ige_encrypt(byte[] input, byte[] output, ulong length, IntPtr key, byte[] ivec, EncOperation enc);
+        public extern static void AES_ige_encrypt(byte[] input, IntPtr output, UIntPtr length, IntPtr key, byte[] ivec, EncOperation enc);
 
         /* NB: the IV is _four_ blocks long */
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void AES_bi_ige_encrypt(byte[] input, byte[] output, ulong length, IntPtr key, IntPtr key2, byte[] ivec, EncOperation enc);
+        public extern static void AES_bi_ige_encrypt(byte[] input, IntPtr output, UIntPtr length, IntPtr key, IntPtr key2, byte[] ivec, EncOperation enc);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AES_wrap_key(IntPtr key, byte[] ivec, byte[] output, byte[] input, uint inlen);
+        public extern static int AES_wrap_key(IntPtr key, byte[] ivec, IntPtr output, byte[] input, uint inlen);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AES_unwrap_key(IntPtr key, byte[] ivec, byte[] output, byte[] input, uint inlen);
+        public extern static int AES_unwrap_key(IntPtr key, byte[] ivec, IntPtr output, byte[] input, uint inlen);
     }
 }
