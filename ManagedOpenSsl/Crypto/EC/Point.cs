@@ -80,6 +80,9 @@ namespace OpenSSL.Crypto.EC
         public JprojectiveCoordinate JprojectiveCoordinates_GFp {
             get {
                 JprojectiveCoordinate c = new JprojectiveCoordinate();
+                c.X = new BigNumber();
+                c.Y = new BigNumber();
+                c.Z = new BigNumber();
                 NativeMethods.ExpectSuccess(
                     NativeMethods.EC_POINT_get_Jprojective_coordinates_GFp(group.Handle, ptr, c.X.Handle, c.Y.Handle, c.Z.Handle, IntPtr.Zero)
                 );
@@ -95,6 +98,8 @@ namespace OpenSSL.Crypto.EC
         public AffineCoordinate AffineCoordinates {
             get {
                 AffineCoordinate c = new AffineCoordinate();
+                c.X = new BigNumber();
+                c.Y = new BigNumber();
                 NativeMethods.ExpectSuccess(
                     NativeMethods.EC_POINT_get_affine_coordinates(group.Handle, ptr, c.X.Handle, c.Y.Handle, IntPtr.Zero)
                 );
