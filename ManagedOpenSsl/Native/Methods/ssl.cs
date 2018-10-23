@@ -162,7 +162,7 @@ namespace OpenSSL.Native
         public static extern int SSL_CTX_callback_ctrl(IntPtr ctx, SSL_Ctrl cmd, IntPtr cb);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int SSL_CTX_set_alpn_protos(IntPtr ctx, byte[] protos, UInt32 protos_len);
+        public static extern int SSL_CTX_set_alpn_protos(IntPtr ctx, byte[] protos, uint protos_len);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SSL_CTX_set_alpn_select_cb(IntPtr ctx, alpn_cb alpnCb, IntPtr arg);

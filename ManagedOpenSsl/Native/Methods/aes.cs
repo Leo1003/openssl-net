@@ -7,8 +7,8 @@ namespace OpenSSL.Native
 {
     internal partial class NativeMethods
     {
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr AES_options();
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public extern static string AES_options();
 
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
