@@ -174,7 +174,7 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Calls HMAC_CTX_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             // Clean up the context
             NativeMethods.HMAC_CTX_free(ptr);

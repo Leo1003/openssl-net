@@ -634,7 +634,7 @@ namespace OpenSSL.Core
         /// <summary>
         /// Calls BN_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.BN_free(ptr);
         }
@@ -713,7 +713,7 @@ namespace OpenSSL.Core
                 }
             }
 
-            protected override void OnDispose()
+            protected override void ReleaseHandle()
             {
                 NativeMethods.BN_GENCB_free(ptr);
             }
@@ -761,7 +761,7 @@ namespace OpenSSL.Core
             /// <summary>
             /// Calls BN_CTX_free()
             /// </summary>
-            protected override void OnDispose()
+            protected override void ReleaseHandle()
             {
                 NativeMethods.BN_CTX_free(ptr);
             }

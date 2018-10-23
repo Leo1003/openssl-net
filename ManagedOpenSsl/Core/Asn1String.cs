@@ -97,7 +97,7 @@ namespace OpenSSL.Core
         /// <summary>
         /// Calls ASN1_STRING_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.ASN1_STRING_free(ptr);
         }

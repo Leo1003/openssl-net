@@ -109,7 +109,7 @@ namespace OpenSSL.X509
         /// <summary>
         /// Calls OPENSSL_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.OPENSSL_free(ptr);
         }
@@ -187,7 +187,7 @@ namespace OpenSSL.X509
         /// <summary>
         /// Calls NCONF_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.NCONF_free(ptr);
         }

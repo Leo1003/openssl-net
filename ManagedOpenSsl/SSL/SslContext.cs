@@ -267,7 +267,7 @@ namespace OpenSSL.SSL
         /// <summary>
         ///     base override - calls SSL_CTX_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.SSL_CTX_free(ptr);
         }

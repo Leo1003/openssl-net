@@ -86,7 +86,7 @@ namespace OpenSSL.X509
             raw = (X509_INFO)Marshal.PtrToStructure(this.ptr, typeof(X509_INFO));
         }
 
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.X509_INFO_free(ptr);
         }

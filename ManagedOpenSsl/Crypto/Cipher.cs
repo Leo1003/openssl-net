@@ -56,7 +56,7 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Not implemented, these objects should never be disposed
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             throw new NotImplementedException();
         }
@@ -888,7 +888,7 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Calls EVP_CIPHER_CTX_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.EVP_CIPHER_CTX_free(ptr);
         }

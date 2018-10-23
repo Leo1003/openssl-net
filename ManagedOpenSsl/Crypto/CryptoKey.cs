@@ -448,7 +448,7 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Calls EVP_PKEY_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.EVP_PKEY_free(ptr);
         }

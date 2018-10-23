@@ -233,7 +233,7 @@ namespace OpenSSL.SSL
         /// <summary>
         /// Calls SSL_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.SSL_free(Handle);
         }

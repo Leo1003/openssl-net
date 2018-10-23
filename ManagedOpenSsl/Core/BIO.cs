@@ -293,7 +293,7 @@ namespace OpenSSL.Core
         /// <summary>
         /// Calls BIO_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.BIO_free(ptr);
         }

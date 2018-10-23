@@ -171,7 +171,7 @@ namespace OpenSSL.X509
         /// <summary>
         /// Calls PKCS7_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.PKCS7_free(ptr);
         }

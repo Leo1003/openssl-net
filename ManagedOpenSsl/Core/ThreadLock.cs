@@ -27,7 +27,7 @@ namespace OpenSSL.Core
             NativeMethods.ExpectSuccess(NativeMethods.CRYPTO_THREAD_unlock(ptr));
         }
 
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.CRYPTO_THREAD_lock_free(ptr);
         }

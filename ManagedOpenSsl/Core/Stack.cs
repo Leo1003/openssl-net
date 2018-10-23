@@ -146,7 +146,7 @@ namespace OpenSSL.Core
         /// <summary>
         /// Calls sk_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             // Free the items
             Clear();

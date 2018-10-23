@@ -364,7 +364,7 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Calls DH_free().
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.DH_free(ptr);
         }

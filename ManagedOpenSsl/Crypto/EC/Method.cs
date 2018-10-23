@@ -71,7 +71,7 @@ namespace OpenSSL.Crypto.EC
         /// <summary>
         ///
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
         }
         #endregion

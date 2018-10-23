@@ -200,7 +200,7 @@ namespace OpenSSL.Crypto.EC
         /// <summary>
         /// Calls EC_GROUP_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             if (ClearFree) {
                 NativeMethods.EC_GROUP_clear_free(ptr);

@@ -200,7 +200,7 @@ namespace OpenSSL.Crypto.EC
         /// <summary>
         /// Calls EC_POINT_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             if (ClearFree) {
                 NativeMethods.EC_POINT_clear_free(ptr);

@@ -317,7 +317,7 @@ namespace OpenSSL.Core
             /// <summary>
             ///
             /// </summary>
-            protected override void OnDispose()
+            protected override void ReleaseHandle()
             {
                 Restore();
                 Marshal.FreeHGlobal(ptr);

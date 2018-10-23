@@ -44,7 +44,7 @@ namespace OpenSSL.Core
             Value = value;
         }
 
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.ASN1_INTEGER_free(ptr);
         }

@@ -202,7 +202,7 @@ namespace OpenSSL.X509
         /// <summary>
         /// Calls X509_REQ_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.X509_REQ_free(ptr);
         }

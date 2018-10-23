@@ -45,7 +45,7 @@ namespace OpenSSL.Core
             this.DateTime = dateTime;
         }
 
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.ASN1_TIME_free(ptr);
         }

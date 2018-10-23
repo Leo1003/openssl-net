@@ -222,7 +222,7 @@ namespace OpenSSL.Crypto.EC
         /// <summary>
         /// This method must be implemented in derived classes.
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.EC_KEY_free(ptr);
         }

@@ -131,7 +131,7 @@ namespace OpenSSL.X509
         /// <summary>
         /// Calls X509_STORE_CTX_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.X509_STORE_CTX_free(ptr);
         }

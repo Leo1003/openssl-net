@@ -453,7 +453,7 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Calls RSA_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.RSA_free(ptr);
         }

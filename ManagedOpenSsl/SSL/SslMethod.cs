@@ -42,7 +42,7 @@ namespace OpenSSL.SSL
         /// <summary>
         /// Throws NotImplementedException()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             throw new NotImplementedException();
         }

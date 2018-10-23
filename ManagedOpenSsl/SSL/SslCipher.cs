@@ -138,7 +138,7 @@ namespace OpenSSL.SSL
         /// <summary>
         /// This method must be implemented in derived classes.
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             // SSL_CIPHERs come from a static list in ssl_ciph.c
             // nothing to do here

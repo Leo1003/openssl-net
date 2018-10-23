@@ -260,7 +260,7 @@ namespace OpenSSL.X509
         /// <summary>
         /// Calls PKCS12_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             if (certificate != null) {
                 certificate.Dispose();

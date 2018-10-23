@@ -325,7 +325,7 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Calls DSA_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.DSA_free(ptr);
         }

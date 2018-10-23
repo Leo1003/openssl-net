@@ -6,5 +6,6 @@
 - [ ] Add TLSv1.3 ciphersuites
 - [x] Add SHA512/224 and SHA512/256
 - [ ] Add pkey support
-- [ ] Fix size_t problem in 32bits and 64 bits
+- [x] Fix size_t problem in 32bits and 64 bits
 - [x] Check if OpenSSL will auto deinitialize in C#
+- [ ] Use SafeHandle to hold raw pointer

@@ -399,7 +399,7 @@ namespace OpenSSL.X509
         /// <summary>
         /// Calls X509_NAME_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.X509_NAME_free(ptr);
         }

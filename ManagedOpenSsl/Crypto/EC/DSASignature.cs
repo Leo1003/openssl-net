@@ -85,7 +85,7 @@ namespace OpenSSL.Crypto.EC
         /// <summary>
         /// Calls ECDSA_SIG_free()
         /// </summary>
-        protected override void OnDispose()
+        protected override void ReleaseHandle()
         {
             NativeMethods.ECDSA_SIG_free(ptr);
         }

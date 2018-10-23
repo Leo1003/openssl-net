@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2006-2009 Frank Laub
+// Copyright (c) 2006-2009 Frank Laub
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -57,7 +57,7 @@ namespace OpenSSL.Core
         /// </summary>
         ~Base()
         {
-            Dispose();
+            Dispose(false);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace OpenSSL.Core
         /// <summary>
         /// This method must be implemented in derived classes.
         /// </summary>
-        protected abstract void OnDispose();
+        protected abstract void ReleaseHandle();
 
         /// <summary>
         /// Do nothing in the base class.
@@ -111,11 +111,21 @@ namespace OpenSSL.Core
         /// </summary>
         public void Dispose()
         {
-            if (!isDisposed && owner && ptr != IntPtr.Zero) {
-                OnDispose();
-                DoAfterDispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (isDisposed) {
+                return;
             }
 
+            if (owner && ptr != IntPtr.Zero) {
+                ReleaseHandle();
+            }
+
+            ptr = IntPtr.Zero;
             isDisposed = true;
         }
 
@@ -134,13 +144,12 @@ namespace OpenSSL.Core
         /// </summary>
         //TODO: Test if this object was disposed
         public virtual IntPtr Handle {
-            get { return ptr; }
-        }
-
-        private void DoAfterDispose()
-        {
-            ptr = IntPtr.Zero;
-            GC.SuppressFinalize(this);
+            get {
+                if (isDisposed) {
+                    throw new ObjectDisposedException(GetType().FullName);
+                }
+                return ptr;
+            }
         }
 
         /// <summary>
