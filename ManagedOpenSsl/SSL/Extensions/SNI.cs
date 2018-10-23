@@ -32,7 +32,9 @@ namespace OpenSSL.Extensions
         {
             SSL_CTX_set_tlsext_servername_callback(cb, sslCtx);
 
-            NativeMethods.SSL_CTX_ctrl(sslCtx, SSL_Ctrl.SET_TLSEXT_SERVERNAME_ARG, 0, _serverNamePtr);
+            NativeMethods.ExpectSuccess(
+                NativeMethods.SSL_CTX_ctrl(sslCtx, SSL_Ctrl.SET_TLSEXT_SERVERNAME_ARG, 0, _serverNamePtr)
+            );
             SSL_set_tlsext_host_name(ssl);
         }
 

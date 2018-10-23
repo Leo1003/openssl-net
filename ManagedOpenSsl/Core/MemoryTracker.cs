@@ -102,7 +102,9 @@ namespace OpenSSL.Core
         /// </summary>
         public static void Init()
         {
-            NativeMethods.CRYPTO_set_mem_functions(_ptrMalloc, _ptrRealloc, _ptrFree);
+            NativeMethods.ExpectSuccess(
+                NativeMethods.CRYPTO_set_mem_functions(_ptrMalloc, _ptrRealloc, _ptrFree)
+            );
         }
 
         /// <summary>

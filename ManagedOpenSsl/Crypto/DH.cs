@@ -220,7 +220,7 @@ namespace OpenSSL.Crypto
         {
             var len = NativeMethods.DH_size(ptr);
             var key = new byte[len];
-            NativeMethods.DH_compute_key(key, pubkey.Handle, ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.DH_compute_key(key, pubkey.Handle, ptr));
 
             return key;
         }
@@ -356,7 +356,7 @@ namespace OpenSSL.Crypto
 
         internal override void AddRef()
         {
-            NativeMethods.DH_up_ref(ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.DH_up_ref(ptr));
         }
 
         #region IDisposable Members

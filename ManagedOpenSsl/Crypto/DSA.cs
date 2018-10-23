@@ -383,7 +383,7 @@ namespace OpenSSL.Crypto
 
         internal override void AddRef()
         {
-            NativeMethods.DSA_up_ref(ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.DSA_up_ref(ptr));
         }
 
         #endregion

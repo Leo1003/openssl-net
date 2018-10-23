@@ -587,7 +587,7 @@ namespace OpenSSL.Crypto
         public CipherContext(Cipher cipher)
             : base(NativeMethods.EVP_CIPHER_CTX_new(), true)
         {
-            NativeMethods.EVP_CIPHER_CTX_reset(ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_reset(ptr));
             this.cipher = cipher;
         }
 
@@ -773,7 +773,7 @@ namespace OpenSSL.Crypto
             memory.Write(buf, 0, len);
 
             len = buf.Length;
-            NativeMethods.EVP_CipherFinal_ex(ptr, buf, ref len);
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherFinal_ex(ptr, buf, ref len));
 
             memory.Write(buf, 0, len);
 

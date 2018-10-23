@@ -193,7 +193,7 @@ namespace OpenSSL.Native
         public extern static int SSL_get_verify_result(IntPtr ssl);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int SSL_set_verify_result(IntPtr ssl, int v);
+        public extern static void SSL_set_verify_result(IntPtr ssl, int v);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr SSL_get_peer_certificate(IntPtr ssl);

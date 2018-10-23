@@ -462,7 +462,7 @@ namespace OpenSSL.Crypto
 
         internal override void AddRef()
         {
-            NativeMethods.RSA_up_ref(ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.RSA_up_ref(ptr));
         }
     }
 }

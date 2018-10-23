@@ -129,7 +129,7 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            NativeMethods.X509V3_EXT_print(bio.Handle, ptr, 0, 0);
+            NativeMethods.ExpectSuccess(NativeMethods.X509V3_EXT_print(bio.Handle, ptr, 0, 0));
         }
 
         /// <summary>

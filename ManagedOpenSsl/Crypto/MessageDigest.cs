@@ -237,7 +237,7 @@ namespace OpenSSL.Crypto
         public MessageDigestContext(MessageDigest md)
             : base(NativeMethods.EVP_MD_CTX_new(), true)
         {
-            NativeMethods.EVP_MD_CTX_reset(ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_MD_CTX_reset(ptr));
             this.md = md;
         }
 
