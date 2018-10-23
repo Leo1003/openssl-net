@@ -133,24 +133,26 @@ namespace OpenSSL.SSL
             var options = sslContext.Options;
 
             // Remove support for protocols not specified in the enabledSslProtocols
-            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Ssl3)) {
-                options |= SSL_Options.NO_SSLv3;
-            }
+            if (enabledSslProtocols != SslProtocols.Default) {
+                if (!enabledSslProtocols.HasFlag(SslProtocols.Ssl3)) {
+                    options |= SSL_Options.NO_SSLv3;
+                }
 
-            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1)) {
-                options |= SSL_Options.NO_TLSv1;
-            }
+                if (!enabledSslProtocols.HasFlag(SslProtocols.Tls1)) {
+                    options |= SSL_Options.NO_TLSv1;
+                }
 
-            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1_1)) {
-                options |= SSL_Options.NO_TLSv1_1;
-            }
+                if (!enabledSslProtocols.HasFlag(SslProtocols.Tls1_1)) {
+                    options |= SSL_Options.NO_TLSv1_1;
+                }
 
-            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1_2)) {
-                options |= SSL_Options.NO_TLSv1_2;
-            }
+                if (!enabledSslProtocols.HasFlag(SslProtocols.Tls1_2)) {
+                    options |= SSL_Options.NO_TLSv1_2;
+                }
 
-            if (!EnumExtensions.HasFlag(enabledSslProtocols, SslProtocols.Tls1_3)) {
-                options |= SSL_Options.NO_TLSv1_3;
+                if (!enabledSslProtocols.HasFlag(SslProtocols.Tls1_3)) {
+                    options |= SSL_Options.NO_TLSv1_3;
+                }
             }
 
             // Set the workaround options

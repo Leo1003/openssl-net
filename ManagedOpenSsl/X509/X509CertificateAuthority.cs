@@ -164,7 +164,8 @@ namespace OpenSSL.X509
             TimeSpan validity)
         {
             CryptoKey key;
-            using (var dsa = new DSA(true)) {
+            using (var dsa = new DSA(2048, null)) {
+                dsa.GenerateKeys();
                 key = new CryptoKey(dsa);
                 // Dispose the DSA key, the CryptoKey assignment increments the reference count
             }
