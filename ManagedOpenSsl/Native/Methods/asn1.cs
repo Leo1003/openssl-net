@@ -11,24 +11,6 @@ namespace OpenSSL.Native
 
         public const int MBSTRING_ASC = MBSTRING_FLAG | 1;
 
-        public const int ASN1_STRFLGS_RFC2253 =
-            ASN1_STRFLGS_ESC_2253 |
-            ASN1_STRFLGS_ESC_CTRL |
-            ASN1_STRFLGS_ESC_MSB |
-            ASN1_STRFLGS_UTF8_CONVERT |
-            ASN1_STRFLGS_DUMP_UNKNOWN |
-            ASN1_STRFLGS_DUMP_DER;
-
-        public const int ASN1_STRFLGS_ESC_2253 = 1;
-        public const int ASN1_STRFLGS_ESC_CTRL = 2;
-        public const int ASN1_STRFLGS_ESC_MSB = 4;
-        public const int ASN1_STRFLGS_ESC_QUOTE = 8;
-        public const int ASN1_STRFLGS_UTF8_CONVERT = 0x10;
-        public const int ASN1_STRFLGS_DUMP_UNKNOWN = 0x100;
-        public const int ASN1_STRFLGS_DUMP_DER = 0x200;
-        public const int XN_FLAG_SEP_COMMA_PLUS = (1 << 16);
-        public const int XN_FLAG_FN_SN = 0;
-
         public const int V_ASN1_OCTET_STRING = 4;
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]

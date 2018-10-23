@@ -287,7 +287,7 @@ namespace OpenSSL.Native
         public extern static int X509_NAME_print(IntPtr bp, IntPtr name, int obase);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int X509_NAME_print_ex(IntPtr bp, IntPtr nm, int indent, uint flags);
+        public extern static int X509_NAME_print_ex(IntPtr bp, IntPtr nm, int indent, XnFlags flags);
 
         #endregion
     }

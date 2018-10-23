@@ -381,11 +381,8 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            const int flags =
-                NativeMethods.ASN1_STRFLGS_RFC2253 |
-                NativeMethods.ASN1_STRFLGS_ESC_QUOTE |
-                NativeMethods.XN_FLAG_SEP_COMMA_PLUS |
-                NativeMethods.XN_FLAG_FN_SN;
+            const XnFlags flags = (XnFlags)ASN1StrFlags.RFC2253 | XnFlags.ESC_QUOTE |
+                XnFlags.SEP_COMMA_PLUS | XnFlags.FN_SN;
 
             var ret = NativeMethods.X509_NAME_print_ex(bio.Handle, Handle, 0, flags);
             if (ret <= 0)
