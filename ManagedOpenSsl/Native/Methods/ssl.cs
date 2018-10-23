@@ -61,6 +61,9 @@ namespace OpenSSL.Native
         public extern static void SSL_CTX_free(IntPtr ctx);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int SSL_CTX_up_ref(IntPtr ctx);
+
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int SSL_CTX_ctrl(IntPtr ctx, SSL_Ctrl cmd, int arg, IntPtr parg);
 
         /// <summary>
@@ -233,6 +236,9 @@ namespace OpenSSL.Native
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void SSL_free(IntPtr ssl);
+
+        [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int SSL_up_ref(IntPtr ssl);
 
         [DllImport(SSLDLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static SSL_HandshakeState SSL_get_state(IntPtr ssl);

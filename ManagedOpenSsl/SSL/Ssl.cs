@@ -51,7 +51,7 @@ namespace OpenSSL.SSL
     /// <summary>
     /// Ssl.
     /// </summary>
-    public class Ssl : Base
+    public class Ssl : BaseReference
     {
         #region Initialization
 
@@ -238,7 +238,11 @@ namespace OpenSSL.SSL
             NativeMethods.SSL_free(Handle);
         }
 
-        #endregion
+        internal override void AddRef()
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.SSL_up_ref(ptr));
+        }
 
+        #endregion
     }
 }

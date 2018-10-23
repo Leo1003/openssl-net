@@ -43,7 +43,7 @@ namespace OpenSSL.SSL
     /// <summary>
     ///     Wraps the SST_CTX structure and methods
     /// </summary>
-    internal sealed class SslContext : Base
+    internal sealed class SslContext : BaseReference
     {
         #region Members
 
@@ -271,7 +271,11 @@ namespace OpenSSL.SSL
         {
             NativeMethods.SSL_CTX_free(ptr);
         }
-
         #endregion
+
+        internal override void AddRef()
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.SSL_CTX_up_ref(ptr));
+        }
     }
 }

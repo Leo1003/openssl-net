@@ -85,7 +85,7 @@ namespace OpenSSL.X509
         /// </summary>
         internal override void AddRef()
         {
-            NativeMethods.X509_OBJECT_up_ref_count(ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.X509_OBJECT_up_ref_count(ptr));
         }
 
         /// <summary>

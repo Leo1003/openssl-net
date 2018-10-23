@@ -229,7 +229,7 @@ namespace OpenSSL.Crypto.EC
 
         internal override void AddRef()
         {
-            NativeMethods.EC_KEY_up_ref(ptr);
+            NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_up_ref(ptr));
         }
 
         #endregion

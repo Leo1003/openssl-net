@@ -34,7 +34,7 @@ namespace OpenSSL.Core
     /// <summary>
     /// Encapsulates the BIO_* functions.
     /// </summary>
-    public class BIO : Base
+    public class BIO : BaseReference
     {
         #region Initialization
         internal BIO(IntPtr ptr, bool owner) : base(ptr, owner)
@@ -296,6 +296,11 @@ namespace OpenSSL.Core
         protected override void ReleaseHandle()
         {
             NativeMethods.BIO_free(ptr);
+        }
+
+        internal override void AddRef()
+        {
+            NativeMethods.ExpectSuccess(NativeMethods.BIO_up_ref(ptr));
         }
 
         #endregion

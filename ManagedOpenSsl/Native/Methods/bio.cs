@@ -7,6 +7,15 @@ namespace OpenSSL.Native
 {
     internal partial class NativeMethods
     {
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr BIO_new(IntPtr type);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void BIO_free(IntPtr bio);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static int BIO_up_ref(IntPtr bio);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public extern static IntPtr BIO_new_file(string filename, string mode);
 
@@ -76,9 +85,6 @@ namespace OpenSSL.Native
         public extern static int BIO_int_ctrl(IntPtr bp, int cmd, int larg, int parg);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr BIO_new(IntPtr type);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BIO_read(IntPtr b, byte[] buf, int len);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -89,9 +95,6 @@ namespace OpenSSL.Native
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int BIO_gets(IntPtr b, byte[] buf, int len);
-
-        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static void BIO_free(IntPtr bio);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static ulong BIO_number_read(IntPtr bio);
