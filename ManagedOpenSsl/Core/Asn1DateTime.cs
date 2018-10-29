@@ -80,7 +80,7 @@ namespace OpenSSL.Core
             string str;
 
             using (var bio = BIO.MemoryBuffer()) {
-                NativeMethods.ExpectSuccess(NativeMethods.ASN1_UTCTIME_print(bio.Handle, ptr));
+                NativeMethods.ExpectSuccess(NativeMethods.ASN1_TIME_print(bio.Handle, ptr));
                 str = bio.ReadString();
             }
 
