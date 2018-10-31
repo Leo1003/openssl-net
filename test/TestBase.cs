@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2009 Frank Laub
+// Copyright (c) 2009 Frank Laub
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 
 using System;
 using NUnit.Framework;
-using OpenSSL.Core;
+using OpenSSL.Native;
 using System.Reflection;
 using System.IO;
 using OpenSSL.X509;

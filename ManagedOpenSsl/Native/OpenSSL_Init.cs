@@ -4,6 +4,7 @@ using System.Text;
 
 namespace OpenSSL.Native
 {
+    [Flags]
     internal enum OpenSSL_Init : ulong
     {
         None = 0x00000000,

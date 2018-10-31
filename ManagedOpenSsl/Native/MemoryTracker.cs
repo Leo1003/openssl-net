@@ -1,10 +1,10 @@
-﻿using System;
+﻿using OpenSSL.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using OpenSSL.Native;
 
-namespace OpenSSL.Core
+namespace OpenSSL.Native
 {
     /// <summary>
     ///
