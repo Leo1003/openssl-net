@@ -193,6 +193,8 @@ namespace OpenSSL.Core
 
         internal override void AddRef()
         {
+            //TODO: Lost original pointer!!!!!!!!!!
+            //TODO: May cause double free when calling AddRef() on Stack
             ptr = DuplicateHandle();
             owner = true;
 

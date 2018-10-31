@@ -23,6 +23,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trace|x64'">
     <DefineConstants>TRACE;DEBUG;_WIN64;MEMORY_TRACKER</DefineConstants>
     <PlatformTarget>x64</PlatformTarget>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DefineConstants>TRACE;DEBUG;_WIN32</DefineConstants>
@@ -35,6 +38,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trace|x86'">
     <DefineConstants>TRACE;DEBUG;_WIN32;MEMORY_TRACKER</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup Condition="'$(Platform)' == 'x86'">
     <Content Include="..\native\windows\x86\libcrypto-1_1.dll">

@@ -81,6 +81,9 @@ namespace OpenSSL.Native
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static int OPENSSL_init_crypto(OpenSSL_Init opts, IntPtr settings);
 
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void OPENSSL_cleanup();
+
         #endregion
 
         #region Version

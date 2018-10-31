@@ -158,7 +158,11 @@ namespace OpenSSL.Native
                     if (block.count > 0)
                         frees.Add(block);
 
-                    if (block.count == 0 || block.count > 1) {
+                    /* OpenSSL will automatic initialize something in 1.1.0
+                     * So we can't determine which memory blocks are leaked.
+                     * Only detect multiple free now. */
+                    //if (block.count == 0 || block.count > 1) {
+                    if (block.count > 1) {
                         var problem = new MemoryProblem {
                             Type = block.count == 0 ? MemoryProblemType.Leaked : MemoryProblemType.MultipleFree,
                             Size = block.bytes,
