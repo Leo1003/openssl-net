@@ -517,8 +517,14 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// Returns the flags field
         /// </summary>
-        public uint Flags {
-            get { return NativeMethods.EVP_CIPHER_flags(ptr); }
+        public EVP_CIPH Flags {
+            get { return (EVP_CIPH)NativeMethods.EVP_CIPHER_flags(ptr); }
+        }
+
+        public EVP_CIPH Mode {
+            get {
+                return (Flags & EVP_CIPH.MODE);
+            }
         }
 
         /// <summary>
@@ -576,10 +582,8 @@ namespace OpenSSL.Crypto
     /// <summary>
     /// Wraps the EVP_CIPHER_CTX object.
     /// </summary>
-    public class CipherContext : Base, IDisposable
+    public class CipherContext : Base
     {
-        private Cipher cipher;
-
         /// <summary>
         /// Calls EVP_CIPHER_CTX_new() and initializes the buffer using EVP_CIPHER_CTX_reset()
         /// </summary>
@@ -588,7 +592,7 @@ namespace OpenSSL.Crypto
             : base(NativeMethods.EVP_CIPHER_CTX_new(), true)
         {
             NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_reset(ptr));
-            this.cipher = cipher;
+            this.Cipher = cipher;
         }
 
         /// <summary>
@@ -597,7 +601,7 @@ namespace OpenSSL.Crypto
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            bio.Write("CipherContext: " + cipher.LongName);
+            bio.Write("CipherContext: " + Cipher.LongName);
         }
 
         #region Methods
@@ -613,7 +617,7 @@ namespace OpenSSL.Crypto
         public byte[] Open(byte[] input, byte[] ekey, byte[] iv, CryptoKey pkey)
         {
             NativeMethods.ExpectSuccess(NativeMethods.EVP_OpenInit(
-                ptr, cipher.Handle, ekey, ekey.Length, iv, pkey.Handle));
+                ptr, Cipher.Handle, ekey, ekey.Length, iv, pkey.Handle));
 
             var memory = new MemoryStream();
             var output = new byte[input.Length + Cipher.BlockSize];
@@ -716,8 +720,8 @@ namespace OpenSSL.Crypto
 
         private byte[] SetupIV(byte[] iv)
         {
-            if (cipher.IVLength > iv.Length) {
-                var ret = new byte[cipher.IVLength];
+            if (Cipher.IVLength > iv.Length) {
+                var ret = new byte[Cipher.IVLength];
                 ret.Initialize();
                 Buffer.BlockCopy(iv, 0, ret, 0, iv.Length);
 
@@ -740,7 +744,7 @@ namespace OpenSSL.Crypto
         {
             var enc = doEncrypt ? 1 : 0;
 
-            var total = Math.Max(input.Length, cipher.BlockSize);
+            var total = Math.Max(input.Length, Cipher.BlockSize);
             var real_key = SetupKey(key);
             var real_iv = SetupIV(iv);
 
@@ -748,7 +752,7 @@ namespace OpenSSL.Crypto
             var memory = new MemoryStream(total);
 
             NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
-                ptr, cipher.Handle, IntPtr.Zero, null, null, enc));
+                ptr, Cipher.Handle, IntPtr.Zero, null, null, enc));
 
             NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_set_key_length(ptr, real_key.Length));
 
@@ -758,10 +762,10 @@ namespace OpenSSL.Crypto
                 }
 
                 NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
-                    ptr, cipher.Handle, IntPtr.Zero, real_key, null, enc));
+                    ptr, Cipher.Handle, IntPtr.Zero, real_key, null, enc));
             } else {
                 NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
-                    ptr, cipher.Handle, IntPtr.Zero, real_key, real_iv, enc));
+                    ptr, Cipher.Handle, IntPtr.Zero, real_key, real_iv, enc));
             }
 
             if (padding >= 0)
@@ -854,7 +858,7 @@ namespace OpenSSL.Crypto
             iv = new byte[ivlen];
 
             NativeMethods.ExpectSuccess(NativeMethods.EVP_BytesToKey(
-                cipher.Handle,
+                Cipher.Handle,
                 md.Handle,
                 salt,
                 data,
@@ -872,14 +876,15 @@ namespace OpenSSL.Crypto
         /// Returns the EVP_CIPHER for this context.
         /// </summary>
         public Cipher Cipher {
-            get { return cipher; }
+            get;
+            private set;
         }
 
         /// <summary>
         /// Returns if EVP_CIPH_STREAM_CIPHER is set in flags
         /// </summary>
         public bool IsStream {
-            get { return (cipher.Flags & NativeMethods.EVP_CIPH_MODE) == NativeMethods.EVP_CIPH_STREAM_CIPHER; }
+            get { return Cipher.Mode == EVP_CIPH.STREAM_CIPHER; }
         }
         #endregion
 

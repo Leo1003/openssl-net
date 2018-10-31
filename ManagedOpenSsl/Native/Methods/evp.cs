@@ -15,21 +15,6 @@ namespace OpenSSL.Native
         public const int EVP_MAX_IV_LENGTH = 16;
         public const int EVP_MAX_BLOCK_LENGTH = 32;
 
-        public const int EVP_CIPH_STREAM_CIPHER = 0x0;
-        public const int EVP_CIPH_ECB_MODE = 0x1;
-        public const int EVP_CIPH_CBC_MODE = 0x2;
-        public const int EVP_CIPH_CFB_MODE = 0x3;
-        public const int EVP_CIPH_OFB_MODE = 0x4;
-        public const int EVP_CIPH_MODE = 0x7;
-        public const int EVP_CIPH_VARIABLE_LENGTH = 0x8;
-        public const int EVP_CIPH_CUSTOM_IV = 0x10;
-        public const int EVP_CIPH_ALWAYS_CALL_INIT = 0x20;
-        public const int EVP_CIPH_CTRL_INIT = 0x40;
-        public const int EVP_CIPH_CUSTOM_KEY_LENGTH = 0x80;
-        public const int EVP_CIPH_NO_PADDING = 0x100;
-        public const int EVP_CIPH_FLAG_FIPS = 0x400;
-        public const int EVP_CIPH_FLAG_NON_FIPS_ALLOW = 0x800;
-
         #endregion
 
         #region Message Digests
