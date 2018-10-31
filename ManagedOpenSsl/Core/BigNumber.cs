@@ -669,6 +669,7 @@ namespace OpenSSL.Core
 
         public class GeneratorCallback : Base
         {
+            private NativeMethods.GeneratorHandler native_callback; //Hold the delegate
             private GeneratorHandler callback;
             private object arg;
 
@@ -681,7 +682,8 @@ namespace OpenSSL.Core
             {
                 callback = handler;
                 this.arg = arg;
-                NativeMethods.BN_GENCB_set(ptr, OnGeneratorThunk, IntPtr.Zero);
+                native_callback = new NativeMethods.GeneratorHandler(OnGeneratorThunk);
+                NativeMethods.BN_GENCB_set(ptr, native_callback, IntPtr.Zero);
             }
 
             public void SetCallback(GeneratorHandler handler)
