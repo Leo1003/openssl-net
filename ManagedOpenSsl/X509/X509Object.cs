@@ -38,8 +38,8 @@ namespace OpenSSL.X509
     {
         #region Initialization
 
-        internal X509Object(IStack stack, IntPtr ptr)
-            : base(ptr, true)
+        internal X509Object(IntPtr ptr, bool takeOwnership)
+            : base(ptr, takeOwnership)
         {
         }
 
@@ -94,6 +94,12 @@ namespace OpenSSL.X509
         protected override void ReleaseHandle()
         {
             NativeMethods.X509_OBJECT_free(ptr);
+        }
+
+        public IntPtr GetPushHandle()
+        {
+            AddRef();
+            return ptr;
         }
 
         #endregion

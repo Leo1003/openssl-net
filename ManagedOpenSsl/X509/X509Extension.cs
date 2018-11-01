@@ -33,7 +33,7 @@ namespace OpenSSL.X509
     /// <summary>
     /// Wraps the X509_EXTENSION object
     /// </summary>
-    public class X509Extension : BaseValue, IStackable
+    public class X509Extension : Base, IStackable
     {
         #region Initialization
 
@@ -44,8 +44,8 @@ namespace OpenSSL.X509
             : base(NativeMethods.ExpectNonNull(NativeMethods.X509_EXTENSION_new()), true)
         { }
 
-        internal X509Extension(IStack stack, IntPtr ptr)
-            : base(ptr, true)
+        internal X509Extension(IntPtr ptr, bool takeOwnership)
+            : base(ptr, takeOwnership)
         { }
 
         /// <summary>
@@ -132,11 +132,7 @@ namespace OpenSSL.X509
             NativeMethods.ExpectSuccess(NativeMethods.X509V3_EXT_print(bio.Handle, ptr, 0, 0));
         }
 
-        /// <summary>
-        /// Calls X509_EXTENSION_dup()
-        /// </summary>
-        /// <returns></returns>
-        internal override IntPtr DuplicateHandle()
+        public IntPtr GetPushHandle()
         {
             return NativeMethods.X509_EXTENSION_dup(ptr);
         }

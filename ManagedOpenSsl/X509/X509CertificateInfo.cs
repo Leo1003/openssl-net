@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 
 namespace OpenSSL.X509
 {
-    internal class X509CertificateInfo : BaseReference, IStackable
+    internal class X509CertificateInfo : Base, IStackable
     {
         #region X509_INFO
         [StructLayout(LayoutKind.Sequential)]
@@ -51,10 +51,9 @@ namespace OpenSSL.X509
         #endregion
 
         #region Initialization
-        internal X509CertificateInfo(IStack stack, IntPtr ptr)
+        internal X509CertificateInfo(IntPtr ptr, bool takeOwnership)
             : base(ptr, true)
-        {
-        }
+        { }
         #endregion
 
         #region Properties
@@ -91,9 +90,11 @@ namespace OpenSSL.X509
             NativeMethods.X509_INFO_free(ptr);
         }
 
-        internal override void AddRef()
+        public IntPtr GetPushHandle()
         {
-
+            IntPtr new_ptr = NativeMethods.X509_INFO_new();
+            Marshal.StructureToPtr<X509_INFO>(raw, new_ptr, false);
+            return new_ptr;
         }
 
         #endregion

@@ -180,33 +180,4 @@ namespace OpenSSL.Core
 
         internal abstract void AddRef();
     }
-
-    /// <summary>
-    /// Helper base class that handles the AddRef() method by using a _dup() method.
-    /// </summary>
-    public abstract class BaseValue : BaseReference
-    {
-        internal BaseValue(IntPtr ptr, bool takeOwnership)
-            : base(ptr, takeOwnership)
-        {
-        }
-
-        internal override void AddRef()
-        {
-            //TODO: Lost original pointer!!!!!!!!!!
-            //TODO: May cause double free when calling AddRef() on Stack
-            ptr = DuplicateHandle();
-            owner = true;
-
-            if (ptr != IntPtr.Zero) {
-                OnNewHandle(ptr);
-            }
-        }
-
-        /// <summary>
-        /// Derived classes must use a _dup() method to make a copy of the underlying native data structure.
-        /// </summary>
-        /// <returns></returns>
-        internal abstract IntPtr DuplicateHandle();
-    }
 }

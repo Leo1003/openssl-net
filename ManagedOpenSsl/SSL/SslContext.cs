@@ -204,8 +204,8 @@ namespace OpenSSL.SSL
                 return new Core.Stack<X509Name>(ptr, false);
             }
             set {
-                value.AddRef();
-                NativeMethods.SSL_CTX_set_client_CA_list(ptr, value.Handle);
+                Core.Stack<X509Name> st = value.GetCopy(false);
+                NativeMethods.SSL_CTX_set_client_CA_list(ptr, st.Handle);
             }
         }
 

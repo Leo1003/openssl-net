@@ -32,7 +32,7 @@ namespace OpenSSL.Core
     /// <summary>
     /// Wraps ASN1_STRING_*
     /// </summary>
-    public class Asn1String : BaseValue, IComparable<Asn1String>
+    public class Asn1String : Base, IComparable<Asn1String>
     {
         #region Initialization
         /// <summary>
@@ -88,11 +88,6 @@ namespace OpenSSL.Core
         #endregion
 
         #region Overrides
-
-        internal override IntPtr DuplicateHandle()
-        {
-            return NativeMethods.ASN1_STRING_dup(ptr);
-        }
 
         /// <summary>
         /// Calls ASN1_STRING_free()

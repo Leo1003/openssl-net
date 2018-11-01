@@ -38,11 +38,6 @@ namespace OpenSSL.X509
     {
         #region Initialization
 
-        internal X509Certificate(IStack stack, IntPtr ptr)
-            : base(ptr, true)
-        {
-        }
-
         internal X509Certificate(IntPtr ptr, bool owner)
             : base(ptr, owner)
         {
@@ -181,10 +176,10 @@ namespace OpenSSL.X509
             get {
                 // Get the native pointer for the subject name
                 var name_ptr = NativeMethods.ExpectNonNull(NativeMethods.X509_get_subject_name(this.ptr));
-                var ret = new X509Name(name_ptr, true);
+                var ret = new X509Name(name_ptr, false);
                 // Duplicate the native pointer, as the X509_get_subject_name returns a pointer
                 // that is owned by the X509 object
-                ret.AddRef();
+
                 return ret;
             }
             set { NativeMethods.ExpectSuccess(NativeMethods.X509_set_subject_name(this.ptr, value.Handle)); }
@@ -196,8 +191,7 @@ namespace OpenSSL.X509
         public X509Name Issuer {
             get {
                 var name_ptr = NativeMethods.ExpectNonNull(NativeMethods.X509_get_issuer_name(ptr));
-                var name = new X509Name(name_ptr, true);
-                name.AddRef();
+                var name = new X509Name(name_ptr, false);
 
                 return name;
             }
@@ -490,6 +484,12 @@ namespace OpenSSL.X509
         #endregion
 
         #region Overrides
+
+        public IntPtr GetPushHandle()
+        {
+            AddRef();
+            return ptr;
+        }
 
         /// <summary>
         /// Calls X509_free()

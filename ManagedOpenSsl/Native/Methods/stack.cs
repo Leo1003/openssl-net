@@ -7,11 +7,28 @@ namespace OpenSSL.Native
 {
     internal partial class NativeMethods
     {
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int OPENSSL_sk_compfunc(IntPtr a, IntPtr b);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void OPENSSL_sk_freefunc(IntPtr ptr);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate IntPtr OPENSSL_sk_copyfunc(IntPtr ptr);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr OPENSSL_sk_new_null();
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static void OPENSSL_sk_free(IntPtr stack);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static void OPENSSL_sk_pop_free(IntPtr stack, OPENSSL_sk_freefunc func);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr OPENSSL_sk_deep_copy(IntPtr stack,
+                                    OPENSSL_sk_copyfunc c,
+                                    OPENSSL_sk_freefunc f);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr OPENSSL_sk_delete(IntPtr stack, int loc);

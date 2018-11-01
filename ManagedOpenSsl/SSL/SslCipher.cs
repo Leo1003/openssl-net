@@ -35,28 +35,15 @@ namespace OpenSSL.SSL
     /// <summary>
     /// Wraps a SSL_CIPHER
     /// </summary>
-    public class SslCipher : BaseReference, IStackable
+    public class SslCipher : Base, IStackable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OpenSSL.SSL.SslCipher"/> class.
-        /// </summary>
-        public SslCipher() :
-            this(IntPtr.Zero, false)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenSSL.SSL.SslCipher"/> class.
         /// </summary>
         /// <param name="ptr">Ptr.</param>
         /// <param name="owner">If set to <c>true</c> owner.</param>
         public SslCipher(IntPtr ptr, bool owner) :
-            base(ptr, owner)
-        {
-        }
-
-        internal SslCipher(IStack stack, IntPtr ptr) :
-            base(ptr, true)
+            base(ptr, false)
         {
         }
 
@@ -129,12 +116,6 @@ namespace OpenSSL.SSL
             }
         }
 
-        internal override void AddRef()
-        {
-            // SSL_CIPHERs come from a static list in ssl_ciph.c
-            // nothing to do here
-        }
-
         /// <summary>
         /// This method must be implemented in derived classes.
         /// </summary>
@@ -142,6 +123,13 @@ namespace OpenSSL.SSL
         {
             // SSL_CIPHERs come from a static list in ssl_ciph.c
             // nothing to do here
+        }
+
+        public IntPtr GetPushHandle()
+        {
+            // SSL_CIPHERs come from a static list in ssl_ciph.c
+            // Just return pointer
+            return ptr;
         }
     }
 }

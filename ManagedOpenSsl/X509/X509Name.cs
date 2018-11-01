@@ -34,7 +34,7 @@ namespace OpenSSL.X509
     /// <summary>
     /// Encapsulates the X509_NAME_* functions
     /// </summary>
-    public class X509Name : BaseValue, IComparable<X509Name>, IStackable
+    public class X509Name : Base, IComparable<X509Name>, IStackable
     {
         #region Initialization
         internal X509Name(IntPtr ptr, bool owner)
@@ -56,10 +56,6 @@ namespace OpenSSL.X509
             : base(NativeMethods.ExpectNonNull(NativeMethods.X509_NAME_dup(rhs.ptr)), true)
         {
         }
-
-        internal X509Name(IStack stack, IntPtr ptr)
-            : base(ptr, true)
-        { }
 
         /// <summary>
         /// Calls X509_NAME_new()
@@ -401,11 +397,6 @@ namespace OpenSSL.X509
             NativeMethods.X509_NAME_free(ptr);
         }
 
-        internal override IntPtr DuplicateHandle()
-        {
-            return NativeMethods.X509_NAME_dup(ptr);
-        }
-
         /// <summary>
         /// Returns CompareTo(rhs) == 0
         /// </summary>
@@ -439,6 +430,11 @@ namespace OpenSSL.X509
         public int CompareTo(X509Name other)
         {
             return NativeMethods.X509_NAME_cmp(ptr, other.ptr);
+        }
+
+        public IntPtr GetPushHandle()
+        {
+            return NativeMethods.ExpectNonNull(NativeMethods.X509_NAME_dup(ptr));
         }
 
         #endregion
