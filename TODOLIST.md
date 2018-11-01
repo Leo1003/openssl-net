@@ -9,3 +9,4 @@
 - [x] Fix size_t problem in 32bits and 64 bits
 - [x] Check if OpenSSL will auto deinitialize in C#
 - [ ] Use SafeHandle to hold raw pointer
+- [ ] Detect if object not own by C# was freed by libopenssl
