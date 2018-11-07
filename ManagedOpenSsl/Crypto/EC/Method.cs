@@ -43,19 +43,19 @@ namespace OpenSSL.Crypto.EC
         /// <summary>
         /// Returns EC_GFp_simple_method()
         /// </summary>
-        public static Method GFpSimple = new Method(NativeMethods.EC_GFp_simple_method(), false);
+        public static readonly Method GFpSimple = new Method(NativeMethods.EC_GFp_simple_method(), false);
         /// <summary>
         /// Returns EC_GFp_mont_method()
         /// </summary>
-        public static Method GFpMont = new Method(NativeMethods.EC_GFp_mont_method(), false);
+        public static readonly Method GFpMont = new Method(NativeMethods.EC_GFp_mont_method(), false);
         /// <summary>
         /// Returns EC_GFp_nist_method()
         /// </summary>
-        public static Method GFpNist = new Method(NativeMethods.EC_GFp_nist_method(), false);
+        public static readonly Method GFpNist = new Method(NativeMethods.EC_GFp_nist_method(), false);
         /// <summary>
         /// Returns EC_GF2m_simple_method()
         /// </summary>
-        public static Method GF2mSimple = new Method(NativeMethods.EC_GF2m_simple_method(), false);
+        public static readonly Method GF2mSimple = new Method(NativeMethods.EC_GF2m_simple_method(), false);
         #endregion
 
         #region Properties
