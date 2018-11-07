@@ -35,13 +35,6 @@ namespace OpenSSL.Crypto.EC
     /// </summary>
     public class DSASignature : Base
     {
-        [StructLayout(LayoutKind.Sequential)]
-        struct ECDSA_SIG_st
-        {
-            public IntPtr r;
-            public IntPtr s;
-        }
-
         #region Initialization
         internal DSASignature(IntPtr ptr, bool owner)
             : base(ptr, owner)
@@ -58,23 +51,31 @@ namespace OpenSSL.Crypto.EC
         #endregion
 
         #region Properties
-        private ECDSA_SIG_st Raw {
-            get { return (ECDSA_SIG_st)Marshal.PtrToStructure(ptr, typeof(ECDSA_SIG_st)); }
-            set { Marshal.StructureToPtr(value, ptr, false); }
-        }
 
         /// <summary>
         /// Returns R
         /// </summary>
         public BigNumber R {
-            get { return new BigNumber(Raw.r, false); }
+            get {
+                IntPtr rptr = NativeMethods.ECDSA_SIG_get0_r(ptr);
+                if (rptr == IntPtr.Zero) {
+                    return null;
+                }
+                return new BigNumber(rptr, false);
+            }
         }
 
         /// <summary>
         /// Returns S
         /// </summary>
         public BigNumber S {
-            get { return new BigNumber(Raw.s, false); }
+            get {
+                IntPtr sptr = NativeMethods.ECDSA_SIG_get0_s(ptr);
+                if (sptr == IntPtr.Zero) {
+                    return null;
+                }
+                return new BigNumber(sptr, false);
+            }
         }
         #endregion
 

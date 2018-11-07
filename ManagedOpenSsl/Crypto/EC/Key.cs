@@ -95,6 +95,9 @@ namespace OpenSSL.Crypto.EC
                     NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_public_key(ptr)),
                     false);
             }
+            set {
+                NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_public_key(ptr, value.Handle));
+            }
         }
 
         /// <summary>
@@ -107,6 +110,9 @@ namespace OpenSSL.Crypto.EC
                     this.Group,
                     NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_private_key(ptr)),
                     false);
+            }
+            set {
+                NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_private_key(ptr, value.Handle));
             }
         }
 

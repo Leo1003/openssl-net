@@ -304,7 +304,7 @@ namespace OpenSSL.Native
 
         #endregion
 
-        #region ECDSA
+        #region ECDSA_SIG
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr ECDSA_SIG_new();
@@ -313,10 +313,20 @@ namespace OpenSSL.Native
         public extern static void ECDSA_SIG_free(IntPtr sig);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public extern static int i2d_ECDSA_SIG(IntPtr sig, byte[] pp);
+        public extern static int i2d_ECDSA_SIG(IntPtr sig, IntPtr pp);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr d2i_ECDSA_SIG(IntPtr sig, byte[] pp, long len);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr ECDSA_SIG_get0_r(IntPtr sig);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr ECDSA_SIG_get0_s(IntPtr sig);
+
+        #endregion
+
+        #region ECDSA
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr ECDSA_do_sign(byte[] dgst, int dgst_len, IntPtr eckey);
