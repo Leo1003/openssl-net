@@ -38,7 +38,7 @@ namespace OpenSSL.Core
         /// <summary>
         /// Creates a BigNumber object by calling BN_value_one()
         /// </summary>
-        public static BigNumber One = new BigNumber(NativeMethods.BN_value_one(), false);
+        public static readonly BigNumber One = new BigNumber(NativeMethods.BN_value_one(), false);
 
         /// <summary>
         /// Calls BN_options()

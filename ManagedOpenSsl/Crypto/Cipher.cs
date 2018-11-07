@@ -95,399 +95,399 @@ namespace OpenSSL.Crypto
         /// <summary>
         /// EVP_enc_null()
         /// </summary>
-        public static Cipher Null = new Cipher(NativeMethods.EVP_enc_null(), false);
+        public static readonly Cipher Null = new Cipher(NativeMethods.EVP_enc_null(), false);
 
         /// <summary>
         /// EVP_des_ecb()
         /// </summary>
-        public static Cipher DES_ECB = new Cipher(NativeMethods.EVP_des_ecb(), false);
+        public static readonly Cipher DES_ECB = new Cipher(NativeMethods.EVP_des_ecb(), false);
 
         /// <summary>
         /// EVP_des_ede()
         /// </summary>
-        public static Cipher DES_EDE = new Cipher(NativeMethods.EVP_des_ede(), false);
+        public static readonly Cipher DES_EDE = new Cipher(NativeMethods.EVP_des_ede(), false);
 
         /// <summary>
         /// EVP_des_ede3()
         /// </summary>
-        public static Cipher DES_EDE3 = new Cipher(NativeMethods.EVP_des_ede3(), false);
+        public static readonly Cipher DES_EDE3 = new Cipher(NativeMethods.EVP_des_ede3(), false);
 
         /// <summary>
         /// EVP_des_ede_ecb()
         /// </summary>
-        public static Cipher DES_EDE_ECB = new Cipher(NativeMethods.EVP_des_ede_ecb(), false);
+        public static readonly Cipher DES_EDE_ECB = new Cipher(NativeMethods.EVP_des_ede_ecb(), false);
 
         /// <summary>
         /// EVP_des_ede3_ecb()
         /// </summary>
-        public static Cipher DES_EDE3_ECB = new Cipher(NativeMethods.EVP_des_ede3_ecb(), false);
+        public static readonly Cipher DES_EDE3_ECB = new Cipher(NativeMethods.EVP_des_ede3_ecb(), false);
 
         /// <summary>
         /// EVP_des_cfb64()
         /// </summary>
-        public static Cipher DES_CFB64 = new Cipher(NativeMethods.EVP_des_cfb64(), false);
+        public static readonly Cipher DES_CFB64 = new Cipher(NativeMethods.EVP_des_cfb64(), false);
 
         /// <summary>
         /// EVP_des_cfb1()
         /// </summary>
-        public static Cipher DES_CFB1 = new Cipher(NativeMethods.EVP_des_cfb1(), false);
+        public static readonly Cipher DES_CFB1 = new Cipher(NativeMethods.EVP_des_cfb1(), false);
 
         /// <summary>
         /// EVP_des_cfb8()
         /// </summary>
-        public static Cipher DES_CFB8 = new Cipher(NativeMethods.EVP_des_cfb8(), false);
+        public static readonly Cipher DES_CFB8 = new Cipher(NativeMethods.EVP_des_cfb8(), false);
 
         /// <summary>
         /// EVP_des_ede_cfb64()
         /// </summary>
-        public static Cipher DES_EDE_CFB64 = new Cipher(NativeMethods.EVP_des_ede_cfb64(), false);
+        public static readonly Cipher DES_EDE_CFB64 = new Cipher(NativeMethods.EVP_des_ede_cfb64(), false);
 
         /// <summary>
         /// EVP_des_ede3_cfb64()
         /// </summary>
-        public static Cipher DES_EDE3_CFB64 = new Cipher(NativeMethods.EVP_des_ede3_cfb64(), false);
+        public static readonly Cipher DES_EDE3_CFB64 = new Cipher(NativeMethods.EVP_des_ede3_cfb64(), false);
 
         /// <summary>
         /// EVP_des_ede3_cfb1()
         /// </summary>
-        public static Cipher DES_EDE3_CFB1 = new Cipher(NativeMethods.EVP_des_ede3_cfb1(), false);
+        public static readonly Cipher DES_EDE3_CFB1 = new Cipher(NativeMethods.EVP_des_ede3_cfb1(), false);
 
         /// <summary>
         /// EVP_des_ede3_cfb8()
         /// </summary>
-        public static Cipher DES_EDE3_CFB8 = new Cipher(NativeMethods.EVP_des_ede3_cfb8(), false);
+        public static readonly Cipher DES_EDE3_CFB8 = new Cipher(NativeMethods.EVP_des_ede3_cfb8(), false);
 
         /// <summary>
         /// EVP_des_ofb()
         /// </summary>
-        public static Cipher DES_OFB = new Cipher(NativeMethods.EVP_des_ofb(), false);
+        public static readonly Cipher DES_OFB = new Cipher(NativeMethods.EVP_des_ofb(), false);
 
         /// <summary>
         /// EVP_ded_ede_ofb()
         /// </summary>
-        public static Cipher DES_EDE_OFB = new Cipher(NativeMethods.EVP_des_ede_ofb(), false);
+        public static readonly Cipher DES_EDE_OFB = new Cipher(NativeMethods.EVP_des_ede_ofb(), false);
 
         /// <summary>
         /// EVP_des_ede3_ofb()
         /// </summary>
-        public static Cipher DES_EDE3_OFB = new Cipher(NativeMethods.EVP_des_ede3_ofb(), false);
+        public static readonly Cipher DES_EDE3_OFB = new Cipher(NativeMethods.EVP_des_ede3_ofb(), false);
 
         /// <summary>
         /// EVP_des_cbc()
         /// </summary>
-        public static Cipher DES_CBC = new Cipher(NativeMethods.EVP_des_cbc(), false);
+        public static readonly Cipher DES_CBC = new Cipher(NativeMethods.EVP_des_cbc(), false);
 
         /// <summary>
         /// EVP_des_ede_cbc()
         /// </summary>
-        public static Cipher DES_EDE_CBC = new Cipher(NativeMethods.EVP_des_ede_cbc(), false);
+        public static readonly Cipher DES_EDE_CBC = new Cipher(NativeMethods.EVP_des_ede_cbc(), false);
 
         /// <summary>
         /// EVP_des_ede3_cbc()
         /// </summary>
-        public static Cipher DES_EDE3_CBC = new Cipher(NativeMethods.EVP_des_ede3_cbc(), false);
+        public static readonly Cipher DES_EDE3_CBC = new Cipher(NativeMethods.EVP_des_ede3_cbc(), false);
 
         /// <summary>
         /// EVP_desx_cbc()
         /// </summary>
-        public static Cipher DESX_CBC = new Cipher(NativeMethods.EVP_desx_cbc(), false);
+        public static readonly Cipher DESX_CBC = new Cipher(NativeMethods.EVP_desx_cbc(), false);
 
         /// <summary>
         /// EVP_rc4()
         /// </summary>
-        public static Cipher RC4 = new Cipher(NativeMethods.EVP_rc4(), false);
+        public static readonly Cipher RC4 = new Cipher(NativeMethods.EVP_rc4(), false);
 
         /// <summary>
         /// EVP_rc4_40()
         /// </summary>
-        public static Cipher RC4_40 = new Cipher(NativeMethods.EVP_rc4_40(), false);
+        public static readonly Cipher RC4_40 = new Cipher(NativeMethods.EVP_rc4_40(), false);
 
         /// <summary>
         /// EVP_idea_ecb()
         /// </summary>
-        public static Cipher Idea_ECB = new Cipher(NativeMethods.EVP_idea_ecb(), false);
+        public static readonly Cipher Idea_ECB = new Cipher(NativeMethods.EVP_idea_ecb(), false);
 
         /// <summary>
         /// EVP_idea_cfb64()
         /// </summary>
-        public static Cipher Idea_CFB64 = new Cipher(NativeMethods.EVP_idea_cfb64(), false);
+        public static readonly Cipher Idea_CFB64 = new Cipher(NativeMethods.EVP_idea_cfb64(), false);
 
         /// <summary>
         /// EVP_idea_ofb()
         /// </summary>
-        public static Cipher Idea_OFB = new Cipher(NativeMethods.EVP_idea_ofb(), false);
+        public static readonly Cipher Idea_OFB = new Cipher(NativeMethods.EVP_idea_ofb(), false);
 
         /// <summary>
         /// EVP_idea_cbc()
         /// </summary>
-        public static Cipher Idea_CBC = new Cipher(NativeMethods.EVP_idea_cbc(), false);
+        public static readonly Cipher Idea_CBC = new Cipher(NativeMethods.EVP_idea_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_ecb()
         /// </summary>
-        public static Cipher RC2_ECB = new Cipher(NativeMethods.EVP_rc2_ecb(), false);
+        public static readonly Cipher RC2_ECB = new Cipher(NativeMethods.EVP_rc2_ecb(), false);
 
         /// <summary>
         /// EVP_rc2_cbc()
         /// </summary>
-        public static Cipher RC2_CBC = new Cipher(NativeMethods.EVP_rc2_cbc(), false);
+        public static readonly Cipher RC2_CBC = new Cipher(NativeMethods.EVP_rc2_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_40_cbc()
         /// </summary>
-        public static Cipher RC2_40_CBC = new Cipher(NativeMethods.EVP_rc2_40_cbc(), false);
+        public static readonly Cipher RC2_40_CBC = new Cipher(NativeMethods.EVP_rc2_40_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_64_cbc()
         /// </summary>
-        public static Cipher RC2_64_CBC = new Cipher(NativeMethods.EVP_rc2_64_cbc(), false);
+        public static readonly Cipher RC2_64_CBC = new Cipher(NativeMethods.EVP_rc2_64_cbc(), false);
 
         /// <summary>
         /// EVP_rc2_cfb64()
         /// </summary>
-        public static Cipher RC2_CFB64 = new Cipher(NativeMethods.EVP_rc2_cfb64(), false);
+        public static readonly Cipher RC2_CFB64 = new Cipher(NativeMethods.EVP_rc2_cfb64(), false);
 
         /// <summary>
         /// EVP_rc2_ofb()
         /// </summary>
-        public static Cipher RC2_OFB = new Cipher(NativeMethods.EVP_rc2_ofb(), false);
+        public static readonly Cipher RC2_OFB = new Cipher(NativeMethods.EVP_rc2_ofb(), false);
 
         /// <summary>
         /// EVP_bf_ecb()
         /// </summary>
-        public static Cipher Blowfish_ECB = new Cipher(NativeMethods.EVP_bf_ecb(), false);
+        public static readonly Cipher Blowfish_ECB = new Cipher(NativeMethods.EVP_bf_ecb(), false);
 
         /// <summary>
         /// EVP_bf_cbc()
         /// </summary>
-        public static Cipher Blowfish_CBC = new Cipher(NativeMethods.EVP_bf_cbc(), false);
+        public static readonly Cipher Blowfish_CBC = new Cipher(NativeMethods.EVP_bf_cbc(), false);
 
         /// <summary>
         /// EVP_bf_cfb64()
         /// </summary>
-        public static Cipher Blowfish_CFB64 = new Cipher(NativeMethods.EVP_bf_cfb64(), false);
+        public static readonly Cipher Blowfish_CFB64 = new Cipher(NativeMethods.EVP_bf_cfb64(), false);
 
         /// <summary>
         /// EVP_bf_ofb()
         /// </summary>
-        public static Cipher Blowfish_OFB = new Cipher(NativeMethods.EVP_bf_ofb(), false);
+        public static readonly Cipher Blowfish_OFB = new Cipher(NativeMethods.EVP_bf_ofb(), false);
 
         /// <summary>
         /// EVP_cast5_ecb()
         /// </summary>
-        public static Cipher Cast5_ECB = new Cipher(NativeMethods.EVP_cast5_ecb(), false);
+        public static readonly Cipher Cast5_ECB = new Cipher(NativeMethods.EVP_cast5_ecb(), false);
 
         /// <summary>
         /// EVP_cast5_cbc()
         /// </summary>
-        public static Cipher Cast5_CBC = new Cipher(NativeMethods.EVP_cast5_cbc(), false);
+        public static readonly Cipher Cast5_CBC = new Cipher(NativeMethods.EVP_cast5_cbc(), false);
 
         /// <summary>
         /// EVP_cast5_cfb64()
         /// </summary>
-        public static Cipher Cast5_OFB64 = new Cipher(NativeMethods.EVP_cast5_cfb64(), false);
+        public static readonly Cipher Cast5_OFB64 = new Cipher(NativeMethods.EVP_cast5_cfb64(), false);
 
         /// <summary>
         /// EVP_cast5_ofb()
         /// </summary>
-        public static Cipher Cast5_OFB = new Cipher(NativeMethods.EVP_cast5_ofb(), false);
+        public static readonly Cipher Cast5_OFB = new Cipher(NativeMethods.EVP_cast5_ofb(), false);
 
 #if OPENSSL_RC5_SUPPORT
-		public static Cipher RC5_32_12_16_CBC = new Cipher(Native.EVP_rc5_32_12_16_cbc(), false);
-		public static Cipher RC5_32_12_16_ECB = new Cipher(Native.EVP_rc5_32_12_16_ecb(), false);
-		public static Cipher RC5_32_12_16_CFB64 = new Cipher(Native.EVP_rc5_32_12_16_cfb64(), false);
-		public static Cipher RC5_32_12_16_OFB = new Cipher(Native.EVP_rc5_32_12_16_ofb(), false);
+		public static readonly Cipher RC5_32_12_16_CBC = new Cipher(Native.EVP_rc5_32_12_16_cbc(), false);
+		public static readonly Cipher RC5_32_12_16_ECB = new Cipher(Native.EVP_rc5_32_12_16_ecb(), false);
+		public static readonly Cipher RC5_32_12_16_CFB64 = new Cipher(Native.EVP_rc5_32_12_16_cfb64(), false);
+		public static readonly Cipher RC5_32_12_16_OFB = new Cipher(Native.EVP_rc5_32_12_16_ofb(), false);
 #endif
 
         /// <summary>
         /// AES 128bits Electronic Codebook Mode
         /// </summary>
-        public static Cipher AES_128_ECB = new Cipher(NativeMethods.EVP_aes_128_ecb(), false);
+        public static readonly Cipher AES_128_ECB = new Cipher(NativeMethods.EVP_aes_128_ecb(), false);
 
         /// <summary>
         /// AES 128bits Cipher-block Chaining Mode
         /// </summary>
-        public static Cipher AES_128_CBC = new Cipher(NativeMethods.EVP_aes_128_cbc(), false);
+        public static readonly Cipher AES_128_CBC = new Cipher(NativeMethods.EVP_aes_128_cbc(), false);
 
         /// <summary>
         /// AES 128bits Cipher Feedback 1 Mode
         /// </summary>
-        public static Cipher AES_128_CFB1 = new Cipher(NativeMethods.EVP_aes_128_cfb1(), false);
+        public static readonly Cipher AES_128_CFB1 = new Cipher(NativeMethods.EVP_aes_128_cfb1(), false);
 
         /// <summary>
         /// AES 128bits Cipher Feedback 8 Mode
         /// </summary>
-        public static Cipher AES_128_CFB8 = new Cipher(NativeMethods.EVP_aes_128_cfb8(), false);
+        public static readonly Cipher AES_128_CFB8 = new Cipher(NativeMethods.EVP_aes_128_cfb8(), false);
 
         /// <summary>
         /// AES 128bits Cipher Feedback 128 Mode
         /// </summary>
-        public static Cipher AES_128_CFB128 = new Cipher(NativeMethods.EVP_aes_128_cfb128(), false);
+        public static readonly Cipher AES_128_CFB128 = new Cipher(NativeMethods.EVP_aes_128_cfb128(), false);
 
         /// <summary>
         /// AES 128bits Output Feedback Mode
         /// </summary>
-        public static Cipher AES_128_OFB = new Cipher(NativeMethods.EVP_aes_128_ofb(), false);
+        public static readonly Cipher AES_128_OFB = new Cipher(NativeMethods.EVP_aes_128_ofb(), false);
 
         /// <summary>
         /// AES 128bits Counter Mode
         /// </summary>
-        public static Cipher AES_128_CTR = new Cipher(NativeMethods.EVP_aes_128_ctr(), false);
+        public static readonly Cipher AES_128_CTR = new Cipher(NativeMethods.EVP_aes_128_ctr(), false);
 
         /// <summary>
         /// AES 128bits Counter with CBC-MAC Mode
         /// </summary>
-        public static Cipher AES_128_CCM = new Cipher(NativeMethods.EVP_aes_128_ccm(), false);
+        public static readonly Cipher AES_128_CCM = new Cipher(NativeMethods.EVP_aes_128_ccm(), false);
 
         /// <summary>
         /// AES 128bits Galois/Counter Mode
         /// </summary>
-        public static Cipher AES_128_GCM = new Cipher(NativeMethods.EVP_aes_128_gcm(), false);
+        public static readonly Cipher AES_128_GCM = new Cipher(NativeMethods.EVP_aes_128_gcm(), false);
 
         /// <summary>
         /// AES 128bits XEX-based Tweaked-codebook Mode with Ciphertext Stealing
         /// </summary>
-        public static Cipher AES_128_XTS = new Cipher(NativeMethods.EVP_aes_128_xts(), false);
+        public static readonly Cipher AES_128_XTS = new Cipher(NativeMethods.EVP_aes_128_xts(), false);
 
         /// <summary>
         /// AES 128bits Key Wrapping
         /// </summary>
-        public static Cipher AES_128_Wrap = new Cipher(NativeMethods.EVP_aes_128_wrap(), false);
+        public static readonly Cipher AES_128_Wrap = new Cipher(NativeMethods.EVP_aes_128_wrap(), false);
 
         /// <summary>
         /// AES 128bits Key Wrapping with Padding
         /// </summary>
-        public static Cipher AES_128_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_128_wrap_pad(), false);
+        public static readonly Cipher AES_128_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_128_wrap_pad(), false);
 
         /// <summary>
         /// AES 128bits Offset Codebook Mode
         /// </summary>
-        public static Cipher AES_128_OCB = new Cipher(NativeMethods.EVP_aes_128_ocb(), false);
+        public static readonly Cipher AES_128_OCB = new Cipher(NativeMethods.EVP_aes_128_ocb(), false);
 
         /// <summary>
         /// AES 192bits Electronic Codebook Mode
         /// </summary>
-        public static Cipher AES_192_ECB = new Cipher(NativeMethods.EVP_aes_192_ecb(), false);
+        public static readonly Cipher AES_192_ECB = new Cipher(NativeMethods.EVP_aes_192_ecb(), false);
 
         /// <summary>
         /// AES 192bits Cipher-block Chaining Mode
         /// </summary>
-        public static Cipher AES_192_CBC = new Cipher(NativeMethods.EVP_aes_192_cbc(), false);
+        public static readonly Cipher AES_192_CBC = new Cipher(NativeMethods.EVP_aes_192_cbc(), false);
 
         /// <summary>
         /// AES 192bits Cipher Feedback 1 Mode
         /// </summary>
-        public static Cipher AES_192_CFB1 = new Cipher(NativeMethods.EVP_aes_192_cfb1(), false);
+        public static readonly Cipher AES_192_CFB1 = new Cipher(NativeMethods.EVP_aes_192_cfb1(), false);
 
         /// <summary>
         /// AES 192bits Cipher Feedback 8 Mode
         /// </summary>
-        public static Cipher AES_192_CFB8 = new Cipher(NativeMethods.EVP_aes_192_cfb8(), false);
+        public static readonly Cipher AES_192_CFB8 = new Cipher(NativeMethods.EVP_aes_192_cfb8(), false);
 
         /// <summary>
         /// AES 192bits Cipher Feedback 128 Mode
         /// </summary>
-        public static Cipher AES_192_CFB128 = new Cipher(NativeMethods.EVP_aes_192_cfb128(), false);
+        public static readonly Cipher AES_192_CFB128 = new Cipher(NativeMethods.EVP_aes_192_cfb128(), false);
 
         /// <summary>
         /// AES 192bits Output Feedback Mode
         /// </summary>
-        public static Cipher AES_192_OFB = new Cipher(NativeMethods.EVP_aes_192_ofb(), false);
+        public static readonly Cipher AES_192_OFB = new Cipher(NativeMethods.EVP_aes_192_ofb(), false);
 
         /// <summary>
         /// AES 192bits Counter Mode
         /// </summary>
-        public static Cipher AES_192_CTR = new Cipher(NativeMethods.EVP_aes_192_ctr(), false);
+        public static readonly Cipher AES_192_CTR = new Cipher(NativeMethods.EVP_aes_192_ctr(), false);
 
         /// <summary>
         /// AES 192bits Counter with CBC-MAC Mode
         /// </summary>
-        public static Cipher AES_192_CCM = new Cipher(NativeMethods.EVP_aes_192_ccm(), false);
+        public static readonly Cipher AES_192_CCM = new Cipher(NativeMethods.EVP_aes_192_ccm(), false);
 
         /// <summary>
         /// AES 192bits Galois/Counter Mode
         /// </summary>
-        public static Cipher AES_192_GCM = new Cipher(NativeMethods.EVP_aes_192_gcm(), false);
+        public static readonly Cipher AES_192_GCM = new Cipher(NativeMethods.EVP_aes_192_gcm(), false);
 
         /// <summary>
         /// AES 192bits Key Wrapping
         /// </summary>
-        public static Cipher AES_192_Wrap = new Cipher(NativeMethods.EVP_aes_192_wrap(), false);
+        public static readonly Cipher AES_192_Wrap = new Cipher(NativeMethods.EVP_aes_192_wrap(), false);
 
         /// <summary>
         /// AES 192bits Key Wrapping with Padding
         /// </summary>
-        public static Cipher AES_192_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_192_wrap_pad(), false);
+        public static readonly Cipher AES_192_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_192_wrap_pad(), false);
 
         /// <summary>
         /// AES 192bits Offset Codebook Mode
         /// </summary>
-        public static Cipher AES_192_OCB = new Cipher(NativeMethods.EVP_aes_192_ocb(), false);
+        public static readonly Cipher AES_192_OCB = new Cipher(NativeMethods.EVP_aes_192_ocb(), false);
 
         /// <summary>
         /// AES 256bits Electronic Codebook Mode
         /// </summary>
-        public static Cipher AES_256_ECB = new Cipher(NativeMethods.EVP_aes_256_ecb(), false);
+        public static readonly Cipher AES_256_ECB = new Cipher(NativeMethods.EVP_aes_256_ecb(), false);
 
         /// <summary>
         /// AES 256bits Cipher-block Chaining Mode
         /// </summary>
-        public static Cipher AES_256_CBC = new Cipher(NativeMethods.EVP_aes_256_cbc(), false);
+        public static readonly Cipher AES_256_CBC = new Cipher(NativeMethods.EVP_aes_256_cbc(), false);
 
         /// <summary>
         /// AES 256bits Cipher Feedback 1 Mode
         /// </summary>
-        public static Cipher AES_256_CFB1 = new Cipher(NativeMethods.EVP_aes_256_cfb1(), false);
+        public static readonly Cipher AES_256_CFB1 = new Cipher(NativeMethods.EVP_aes_256_cfb1(), false);
 
         /// <summary>
         /// AES 256bits Cipher Feedback 8 Mode
         /// </summary>
-        public static Cipher AES_256_CFB8 = new Cipher(NativeMethods.EVP_aes_256_cfb8(), false);
+        public static readonly Cipher AES_256_CFB8 = new Cipher(NativeMethods.EVP_aes_256_cfb8(), false);
 
         /// <summary>
         /// AES 256bits Cipher Feedback 128 Mode
         /// </summary>
-        public static Cipher AES_256_CFB128 = new Cipher(NativeMethods.EVP_aes_256_cfb128(), false);
+        public static readonly Cipher AES_256_CFB128 = new Cipher(NativeMethods.EVP_aes_256_cfb128(), false);
 
         /// <summary>
         /// AES 256bits Output Feedback Mode
         /// </summary>
-        public static Cipher AES_256_OFB = new Cipher(NativeMethods.EVP_aes_256_ofb(), false);
+        public static readonly Cipher AES_256_OFB = new Cipher(NativeMethods.EVP_aes_256_ofb(), false);
 
         /// <summary>
         /// AES 256bits Counter Mode
         /// </summary>
-        public static Cipher AES_256_CTR = new Cipher(NativeMethods.EVP_aes_256_ctr(), false);
+        public static readonly Cipher AES_256_CTR = new Cipher(NativeMethods.EVP_aes_256_ctr(), false);
 
         /// <summary>
         /// AES 256bits Counter with CBC-MAC Mode
         /// </summary>
-        public static Cipher AES_256_CCM = new Cipher(NativeMethods.EVP_aes_256_ccm(), false);
+        public static readonly Cipher AES_256_CCM = new Cipher(NativeMethods.EVP_aes_256_ccm(), false);
 
         /// <summary>
         /// AES 256bits Galois/Counter Mode
         /// </summary>
-        public static Cipher AES_256_GCM = new Cipher(NativeMethods.EVP_aes_256_gcm(), false);
+        public static readonly Cipher AES_256_GCM = new Cipher(NativeMethods.EVP_aes_256_gcm(), false);
 
         /// <summary>
         /// AES 256bits XEX-based Tweaked-codebook Mode with Ciphertext Stealing
         /// </summary>
-        public static Cipher AES_256_XTS = new Cipher(NativeMethods.EVP_aes_256_xts(), false);
+        public static readonly Cipher AES_256_XTS = new Cipher(NativeMethods.EVP_aes_256_xts(), false);
 
         /// <summary>
         /// AES 256bits Key Wrapping
         /// </summary>
-        public static Cipher AES_256_Wrap = new Cipher(NativeMethods.EVP_aes_256_wrap(), false);
+        public static readonly Cipher AES_256_Wrap = new Cipher(NativeMethods.EVP_aes_256_wrap(), false);
 
         /// <summary>
         /// AES 256bits Key Wrapping with Padding
         /// </summary>
-        public static Cipher AES_256_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_256_wrap_pad(), false);
+        public static readonly Cipher AES_256_Wrap_Pad = new Cipher(NativeMethods.EVP_aes_256_wrap_pad(), false);
 
         /// <summary>
         /// AES 256bits Offset Codebook Mode
         /// </summary>
-        public static Cipher AES_256_OCB = new Cipher(NativeMethods.EVP_aes_256_ocb(), false);
+        public static readonly Cipher AES_256_OCB = new Cipher(NativeMethods.EVP_aes_256_ocb(), false);
 
         #endregion
 

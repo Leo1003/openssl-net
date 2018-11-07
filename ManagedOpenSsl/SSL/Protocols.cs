@@ -1,4 +1,4 @@
-﻿// Copyright © Microsoft Open Technologies, Inc.
+// Copyright © Microsoft Open Technologies, Inc.
 // All Rights Reserved
 
 namespace OpenSSL
@@ -11,14 +11,14 @@ namespace OpenSSL
         /// <summary>
         /// The http2.
         /// </summary>
-        public static string Http2 = "h2-12";
+        public static readonly string Http2 = "h2-12";
         /// <summary>
         /// The http2 no tls.
         /// </summary>
-        public static string Http2NoTls = "h2c-12";
+        public static readonly string Http2NoTls = "h2c-12";
         /// <summary>
         /// The http1.
         /// </summary>
-        public static string Http1 = "http/1.1";
+        public static readonly string Http1 = "http/1.1";
     }
 }

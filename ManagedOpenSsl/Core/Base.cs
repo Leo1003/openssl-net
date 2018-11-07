@@ -142,7 +142,6 @@ namespace OpenSSL.Core
         /// <summary>
         /// Access to the raw unmanaged pointer.
         /// </summary>
-        //TODO: Test if this object was disposed
         public virtual IntPtr Handle {
             get {
                 if (isDisposed) {
