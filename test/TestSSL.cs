@@ -33,7 +33,6 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Linq;
 using NUnit.Framework;
-using OpenSSL;
 using OpenSSL.Core;
 using OpenSSL.X509;
 using OpenSSL.SSL;

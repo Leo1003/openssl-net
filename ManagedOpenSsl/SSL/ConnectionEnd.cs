@@ -1,7 +1,7 @@
 ﻿// Copyright © Microsoft Open Technologies, Inc.
 // All Rights Reserved
 
-namespace OpenSSL
+namespace OpenSSL.SSL
 {
     /// <summary>
     ///

@@ -1,7 +1,7 @@
-// Copyright © Microsoft Open Technologies, Inc.
+﻿// Copyright © Microsoft Open Technologies, Inc.
 // All Rights Reserved
 
-namespace OpenSSL
+namespace OpenSSL.SSL
 {
     /// <summary>
     /// see 12 -> 3.1.  HTTP/2 Version Identification
