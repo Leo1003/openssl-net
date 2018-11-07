@@ -58,15 +58,15 @@ namespace OpenSSL.SSL
         {
             var parts = new List<string>();
 
-            if (EnumExtensions.HasFlag(sslStrength, SslStrength.High)) {
+            if (sslStrength.HasFlag(SslStrength.High)) {
                 parts.Add("HIGH");
             }
 
-            if (EnumExtensions.HasFlag(sslStrength, SslStrength.Medium)) {
+            if (sslStrength.HasFlag(SslStrength.Medium)) {
                 parts.Add("MEDIUM");
             }
 
-            if (EnumExtensions.HasFlag(sslStrength, SslStrength.Low)) {
+            if (sslStrength.HasFlag(SslStrength.Low)) {
                 parts.Add("LOW");
             }
 
