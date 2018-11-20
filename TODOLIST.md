@@ -1,12 +1,9 @@
-- [x] Add new thread locking api
-- [ ] Add X25519 support
-- [ ] Rewrite SslStream
-- [x] Add SHA-3 support
-- [ ] Work with new SSL/TLS state machine
-- [ ] Add TLSv1.3 ciphersuites
-- [x] Add SHA512/224 and SHA512/256
-- [ ] Add pkey support
-- [x] Fix size_t problem in 32bits and 64 bits
-- [x] Check if OpenSSL will auto deinitialize in C#
-- [ ] Use SafeHandle to hold raw pointer
-- [ ] Detect if object not own by C# was freed by libopenssl
+- 0.7.0 Milestone
+    - [ ] Use SafeHandle to hold raw pointer
+    - [ ] Detect if object not managed by C# was freed by libopenssl
+    - [ ] Recheck imported functions' protocol types
+    - [ ] Add Unix & Mac support
+    - [ ] NuGet package
+- Future Milestone
+    - [ ] Rewrite SslStream
+    - [ ] Work with new SSL/TLS state machine
