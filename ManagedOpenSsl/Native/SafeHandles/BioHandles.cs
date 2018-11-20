@@ -17,4 +17,23 @@ namespace OpenSSL.Native.SafeHandles
             return true;
         }
     }
+
+    public class BioMethodHandle : OpenSslHandle
+    {
+        private BioMethodHandle() : base(IntPtr.Zero, false)
+        {
+
+        }
+
+        internal BioMethodHandle(IntPtr ptr) : base(ptr, false)
+        {
+
+        }
+
+        protected override bool ReleaseHandle()
+        {
+            //No need to free
+            return true;
+        }
+    }
 }

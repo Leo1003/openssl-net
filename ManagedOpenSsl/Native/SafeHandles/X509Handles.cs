@@ -18,6 +18,20 @@ namespace OpenSSL.Native.SafeHandles
         }
     }
 
+    public class X509CrlHandle : OpenSslHandle
+    {
+        internal X509CrlHandle(IntPtr ptr, bool ownsHandle) : base(ptr, ownsHandle)
+        {
+
+        }
+
+        protected override bool ReleaseHandle()
+        {
+            throw new NotImplementedException();
+            return true;
+        }
+    }
+
     public class X509ReqHandle : OpenSslHandle
     {
         internal X509ReqHandle(IntPtr ptr, bool ownsHandle) : base(ptr, ownsHandle)

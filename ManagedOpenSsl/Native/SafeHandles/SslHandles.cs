@@ -32,31 +32,23 @@ namespace OpenSSL.Native.SafeHandles
         }
     }
 
-    public class SslMethodHandle : OpenSslHandle
+    public class SslMethodHandle : OpenSslStaticHandle
     {
-        internal SslMethodHandle(IntPtr ptr) : base(ptr, false)
-        {
+        //Constructor for marshaling only
+        private SslMethodHandle()
+        { }
 
-        }
-
-        protected override bool ReleaseHandle()
-        {
-            //No need to free
-            return true;
-        }
+        internal SslMethodHandle(IntPtr ptr) : base(ptr)
+        { }
     }
 
-    public class SslCipher : OpenSslHandle
+    public class SslCipherHandle : OpenSslStaticHandle
     {
-        internal SslCipher(IntPtr ptr) : base(ptr, false)
-        {
+        //Constructor for marshaling only
+        private SslCipherHandle()
+        { }
 
-        }
-
-        protected override bool ReleaseHandle()
-        {
-            //No need to free
-            return true;
-        }
+        internal SslCipherHandle(IntPtr ptr) : base(ptr)
+        { }
     }
 }

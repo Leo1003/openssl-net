@@ -46,6 +46,16 @@ namespace OpenSSL.Native.SafeHandles
         }
     }
 
+    public class EcMethodHandle : OpenSslStaticHandle
+    {
+        //Constructor for marshaling only
+        private EcMethodHandle() : base(IntPtr.Zero)
+        { }
+
+        internal EcMethodHandle(IntPtr ptr) : base(ptr)
+        { }
+    }
+
     public class EcdsaSigHandle : OpenSslHandle
     {
         internal EcdsaSigHandle(IntPtr ptr, bool ownsHandle) : base(ptr, ownsHandle)

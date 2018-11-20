@@ -14,6 +14,7 @@ namespace OpenSSL.Native.SafeHandles
 
         protected override bool ReleaseHandle()
         {
+
             NativeMethods.OPENSSL_sk_free(handle);
             return true;
         }
