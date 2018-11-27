@@ -129,7 +129,7 @@ namespace OpenSSL.SSL
         {
             // SSL_CIPHERs come from a static list in ssl_ciph.c
             // Just return pointer
-            return ptr;
+            return Handle;
         }
     }
 }

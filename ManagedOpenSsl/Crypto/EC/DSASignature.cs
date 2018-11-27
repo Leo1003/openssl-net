@@ -57,7 +57,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         public BigNumber R {
             get {
-                IntPtr rptr = NativeMethods.ECDSA_SIG_get0_r(ptr);
+                IntPtr rptr = NativeMethods.ECDSA_SIG_get0_r(Handle);
                 if (rptr == IntPtr.Zero) {
                     return null;
                 }
@@ -70,7 +70,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         public BigNumber S {
             get {
-                IntPtr sptr = NativeMethods.ECDSA_SIG_get0_s(ptr);
+                IntPtr sptr = NativeMethods.ECDSA_SIG_get0_s(Handle);
                 if (sptr == IntPtr.Zero) {
                     return null;
                 }
@@ -88,7 +88,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.ECDSA_SIG_free(ptr);
+            NativeMethods.ECDSA_SIG_free(Handle);
         }
         #endregion
     }

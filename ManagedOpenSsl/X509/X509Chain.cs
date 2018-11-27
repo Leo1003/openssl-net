@@ -85,7 +85,7 @@ namespace OpenSSL.X509
         public X509Certificate FindByIssuerAndSerial(X509Name issuer, int serial)
         {
             using (var asnInt = new Asn1Integer(serial)) {
-                var ptr = NativeMethods.X509_find_by_issuer_and_serial(this.ptr, issuer.Handle, asnInt.Handle);
+                var ptr = NativeMethods.X509_find_by_issuer_and_serial(this.Handle, issuer.Handle, asnInt.Handle);
 
                 if (ptr == IntPtr.Zero)
                     return null;
@@ -106,7 +106,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public X509Certificate FindBySubject(X509Name subject)
         {
-            var ptr = NativeMethods.X509_find_by_subject(this.ptr, subject.Handle);
+            var ptr = NativeMethods.X509_find_by_subject(this.Handle, subject.Handle);
 
             if (ptr == IntPtr.Zero)
                 return null;

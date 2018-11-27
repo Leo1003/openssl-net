@@ -71,7 +71,7 @@ namespace OpenSSL.X509
             : this()
         {
             NativeMethods.X509V3_set_ctx(
-                this.ptr,
+                this.Handle,
                 issuer != null ? issuer.Handle : IntPtr.Zero,
                 subject != null ? subject.Handle : IntPtr.Zero,
                 request != null ? request.Handle : IntPtr.Zero,
@@ -89,7 +89,7 @@ namespace OpenSSL.X509
         public void SetNoDB()
         {
             var db_offset = (int)Marshal.OffsetOf(typeof(X509V3_CTX), "db");
-            var db_param = new IntPtr((int)ptr + db_offset);
+            var db_param = new IntPtr((int)Handle + db_offset);
             Marshal.WriteIntPtr(db_param, IntPtr.Zero);
         }
 
@@ -99,7 +99,7 @@ namespace OpenSSL.X509
         /// <param name="cfg"></param>
         public void SetConfiguration(Configuration cfg)
         {
-            NativeMethods.X509V3_set_nconf(ptr, cfg.Handle);
+            NativeMethods.X509V3_set_nconf(Handle, cfg.Handle);
         }
 
         #endregion
@@ -111,7 +111,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.OPENSSL_free(ptr);
+            NativeMethods.OPENSSL_free(Handle);
         }
 
         #endregion
@@ -153,7 +153,7 @@ namespace OpenSSL.X509
         public void Load(string filename)
         {
             var eline = 0;
-            NativeMethods.ExpectSuccess(NativeMethods.NCONF_load(ptr, filename, ref eline));
+            NativeMethods.ExpectSuccess(NativeMethods.NCONF_load(Handle, filename, ref eline));
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace OpenSSL.X509
             using (var ctx = new X509V3Context(issuer, subject, request)) {
                 ctx.SetConfiguration(this);
                 NativeMethods.ExpectSuccess(NativeMethods.X509V3_EXT_add_nconf(
-                    this.ptr,
+                    this.Handle,
                     ctx.Handle,
                     Encoding.ASCII.GetBytes(section),
                     subject.Handle));
@@ -189,7 +189,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.NCONF_free(ptr);
+            NativeMethods.NCONF_free(Handle);
         }
 
         #endregion

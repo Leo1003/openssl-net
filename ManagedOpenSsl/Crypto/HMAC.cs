@@ -50,13 +50,13 @@ namespace OpenSSL.Crypto
 
         public void Reset()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.HMAC_CTX_reset(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.HMAC_CTX_reset(Handle));
             initialized = false;
         }
 
         public void CopyTo(HMAC to)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.HMAC_CTX_copy(to.ptr, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.HMAC_CTX_copy(to.Handle, Handle));
             to.initialized = initialized;
         }
 
@@ -83,7 +83,7 @@ namespace OpenSSL.Crypto
         /// <param name="digest"></param>
         public void Init(byte[] key, MessageDigest digest)
         {
-            NativeMethods.HMAC_Init_ex(ptr, key, key.Length, digest.Handle, IntPtr.Zero);
+            NativeMethods.HMAC_Init_ex(Handle, key, key.Length, digest.Handle, IntPtr.Zero);
             initialized = true;
         }
 
@@ -97,7 +97,7 @@ namespace OpenSSL.Crypto
                 throw new InvalidOperationException("Failed to call Initialize before calling Update");
             }
 
-            NativeMethods.HMAC_Update(ptr, data, (UIntPtr)data.Length);
+            NativeMethods.HMAC_Update(Handle, data, (UIntPtr)data.Length);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace OpenSSL.Crypto
             }
 
             var seg = new ArraySegment<byte>(data, offset, count);
-            NativeMethods.HMAC_Update(ptr, seg.Array, (UIntPtr)seg.Count);
+            NativeMethods.HMAC_Update(Handle, seg.Array, (UIntPtr)seg.Count);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace OpenSSL.Crypto
             var hash_value = new byte[Size];
             uint hash_value_length = NativeMethods.EVP_MAX_MD_SIZE;
 
-            NativeMethods.HMAC_Final(ptr, hash_value, ref hash_value_length);
+            NativeMethods.HMAC_Final(Handle, hash_value, ref hash_value_length);
             return hash_value;
         }
 
@@ -151,7 +151,7 @@ namespace OpenSSL.Crypto
 
         public ulong Size {
             get {
-                ulong ret = NativeMethods.HMAC_size(ptr).ToUInt64();
+                ulong ret = NativeMethods.HMAC_size(Handle).ToUInt64();
                 if (ret == 0) {
                     throw new OpenSslException();
                 }
@@ -164,7 +164,7 @@ namespace OpenSSL.Crypto
                 if (!initialized) {
                     throw new InvalidOperationException("Failed to call Initialize before getting MessageDigest");
                 }
-                return new MessageDigest(NativeMethods.HMAC_CTX_get_md(ptr), false);
+                return new MessageDigest(NativeMethods.HMAC_CTX_get_md(Handle), false);
             }
         }
 
@@ -177,7 +177,7 @@ namespace OpenSSL.Crypto
         protected override void ReleaseHandle()
         {
             // Clean up the context
-            NativeMethods.HMAC_CTX_free(ptr);
+            NativeMethods.HMAC_CTX_free(Handle);
         }
         #endregion
 

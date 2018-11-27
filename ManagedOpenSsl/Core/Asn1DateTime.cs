@@ -47,16 +47,16 @@ namespace OpenSSL.Core
 
         protected override void ReleaseHandle()
         {
-            NativeMethods.ASN1_TIME_free(ptr);
+            NativeMethods.ASN1_TIME_free(Handle);
         }
 
         public DateTime DateTime {
             get {
-                return ToDateTime(ptr);
+                return ToDateTime(Handle);
             }
             set {
                 var time_t = DateTimeToTimeT(value.ToUniversalTime());
-                NativeMethods.ASN1_TIME_set(ptr, time_t);
+                NativeMethods.ASN1_TIME_set(Handle, time_t);
             }
         }
 

@@ -209,7 +209,7 @@ namespace OpenSSL.X509
             IntPtr cacerts;
 
             // Parse the PKCS12 object and get privatekey, cert, cacerts if available
-            NativeMethods.ExpectSuccess(NativeMethods.PKCS12_parse(ptr, password, out pkey, out cert, out cacerts));
+            NativeMethods.ExpectSuccess(NativeMethods.PKCS12_parse(Handle, password, out pkey, out cert, out cacerts));
 
             if (cert != IntPtr.Zero) {
                 certificate = new X509Certificate(cert, pkey);
@@ -272,7 +272,7 @@ namespace OpenSSL.X509
                 caCertificates = null;
             }
 
-            NativeMethods.PKCS12_free(ptr);
+            NativeMethods.PKCS12_free(Handle);
         }
 
         #endregion

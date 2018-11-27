@@ -60,7 +60,7 @@ namespace OpenSSL.Core
         public Asn1String(byte[] data)
             : this()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.ASN1_STRING_set(ptr, data, data.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.ASN1_STRING_set(Handle, data, data.Length));
         }
         #endregion
 
@@ -69,7 +69,7 @@ namespace OpenSSL.Core
         /// Returns ASN1_STRING_length()
         /// </summary>
         public int Length {
-            get { return NativeMethods.ASN1_STRING_length(ptr); }
+            get { return NativeMethods.ASN1_STRING_length(Handle); }
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace OpenSSL.Core
         /// </summary>
         public byte[] Data {
             get {
-                var pData = NativeMethods.ASN1_STRING_data(ptr);
+                var pData = NativeMethods.ASN1_STRING_data(Handle);
                 var ret = new byte[Length];
 
                 Marshal.Copy(pData, ret, 0, ret.Length);
@@ -94,7 +94,7 @@ namespace OpenSSL.Core
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.ASN1_STRING_free(ptr);
+            NativeMethods.ASN1_STRING_free(Handle);
         }
 
         #endregion
@@ -108,7 +108,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public int CompareTo(Asn1String other)
         {
-            return NativeMethods.ASN1_STRING_cmp(ptr, other.Handle);
+            return NativeMethods.ASN1_STRING_cmp(Handle, other.Handle);
         }
 
         #endregion

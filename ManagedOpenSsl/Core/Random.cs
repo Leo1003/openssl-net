@@ -303,8 +303,8 @@ namespace OpenSSL.Core
             /// </summary>
             public void Override()
             {
-                Marshal.StructureToPtr(raw, ptr, false);
-                NativeMethods.ExpectSuccess(NativeMethods.RAND_set_rand_method(ptr));
+                Marshal.StructureToPtr(raw, Handle, false);
+                NativeMethods.ExpectSuccess(NativeMethods.RAND_set_rand_method(Handle));
             }
 
             private void Restore()
@@ -320,7 +320,7 @@ namespace OpenSSL.Core
             protected override void ReleaseHandle()
             {
                 Restore();
-                Marshal.FreeHGlobal(ptr);
+                Marshal.FreeHGlobal(Handle);
             }
             #endregion
         };

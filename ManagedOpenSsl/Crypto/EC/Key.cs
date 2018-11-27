@@ -72,7 +72,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         /// <value>The size.</value>
         public int Size {
-            get { return NativeMethods.ECDSA_size(ptr); }
+            get { return NativeMethods.ECDSA_size(Handle); }
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         /// <value>The group.</value>
         public Group Group {
-            get { return new Group(NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_group(ptr)), false); }
-            set { NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_group(ptr, value.Handle)); }
+            get { return new Group(NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_group(Handle)), false); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_group(Handle, value.Handle)); }
         }
 
         /// <summary>
@@ -92,11 +92,11 @@ namespace OpenSSL.Crypto.EC
             get {
                 return new Point(
                     Group,
-                    NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_public_key(ptr)),
+                    NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_public_key(Handle)),
                     false);
             }
             set {
-                NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_public_key(ptr, value.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_public_key(Handle, value.Handle));
             }
         }
 
@@ -108,11 +108,11 @@ namespace OpenSSL.Crypto.EC
             get {
                 return new Point(
                     this.Group,
-                    NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_private_key(ptr)),
+                    NativeMethods.ExpectNonNull(NativeMethods.EC_KEY_get0_private_key(Handle)),
                     false);
             }
             set {
-                NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_private_key(ptr, value.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_set_private_key(Handle, value.Handle));
             }
         }
 
@@ -125,7 +125,7 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         public void GenerateKey()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_generate_key(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_generate_key(Handle));
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace OpenSSL.Crypto.EC
         /// <returns><c>true</c>, if key was checked, <c>false</c> otherwise.</returns>
         public bool CheckKey()
         {
-            return NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_check_key(ptr)) == 1;
+            return NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_check_key(Handle)) == 1;
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace OpenSSL.Crypto.EC
         /// <param name="digest">Digest.</param>
         public DSASignature Sign(byte[] digest)
         {
-            var sig = NativeMethods.ExpectNonNull(NativeMethods.ECDSA_do_sign(digest, digest.Length, ptr));
+            var sig = NativeMethods.ExpectNonNull(NativeMethods.ECDSA_do_sign(digest, digest.Length, Handle));
             return new DSASignature(sig, true);
         }
 
@@ -156,7 +156,7 @@ namespace OpenSSL.Crypto.EC
         public uint Sign(int type, byte[] digest, byte[] sig)
         {
             var siglen = (uint)sig.Length;
-            NativeMethods.ExpectSuccess(NativeMethods.ECDSA_sign(type, digest, digest.Length, sig, ref siglen, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.ECDSA_sign(type, digest, digest.Length, sig, ref siglen, Handle));
 
             return siglen;
         }
@@ -168,7 +168,7 @@ namespace OpenSSL.Crypto.EC
         /// <param name="sig">Sig.</param>
         public bool Verify(byte[] digest, DSASignature sig)
         {
-            return NativeMethods.ECDSA_do_verify(digest, digest.Length, sig.Handle, ptr) == 1;
+            return NativeMethods.ECDSA_do_verify(digest, digest.Length, sig.Handle, Handle) == 1;
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace OpenSSL.Crypto.EC
         /// <param name="sig">Sig.</param>
         public bool Verify(int type, byte[] digest, byte[] sig)
         {
-            return NativeMethods.ECDSA_verify(type, digest, digest.Length, sig, sig.Length, ptr) == 1;
+            return NativeMethods.ECDSA_verify(type, digest, digest.Length, sig, sig.Length, Handle) == 1;
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace OpenSSL.Crypto.EC
         {
             ComputeKeyThunk thunk = new ComputeKeyThunk(kdf);
             return NativeMethods.ExpectSuccess(
-                NativeMethods.ECDH_compute_key(buf, (UIntPtr)buf.Length, b.PublicKey.Handle, ptr, thunk.Wrapper)
+                NativeMethods.ECDH_compute_key(buf, (UIntPtr)buf.Length, b.PublicKey.Handle, Handle, thunk.Wrapper)
             );
         }
 
@@ -230,12 +230,12 @@ namespace OpenSSL.Crypto.EC
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.EC_KEY_free(ptr);
+            NativeMethods.EC_KEY_free(Handle);
         }
 
         internal override void AddRef()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_up_ref(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.EC_KEY_up_ref(Handle));
         }
 
         #endregion

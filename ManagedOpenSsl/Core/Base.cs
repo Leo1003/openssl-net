@@ -45,10 +45,10 @@ namespace OpenSSL.Core
         /// <param name="takeOwnership"></param>
         protected Base(IntPtr ptr, bool takeOwnership)
         {
-            this.ptr = ptr;
+            this.Handle = ptr;
             owner = takeOwnership;
-            if (this.ptr != IntPtr.Zero) {
-                OnNewHandle(this.ptr);
+            if (this.Handle != IntPtr.Zero) {
+                OnNewHandle(this.Handle);
             }
         }
 
@@ -77,7 +77,7 @@ namespace OpenSSL.Core
         public override string ToString()
         {
             try {
-                if (ptr == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                     return "(null)";
 
                 using (var bio = BIO.MemoryBuffer()) {
@@ -121,11 +121,11 @@ namespace OpenSSL.Core
                 return;
             }
 
-            if (owner && ptr != IntPtr.Zero) {
+            if (owner && Handle != IntPtr.Zero) {
                 ReleaseHandle();
             }
 
-            ptr = IntPtr.Zero;
+            Handle = IntPtr.Zero;
             isDisposed = true;
         }
 
@@ -143,18 +143,9 @@ namespace OpenSSL.Core
         /// Access to the raw unmanaged pointer.
         /// </summary>
         public virtual IntPtr Handle {
-            get {
-                if (isDisposed) {
-                    throw new ObjectDisposedException(GetType().FullName);
-                }
-                return ptr;
-            }
+            get;
+            protected set;
         }
-
-        /// <summary>
-        /// Raw unmanaged pointer
-        /// </summary>
-        protected IntPtr ptr;
 
         /// <summary>
         /// If this object is the owner, then call the appropriate native free function.

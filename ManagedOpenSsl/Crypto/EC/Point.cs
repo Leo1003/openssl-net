@@ -63,13 +63,13 @@ namespace OpenSSL.Crypto.EC
         #region Properties
         public bool IsInfinity {
             get {
-                return Convert.ToBoolean(NativeMethods.EC_POINT_is_at_infinity(group.Handle, ptr));
+                return Convert.ToBoolean(NativeMethods.EC_POINT_is_at_infinity(group.Handle, Handle));
             }
         }
 
         public bool IsOnCurve {
             get {
-                int ret = NativeMethods.EC_POINT_is_on_curve(group.Handle, ptr, IntPtr.Zero);
+                int ret = NativeMethods.EC_POINT_is_on_curve(group.Handle, Handle, IntPtr.Zero);
                 if (ret < 0) {
                     throw new OpenSslException();
                 }
@@ -84,13 +84,13 @@ namespace OpenSSL.Crypto.EC
                 c.Y = new BigNumber();
                 c.Z = new BigNumber();
                 NativeMethods.ExpectSuccess(
-                    NativeMethods.EC_POINT_get_Jprojective_coordinates_GFp(group.Handle, ptr, c.X.Handle, c.Y.Handle, c.Z.Handle, IntPtr.Zero)
+                    NativeMethods.EC_POINT_get_Jprojective_coordinates_GFp(group.Handle, Handle, c.X.Handle, c.Y.Handle, c.Z.Handle, IntPtr.Zero)
                 );
                 return c;
             }
             set {
                 NativeMethods.ExpectSuccess(
-                    NativeMethods.EC_POINT_set_Jprojective_coordinates_GFp(group.Handle, ptr, value.X.Handle, value.Y.Handle, value.Z.Handle, IntPtr.Zero)
+                    NativeMethods.EC_POINT_set_Jprojective_coordinates_GFp(group.Handle, Handle, value.X.Handle, value.Y.Handle, value.Z.Handle, IntPtr.Zero)
                 );
             }
         }
@@ -101,13 +101,13 @@ namespace OpenSSL.Crypto.EC
                 c.X = new BigNumber();
                 c.Y = new BigNumber();
                 NativeMethods.ExpectSuccess(
-                    NativeMethods.EC_POINT_get_affine_coordinates(group.Handle, ptr, c.X.Handle, c.Y.Handle, IntPtr.Zero)
+                    NativeMethods.EC_POINT_get_affine_coordinates(group.Handle, Handle, c.X.Handle, c.Y.Handle, IntPtr.Zero)
                 );
                 return c;
             }
             set {
                 NativeMethods.ExpectSuccess(
-                    NativeMethods.EC_POINT_set_affine_coordinates(group.Handle, ptr, value.X.Handle, value.Y.Handle, IntPtr.Zero)
+                    NativeMethods.EC_POINT_set_affine_coordinates(group.Handle, Handle, value.X.Handle, value.Y.Handle, IntPtr.Zero)
                 );
             }
         }
@@ -115,13 +115,13 @@ namespace OpenSSL.Crypto.EC
         public CompressedCoordinate CompressedCoordinates {
             set {
                 NativeMethods.ExpectSuccess(
-                    NativeMethods.EC_POINT_set_compressed_coordinates(group.Handle, ptr, value.X.Handle, (value.Y ? 1 : 0), IntPtr.Zero)
+                    NativeMethods.EC_POINT_set_compressed_coordinates(group.Handle, Handle, value.X.Handle, (value.Y ? 1 : 0), IntPtr.Zero)
                 );
             }
         }
 
         public Method Method {
-            get { return new Method(NativeMethods.EC_POINT_method_of(ptr), false); }
+            get { return new Method(NativeMethods.EC_POINT_method_of(Handle), false); }
         }
 
         /// <summary>
@@ -152,22 +152,22 @@ namespace OpenSSL.Crypto.EC
 
         public void MakeAffine()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_make_affine(group.Handle, ptr, IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_make_affine(group.Handle, Handle, IntPtr.Zero));
         }
 
         public void Invert()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_invert(group.Handle, ptr, IntPtr.Zero));
+            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_invert(group.Handle, Handle, IntPtr.Zero));
         }
 
         public void SetToInfinity()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_set_to_infinity(group.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_set_to_infinity(group.Handle, Handle));
         }
 
         public void CopyTo(Point to)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_copy(to.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.EC_POINT_copy(to.Handle, Handle));
         }
         #endregion
 
@@ -208,15 +208,15 @@ namespace OpenSSL.Crypto.EC
         protected override void ReleaseHandle()
         {
             if (ClearFree) {
-                NativeMethods.EC_POINT_clear_free(ptr);
+                NativeMethods.EC_POINT_clear_free(Handle);
             } else {
-                NativeMethods.EC_POINT_free(ptr);
+                NativeMethods.EC_POINT_free(Handle);
             }
         }
 
         public bool Equals(Point other)
         {
-            int ret = NativeMethods.EC_POINT_cmp(group.Handle, ptr, other.Handle, IntPtr.Zero);
+            int ret = NativeMethods.EC_POINT_cmp(group.Handle, Handle, other.Handle, IntPtr.Zero);
             if (ret < 0) {
                 throw new OpenSslException();
             }

@@ -77,7 +77,7 @@ namespace OpenSSL.Crypto
             IntPtr cbptr = (callback == null) ? IntPtr.Zero : callback.Handle;
             this.counter = counter;
             NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_parameters_ex(
-                ptr,
+                Handle,
                 bits,
                 seed, (seed != null ? seed.Length : 0),
                 out this.counter,
@@ -134,37 +134,37 @@ namespace OpenSSL.Crypto
         /// Returns the p field
         /// </summary>
         public BigNumber P {
-            get { return new BigNumber(NativeMethods.DSA_get0_p(ptr), false); }
+            get { return new BigNumber(NativeMethods.DSA_get0_p(Handle), false); }
         }
 
         /// <summary>
         /// Returns the q field
         /// </summary>
         public BigNumber Q {
-            get { return new BigNumber(NativeMethods.DSA_get0_q(ptr), false); }
+            get { return new BigNumber(NativeMethods.DSA_get0_q(Handle), false); }
         }
 
         /// <summary>
         /// Returns the g field
         /// </summary>
         public BigNumber G {
-            get { return new BigNumber(NativeMethods.DSA_get0_g(ptr), false); }
+            get { return new BigNumber(NativeMethods.DSA_get0_g(Handle), false); }
         }
 
         /// <summary>
         /// Returns DSA_size()
         /// </summary>
         public int Size {
-            get { return NativeMethods.ExpectSuccess(NativeMethods.DSA_size(ptr)); }
+            get { return NativeMethods.ExpectSuccess(NativeMethods.DSA_size(Handle)); }
         }
 
         /// <summary>
         /// Returns the pub_key field
         /// </summary>
         public BigNumber PublicKey {
-            get { return new BigNumber(NativeMethods.DSA_get0_pub_key(ptr), false); }
+            get { return new BigNumber(NativeMethods.DSA_get0_pub_key(Handle), false); }
             set {
-                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(ptr, NativeMethods.BN_dup(value.Handle), IntPtr.Zero));
+                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(Handle, NativeMethods.BN_dup(value.Handle), IntPtr.Zero));
             }
         }
 
@@ -173,13 +173,13 @@ namespace OpenSSL.Crypto
         /// </summary>
         public BigNumber PrivateKey {
             get {
-                var pKey = NativeMethods.DSA_get0_priv_key(ptr);
+                var pKey = NativeMethods.DSA_get0_priv_key(Handle);
                 if (pKey == IntPtr.Zero)
                     return null;
                 return new BigNumber(pKey, false);
             }
             set {
-                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(ptr, IntPtr.Zero, NativeMethods.BN_dup(value.Handle)));
+                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(Handle, IntPtr.Zero, NativeMethods.BN_dup(value.Handle)));
             }
         }
 
@@ -229,7 +229,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         public void GenerateKeys()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_key(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.DSA_generate_key(Handle));
         }
 
         /// <summary>
@@ -240,9 +240,9 @@ namespace OpenSSL.Crypto
         public void SetKey(BigNumber pub_key, BigNumber priv_key)
         {
             if (priv_key == null) {
-                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(ptr, NativeMethods.BN_dup(pub_key.Handle), IntPtr.Zero));
+                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(Handle, NativeMethods.BN_dup(pub_key.Handle), IntPtr.Zero));
             } else {
-                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(ptr, NativeMethods.BN_dup(pub_key.Handle), NativeMethods.BN_dup(priv_key.Handle)));
+                NativeMethods.ExpectSuccess(NativeMethods.DSA_set0_key(Handle, NativeMethods.BN_dup(pub_key.Handle), NativeMethods.BN_dup(priv_key.Handle)));
             }
         }
 
@@ -255,7 +255,7 @@ namespace OpenSSL.Crypto
         {
             var sig = new byte[Size];
             uint siglen;
-            NativeMethods.ExpectSuccess(NativeMethods.DSA_sign(0, msg, msg.Length, sig, out siglen, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.DSA_sign(0, msg, msg.Length, sig, out siglen, Handle));
 
             if (sig.Length != siglen) {
                 var ret = new byte[siglen];
@@ -275,7 +275,7 @@ namespace OpenSSL.Crypto
         public bool Verify(byte[] msg, byte[] sig)
         {
             return NativeMethods.ExpectSuccess(
-                NativeMethods.DSA_verify(0, msg, msg.Length, sig, sig.Length, ptr)
+                NativeMethods.DSA_verify(0, msg, msg.Length, sig, sig.Length, Handle)
             ) == 1;
         }
 
@@ -285,7 +285,7 @@ namespace OpenSSL.Crypto
         /// <param name="bio"></param>
         public void WritePublicKey(BIO bio)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_DSA_PUBKEY(bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_DSA_PUBKEY(bio.Handle, Handle));
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace OpenSSL.Crypto
 
             NativeMethods.ExpectSuccess(NativeMethods.PEM_write_bio_DSAPrivateKey(
                 bio.Handle,
-                ptr,
+                Handle,
                 enc == null ? IntPtr.Zero : enc.Handle,
                 null,
                 0,
@@ -319,7 +319,7 @@ namespace OpenSSL.Crypto
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.DSA_print(bio.Handle, ptr, 0));
+            NativeMethods.ExpectSuccess(NativeMethods.DSA_print(bio.Handle, Handle, 0));
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.DSA_free(ptr);
+            NativeMethods.DSA_free(Handle);
         }
 
         /// <summary>
@@ -383,7 +383,7 @@ namespace OpenSSL.Crypto
 
         internal override void AddRef()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.DSA_up_ref(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.DSA_up_ref(Handle));
         }
 
         #endregion

@@ -63,7 +63,7 @@ namespace OpenSSL.Crypto.EC
         /// Returns EC_METHOD_get_field_type()
         /// </summary>
         public int FieldType {
-            get { return NativeMethods.EC_METHOD_get_field_type(ptr); }
+            get { return NativeMethods.EC_METHOD_get_field_type(Handle); }
         }
         #endregion
 

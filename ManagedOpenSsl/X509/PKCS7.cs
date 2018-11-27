@@ -173,7 +173,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.PKCS7_free(ptr);
+            NativeMethods.PKCS7_free(Handle);
         }
 
         internal override void OnNewHandle(IntPtr ptr)

@@ -82,12 +82,12 @@ namespace OpenSSL.X509
 
         internal override void OnNewHandle(IntPtr ptr)
         {
-            raw = (X509_INFO)Marshal.PtrToStructure(this.ptr, typeof(X509_INFO));
+            raw = (X509_INFO)Marshal.PtrToStructure(this.Handle, typeof(X509_INFO));
         }
 
         protected override void ReleaseHandle()
         {
-            NativeMethods.X509_INFO_free(ptr);
+            NativeMethods.X509_INFO_free(Handle);
         }
 
         public IntPtr GetPushHandle()

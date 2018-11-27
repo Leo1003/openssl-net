@@ -497,28 +497,28 @@ namespace OpenSSL.Crypto
         /// Returns the key_len field
         /// </summary>
         public int KeyLength {
-            get { return NativeMethods.EVP_CIPHER_key_length(ptr); }
+            get { return NativeMethods.EVP_CIPHER_key_length(Handle); }
         }
 
         /// <summary>
         /// Returns the iv_len field
         /// </summary>
         public int IVLength {
-            get { return NativeMethods.EVP_CIPHER_iv_length(ptr); }
+            get { return NativeMethods.EVP_CIPHER_iv_length(Handle); }
         }
 
         /// <summary>
         /// Returns the block_size field
         /// </summary>
         public int BlockSize {
-            get { return NativeMethods.EVP_CIPHER_block_size(ptr); }
+            get { return NativeMethods.EVP_CIPHER_block_size(Handle); }
         }
 
         /// <summary>
         /// Returns the flags field
         /// </summary>
         public EVP_CIPH Flags {
-            get { return (EVP_CIPH)NativeMethods.EVP_CIPHER_flags(ptr); }
+            get { return (EVP_CIPH)NativeMethods.EVP_CIPHER_flags(Handle); }
         }
 
         public EVP_CIPH Mode {
@@ -531,21 +531,21 @@ namespace OpenSSL.Crypto
         /// Returns the long name for the nid field using OBJ_nid2ln()
         /// </summary>
         public string LongName {
-            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2ln(NativeMethods.EVP_CIPHER_nid(ptr))); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2ln(NativeMethods.EVP_CIPHER_nid(Handle))); }
         }
 
         /// <summary>
         /// Returns the name for the nid field using OBJ_nid2sn()
         /// </summary>
         public string Name {
-            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2sn(NativeMethods.EVP_CIPHER_nid(ptr))); }
+            get { return NativeMethods.StaticString(NativeMethods.OBJ_nid2sn(NativeMethods.EVP_CIPHER_nid(Handle))); }
         }
 
         /// <summary>
         /// Returns EVP_CIPHER_type()
         /// </summary>
         public int Type {
-            get { return NativeMethods.EVP_CIPHER_type(ptr); }
+            get { return NativeMethods.EVP_CIPHER_type(Handle); }
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace OpenSSL.Crypto
         public CipherContext(Cipher cipher)
             : base(NativeMethods.EVP_CIPHER_CTX_new(), true)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_reset(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_reset(Handle));
             this.Cipher = cipher;
         }
 
@@ -617,16 +617,16 @@ namespace OpenSSL.Crypto
         public byte[] Open(byte[] input, byte[] ekey, byte[] iv, CryptoKey pkey)
         {
             NativeMethods.ExpectSuccess(NativeMethods.EVP_OpenInit(
-                ptr, Cipher.Handle, ekey, ekey.Length, iv, pkey.Handle));
+                Handle, Cipher.Handle, ekey, ekey.Length, iv, pkey.Handle));
 
             var memory = new MemoryStream();
             var output = new byte[input.Length + Cipher.BlockSize];
             int len;
 
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_DecryptUpdate(ptr, output, out len, input, input.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_DecryptUpdate(Handle, output, out len, input, input.Length));
             memory.Write(output, 0, len);
 
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_OpenFinal(ptr, output, out len));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_OpenFinal(Handle, output, out len));
             memory.Write(output, 0, len);
 
             return memory.ToArray();
@@ -659,7 +659,7 @@ namespace OpenSSL.Crypto
                 }
 
                 NativeMethods.ExpectSuccess(NativeMethods.EVP_SealInit(
-                    ptr, Cipher.Handle, ptrs, ekeylens, env.IV, pubkeys, pubkeys.Length));
+                    Handle, Cipher.Handle, ptrs, ekeylens, env.IV, pubkeys, pubkeys.Length));
 
                 for (var i = 0; i < pkeys.Length; i++) {
                     env.Keys[i] = new byte[ekeylens[i]];
@@ -670,10 +670,10 @@ namespace OpenSSL.Crypto
                 var output = new byte[input.Length + Cipher.BlockSize];
 
                 int len;
-                NativeMethods.ExpectSuccess(NativeMethods.EVP_EncryptUpdate(ptr, output, out len, input, input.Length));
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_EncryptUpdate(Handle, output, out len, input, input.Length));
                 memory.Write(output, 0, len);
 
-                NativeMethods.ExpectSuccess(NativeMethods.EVP_SealFinal(ptr, output, out len));
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_SealFinal(Handle, output, out len));
                 memory.Write(output, 0, len);
 
                 env.Data = memory.ToArray();
@@ -752,9 +752,9 @@ namespace OpenSSL.Crypto
             var memory = new MemoryStream(total);
 
             NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
-                ptr, Cipher.Handle, IntPtr.Zero, null, null, enc));
+                Handle, Cipher.Handle, IntPtr.Zero, null, null, enc));
 
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_set_key_length(ptr, real_key.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_set_key_length(Handle, real_key.Length));
 
             if (IsStream) {
                 for (int i = 0; i < Math.Min(real_key.Length, iv.Length); i++) {
@@ -762,22 +762,22 @@ namespace OpenSSL.Crypto
                 }
 
                 NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
-                    ptr, Cipher.Handle, IntPtr.Zero, real_key, null, enc));
+                    Handle, Cipher.Handle, IntPtr.Zero, real_key, null, enc));
             } else {
                 NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherInit_ex(
-                    ptr, Cipher.Handle, IntPtr.Zero, real_key, real_iv, enc));
+                    Handle, Cipher.Handle, IntPtr.Zero, real_key, real_iv, enc));
             }
 
             if (padding >= 0)
-                NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_set_padding(ptr, padding));
+                NativeMethods.ExpectSuccess(NativeMethods.EVP_CIPHER_CTX_set_padding(Handle, padding));
 
             var len = 0;
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherUpdate(ptr, buf, out len, input, input.Length));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherUpdate(Handle, buf, out len, input, input.Length));
 
             memory.Write(buf, 0, len);
 
             len = buf.Length;
-            NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherFinal_ex(ptr, buf, ref len));
+            NativeMethods.ExpectSuccess(NativeMethods.EVP_CipherFinal_ex(Handle, buf, ref len));
 
             memory.Write(buf, 0, len);
 
@@ -895,7 +895,7 @@ namespace OpenSSL.Crypto
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.EVP_CIPHER_CTX_free(ptr);
+            NativeMethods.EVP_CIPHER_CTX_free(Handle);
         }
 
         #endregion

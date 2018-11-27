@@ -54,7 +54,7 @@ namespace OpenSSL.X509
 
         public X509_LookupType Type {
             get {
-                return NativeMethods.X509_OBJECT_get_type(ptr);
+                return NativeMethods.X509_OBJECT_get_type(Handle);
             }
         }
 
@@ -63,14 +63,14 @@ namespace OpenSSL.X509
         /// </summary>
         public X509Certificate Certificate {
             get {
-                IntPtr retptr = NativeMethods.X509_OBJECT_get0_X509(ptr);
+                IntPtr retptr = NativeMethods.X509_OBJECT_get0_X509(Handle);
                 if (retptr == IntPtr.Zero)
                     return null;
                 else
                     return new X509Certificate(retptr, false);
             }
             set {
-                NativeMethods.ExpectSuccess(NativeMethods.X509_OBJECT_set1_X509(ptr, value.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.X509_OBJECT_set1_X509(Handle, value.Handle));
             }
         }
 
@@ -85,7 +85,7 @@ namespace OpenSSL.X509
         /// </summary>
         internal override void AddRef()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.X509_OBJECT_up_ref_count(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.X509_OBJECT_up_ref_count(Handle));
         }
 
         /// <summary>
@@ -93,13 +93,13 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.X509_OBJECT_free(ptr);
+            NativeMethods.X509_OBJECT_free(Handle);
         }
 
         public IntPtr GetPushHandle()
         {
             AddRef();
-            return ptr;
+            return Handle;
         }
 
         #endregion

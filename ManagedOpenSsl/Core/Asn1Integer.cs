@@ -46,12 +46,12 @@ namespace OpenSSL.Core
 
         protected override void ReleaseHandle()
         {
-            NativeMethods.ASN1_INTEGER_free(ptr);
+            NativeMethods.ASN1_INTEGER_free(Handle);
         }
 
         public int Value {
-            get { return NativeMethods.ASN1_INTEGER_get(ptr); }
-            set { NativeMethods.ExpectSuccess(NativeMethods.ASN1_INTEGER_set(ptr, value)); }
+            get { return NativeMethods.ASN1_INTEGER_get(Handle); }
+            set { NativeMethods.ExpectSuccess(NativeMethods.ASN1_INTEGER_set(Handle, value)); }
         }
 
         public static int ToInt32(IntPtr ptr)

@@ -60,7 +60,7 @@ namespace OpenSSL.X509
             : base(IntPtr.Zero, true)
         {
             using (var ctx = new X509V3Context(issuer, subject, null)) {
-                ptr = NativeMethods.ExpectNonNull(NativeMethods.X509V3_EXT_conf_nid(IntPtr.Zero, ctx.Handle, NativeMethods.TextToNID(name), value));
+                Handle = NativeMethods.ExpectNonNull(NativeMethods.X509V3_EXT_conf_nid(IntPtr.Zero, ctx.Handle, NativeMethods.TextToNID(name), value));
             }
         }
 
@@ -81,7 +81,7 @@ namespace OpenSSL.X509
         public int NID {
             get {
                 // Don't free the obj_ptr
-                var obj_ptr = NativeMethods.X509_EXTENSION_get_object(ptr);
+                var obj_ptr = NativeMethods.X509_EXTENSION_get_object(Handle);
 
                 if (obj_ptr != IntPtr.Zero)
                     return NativeMethods.OBJ_obj2nid(obj_ptr);
@@ -95,7 +95,7 @@ namespace OpenSSL.X509
         /// </summary>
         public bool IsCritical {
             get {
-                var nCritical = NativeMethods.X509_EXTENSION_get_critical(ptr);
+                var nCritical = NativeMethods.X509_EXTENSION_get_critical(Handle);
                 return (nCritical == 1);
             }
         }
@@ -105,7 +105,7 @@ namespace OpenSSL.X509
         /// </summary>
         public byte[] Data {
             get {
-                using (var str = new Asn1String(NativeMethods.X509_EXTENSION_get_data(ptr), false)) {
+                using (var str = new Asn1String(NativeMethods.X509_EXTENSION_get_data(Handle), false)) {
                     return str.Data;
                 }
             }
@@ -120,7 +120,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.X509_EXTENSION_free(ptr);
+            NativeMethods.X509_EXTENSION_free(Handle);
         }
 
         /// <summary>
@@ -129,12 +129,12 @@ namespace OpenSSL.X509
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.X509V3_EXT_print(bio.Handle, ptr, 0, 0));
+            NativeMethods.ExpectSuccess(NativeMethods.X509V3_EXT_print(bio.Handle, Handle, 0, 0));
         }
 
         public IntPtr GetPushHandle()
         {
-            return NativeMethods.X509_EXTENSION_dup(ptr);
+            return NativeMethods.X509_EXTENSION_dup(Handle);
         }
 
         #endregion

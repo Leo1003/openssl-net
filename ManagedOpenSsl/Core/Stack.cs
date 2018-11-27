@@ -70,7 +70,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public T Shift()
         {
-            IntPtr ptr = NativeMethods.OPENSSL_sk_shift(this.ptr);
+            IntPtr ptr = NativeMethods.OPENSSL_sk_shift(this.Handle);
             return CreateInstance(ptr, true);
         }
 
@@ -82,7 +82,7 @@ namespace OpenSSL.Core
         internal Stack<T> GetCopy(bool takeOwnership)
         {
             return new Stack<T>(NativeMethods.ExpectNonNull(
-                NativeMethods.OPENSSL_sk_deep_copy(ptr, CopyPointer, FreePointer)
+                NativeMethods.OPENSSL_sk_deep_copy(Handle, CopyPointer, FreePointer)
             ), takeOwnership);
         }
 
@@ -150,7 +150,7 @@ namespace OpenSSL.Core
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.OPENSSL_sk_pop_free(ptr, FreePointer);
+            NativeMethods.OPENSSL_sk_pop_free(Handle, FreePointer);
         }
 
         #endregion
@@ -164,7 +164,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public int IndexOf(T item)
         {
-            return NativeMethods.OPENSSL_sk_find(ptr, item.Handle);
+            return NativeMethods.OPENSSL_sk_find(Handle, item.Handle);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace OpenSSL.Core
         public void Insert(int index, T item)
         {
             // Insert the item into the stack
-            NativeMethods.ExpectSuccess(NativeMethods.OPENSSL_sk_insert(ptr, item.GetPushHandle(), index));
+            NativeMethods.ExpectSuccess(NativeMethods.OPENSSL_sk_insert(Handle, item.GetPushHandle(), index));
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace OpenSSL.Core
         /// <param name="index"></param>
         public void RemoveAt(int index)
         {
-            IntPtr old_ptr = NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_delete(ptr, index));
+            IntPtr old_ptr = NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_delete(Handle, index));
             FreePointer(old_ptr);
         }
 
@@ -196,7 +196,7 @@ namespace OpenSSL.Core
         public T this[int index] {
             get {
                 // Get the native pointer from the stack
-                var ptr = NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_value(this.ptr, index));
+                var ptr = NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_value(this.Handle, index));
 
                 // Create a new object
                 var item = CreateInstance(ptr, false);
@@ -206,11 +206,11 @@ namespace OpenSSL.Core
             }
             set {
                 // Change the item in the stack
-                IntPtr old_ptr = NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_value(ptr, index));
+                IntPtr old_ptr = NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_value(Handle, index));
                 FreePointer(old_ptr);
 
                 IntPtr v_ptr = value.GetPushHandle();
-                NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_set(ptr, index, v_ptr));
+                NativeMethods.ExpectNonNull(NativeMethods.OPENSSL_sk_set(Handle, index, v_ptr));
             }
         }
 
@@ -225,7 +225,7 @@ namespace OpenSSL.Core
         public void Add(T item)
         {
             // Add the item to the stack
-            if (NativeMethods.OPENSSL_sk_push(ptr, item.GetPushHandle()) <= 0)
+            if (NativeMethods.OPENSSL_sk_push(Handle, item.GetPushHandle()) <= 0)
                 throw new OpenSslException();
         }
 
@@ -234,11 +234,11 @@ namespace OpenSSL.Core
         /// </summary>
         public void Clear()
         {
-            var value_ptr = NativeMethods.OPENSSL_sk_shift(ptr);
+            var value_ptr = NativeMethods.OPENSSL_sk_shift(Handle);
 
             while (value_ptr != IntPtr.Zero) {
                 FreePointer(value_ptr);
-                value_ptr = NativeMethods.OPENSSL_sk_shift(ptr);
+                value_ptr = NativeMethods.OPENSSL_sk_shift(Handle);
             }
         }
 
@@ -271,10 +271,10 @@ namespace OpenSSL.Core
         /// </summary>
         public int Count {
             get {
-                if (ptr == IntPtr.Zero) {
+                if (Handle == IntPtr.Zero) {
                     throw new InvalidOperationException("Invalid stack pointer");
                 }
-                return NativeMethods.OPENSSL_sk_num(ptr);
+                return NativeMethods.OPENSSL_sk_num(Handle);
             }
         }
 
@@ -292,7 +292,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public bool Remove(T item)
         {
-            var ptr = NativeMethods.OPENSSL_sk_delete_ptr(this.ptr, item.Handle);
+            var ptr = NativeMethods.OPENSSL_sk_delete_ptr(this.Handle, item.Handle);
 
             if (ptr != IntPtr.Zero) {
                 FreePointer(ptr);

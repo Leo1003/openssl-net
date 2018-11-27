@@ -83,7 +83,7 @@ namespace OpenSSL.X509
         /// </summary>
         public Core.Stack<X509Object> Objects {
             get {
-                return new Core.Stack<X509Object>(NativeMethods.X509_STORE_get0_objects(ptr), false);
+                return new Core.Stack<X509Object>(NativeMethods.X509_STORE_get0_objects(Handle), false);
             }
         }
 
@@ -138,7 +138,7 @@ namespace OpenSSL.X509
         public void AddTrusted(X509Certificate cert)
         {
             // Don't Addref here -- X509_STORE_add_cert increases the refcount of the certificate pointer
-            NativeMethods.ExpectSuccess(NativeMethods.X509_STORE_add_cert(ptr, cert.Handle));
+            NativeMethods.ExpectSuccess(NativeMethods.X509_STORE_add_cert(Handle, cert.Handle));
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.X509_STORE_free(ptr);
+            NativeMethods.X509_STORE_free(Handle);
             if (untrusted != null) {
                 untrusted.Dispose();
                 untrusted = null;
@@ -168,7 +168,7 @@ namespace OpenSSL.X509
 
         internal override void AddRef()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.X509_STORE_up_ref(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.X509_STORE_up_ref(Handle));
         }
 
         #endregion

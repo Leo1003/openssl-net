@@ -85,19 +85,19 @@ namespace OpenSSL.SSL
         }
 
         internal Core.Stack<X509Name> CAList {
-            get { return new Core.Stack<X509Name>(NativeMethods.SSL_get_client_CA_list(ptr), false); }
-            set { NativeMethods.SSL_set_client_CA_list(ptr, value.Handle); }
+            get { return new Core.Stack<X509Name>(NativeMethods.SSL_get_client_CA_list(Handle), false); }
+            set { NativeMethods.SSL_set_client_CA_list(Handle, value.Handle); }
         }
 
         internal X509Certificate LocalCertificate {
             get {
-                var cert = NativeMethods.SSL_get_certificate(ptr);
+                var cert = NativeMethods.SSL_get_certificate(Handle);
                 if (cert == IntPtr.Zero)
                     return null;
                 return new X509Certificate(cert, false);
             }
             set {
-                NativeMethods.ExpectSuccess(NativeMethods.SSL_use_certificate(ptr, value.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.SSL_use_certificate(Handle, value.Handle));
             }
         }
 
@@ -115,22 +115,22 @@ namespace OpenSSL.SSL
 
         internal int Accept()
         {
-            return NativeMethods.SSL_accept(ptr);
+            return NativeMethods.SSL_accept(Handle);
         }
 
         internal int Connect()
         {
-            return NativeMethods.SSL_connect(ptr);
+            return NativeMethods.SSL_connect(Handle);
         }
 
         internal SslError GetError(int ret_code)
         {
-            return (SslError)NativeMethods.SSL_get_error(ptr, ret_code);
+            return (SslError)NativeMethods.SSL_get_error(Handle, ret_code);
         }
 
         internal X509Certificate GetPeerCertificate()
         {
-            var cert = NativeMethods.SSL_get_peer_certificate(ptr);
+            var cert = NativeMethods.SSL_get_peer_certificate(Handle);
             if (cert == IntPtr.Zero)
                 return null;
             return new X509Certificate(cert, true);
@@ -138,72 +138,72 @@ namespace OpenSSL.SSL
 
         internal VerifyResult GetVerifyResult()
         {
-            return (VerifyResult)NativeMethods.SSL_get_verify_result(ptr);
+            return (VerifyResult)NativeMethods.SSL_get_verify_result(Handle);
         }
 
         internal void SetVerifyResult(VerifyResult result)
         {
-            NativeMethods.SSL_set_verify_result(ptr, (int)result);
+            NativeMethods.SSL_set_verify_result(Handle, (int)result);
         }
 
         internal int Shutdown()
         {
-            return NativeMethods.SSL_shutdown(ptr);
+            return NativeMethods.SSL_shutdown(Handle);
         }
 
         internal int Write(byte[] buf, int len)
         {
-            return NativeMethods.SSL_write(ptr, buf, len);
+            return NativeMethods.SSL_write(Handle, buf, len);
         }
 
         internal int Read(byte[] buf, int len)
         {
-            return NativeMethods.SSL_read(ptr, buf, len);
+            return NativeMethods.SSL_read(Handle, buf, len);
         }
 
         internal int SetSessionIdContext(byte[] sid_ctx, uint sid_ctx_len)
         {
-            return NativeMethods.ExpectSuccess(NativeMethods.SSL_set_session_id_context(ptr, sid_ctx, sid_ctx_len));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_set_session_id_context(Handle, sid_ctx, sid_ctx_len));
         }
 
         internal int Renegotiate()
         {
-            return NativeMethods.ExpectSuccess(NativeMethods.SSL_renegotiate(ptr));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_renegotiate(Handle));
         }
 
         internal int DoHandshake()
         {
-            return NativeMethods.SSL_do_handshake(ptr);
+            return NativeMethods.SSL_do_handshake(Handle);
         }
 
         internal void SetAcceptState()
         {
-            NativeMethods.SSL_set_accept_state(ptr);
+            NativeMethods.SSL_set_accept_state(Handle);
         }
 
         internal void SetConnectState()
         {
-            NativeMethods.SSL_set_connect_state(ptr);
+            NativeMethods.SSL_set_connect_state(Handle);
         }
 
         internal void SetBIO(BIO read, BIO write)
         {
-            NativeMethods.SSL_set_bio(ptr, read.Handle, write.Handle);
+            NativeMethods.SSL_set_bio(Handle, read.Handle, write.Handle);
         }
 
         internal int UseCertificateFile(string filename, SslFileType type)
         {
-            return NativeMethods.ExpectSuccess(NativeMethods.SSL_use_certificate_file(ptr, filename, (int)type));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_use_certificate_file(Handle, filename, (int)type));
         }
 
         internal int UsePrivateKeyFile(string filename, SslFileType type)
         {
-            return NativeMethods.ExpectSuccess(NativeMethods.SSL_use_PrivateKey_file(ptr, filename, (int)type));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_use_PrivateKey_file(Handle, filename, (int)type));
         }
 
         internal int Clear()
         {
-            return NativeMethods.ExpectSuccess(NativeMethods.SSL_clear(ptr));
+            return NativeMethods.ExpectSuccess(NativeMethods.SSL_clear(Handle));
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace OpenSSL.SSL
 
         internal override void AddRef()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.SSL_up_ref(ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.SSL_up_ref(Handle));
         }
 
         #endregion

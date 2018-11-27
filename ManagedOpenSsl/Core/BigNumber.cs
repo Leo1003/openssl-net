@@ -63,7 +63,7 @@ namespace OpenSSL.Core
         /// </summary>
         /// <param name="rhs"></param>
         public BigNumber(BigNumber rhs)
-            : base(NativeMethods.BN_dup(rhs.ptr), true)
+            : base(NativeMethods.BN_dup(rhs.Handle), true)
         {
         }
 
@@ -74,7 +74,7 @@ namespace OpenSSL.Core
         public BigNumber(uint value)
             : this()
         {
-            NativeMethods.ExpectSuccess(NativeMethods.BN_set_word(ptr, value));
+            NativeMethods.ExpectSuccess(NativeMethods.BN_set_word(Handle, value));
         }
         #endregion
 
@@ -130,7 +130,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public string ToDecimalString()
         {
-            return NativeMethods.PtrToStringAnsi(NativeMethods.BN_bn2dec(ptr), true);
+            return NativeMethods.PtrToStringAnsi(NativeMethods.BN_bn2dec(Handle), true);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public string ToHexString()
         {
-            return NativeMethods.PtrToStringAnsi(NativeMethods.BN_bn2hex(ptr), true);
+            return NativeMethods.PtrToStringAnsi(NativeMethods.BN_bn2hex(Handle), true);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public static implicit operator uint(BigNumber rhs)
         {
-            return NativeMethods.BN_get_word(rhs.ptr);
+            return NativeMethods.BN_get_word(rhs.Handle);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace OpenSSL.Core
         public static implicit operator byte[] (BigNumber rhs)
         {
             var bytes = new byte[rhs.Bytes];
-            NativeMethods.ExpectSuccess(NativeMethods.BN_bn2bin(rhs.ptr, bytes));
+            NativeMethods.ExpectSuccess(NativeMethods.BN_bn2bin(rhs.Handle, bytes));
 
             return bytes;
         }
@@ -181,7 +181,7 @@ namespace OpenSSL.Core
         /// <param name="bytes"></param>
         public void ToBytes(byte[] bytes)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.BN_bn2bin(ptr, bytes));
+            NativeMethods.ExpectSuccess(NativeMethods.BN_bn2bin(Handle, bytes));
         }
 
         #endregion
@@ -191,7 +191,7 @@ namespace OpenSSL.Core
         /// Returns BN_num_bits()
         /// </summary>
         public int Bits {
-            get { return NativeMethods.BN_num_bits(ptr); }
+            get { return NativeMethods.BN_num_bits(Handle); }
         }
 
         /// <summary>
@@ -202,19 +202,19 @@ namespace OpenSSL.Core
         }
 
         public bool IsZero {
-            get { return Convert.ToBoolean(NativeMethods.BN_is_zero(ptr)); }
+            get { return Convert.ToBoolean(NativeMethods.BN_is_zero(Handle)); }
         }
 
         public bool IsOne {
-            get { return Convert.ToBoolean(NativeMethods.BN_is_one(ptr)); }
+            get { return Convert.ToBoolean(NativeMethods.BN_is_one(Handle)); }
         }
 
         public bool IsOdd {
-            get { return Convert.ToBoolean(NativeMethods.BN_is_odd(ptr)); }
+            get { return Convert.ToBoolean(NativeMethods.BN_is_odd(Handle)); }
         }
 
         public bool IsNegative {
-            get { return Convert.ToBoolean(NativeMethods.BN_is_negative(ptr)); }
+            get { return Convert.ToBoolean(NativeMethods.BN_is_negative(Handle)); }
         }
         #endregion
 
@@ -224,12 +224,12 @@ namespace OpenSSL.Core
         /// </summary>
         public void Clear()
         {
-            NativeMethods.BN_clear(ptr);
+            NativeMethods.BN_clear(Handle);
         }
 
         public void CopyTo(BigNumber to)
         {
-            NativeMethods.ExpectNonNull(NativeMethods.BN_copy(to.Handle, ptr));
+            NativeMethods.ExpectNonNull(NativeMethods.BN_copy(to.Handle, Handle));
         }
 
         public static void Swap(BigNumber a, BigNumber b)
@@ -303,7 +303,7 @@ namespace OpenSSL.Core
         public bool IsPrime(int ncheck = 0, GeneratorCallback callback = null)
         {
             IntPtr cbptr = (callback != null ? callback.Handle : IntPtr.Zero);
-            int ret = NativeMethods.BN_is_prime_ex(ptr, ncheck, IntPtr.Zero, cbptr);
+            int ret = NativeMethods.BN_is_prime_ex(Handle, ncheck, IntPtr.Zero, cbptr);
             if (ret < 0) {
                 throw new OpenSslException();
             }
@@ -314,7 +314,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_sqr(ret.Handle, ptr, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_sqr(ret.Handle, Handle, ctx.Handle));
             }
             return ret;
         }
@@ -323,7 +323,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_gcd(ret.Handle, ptr, b.Handle, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_gcd(ret.Handle, Handle, b.Handle, ctx.Handle));
             }
             return ret;
         }
@@ -332,7 +332,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_nnmod(ret.Handle, ptr, m.Handle, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_nnmod(ret.Handle, Handle, m.Handle, ctx.Handle));
             }
             return ret;
         }
@@ -341,7 +341,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_add(ret.Handle, ptr, b.Handle, m.Handle, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_add(ret.Handle, Handle, b.Handle, m.Handle, ctx.Handle));
             }
             return ret;
         }
@@ -350,7 +350,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_sub(ret.Handle, ptr, b.Handle, m.Handle, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_sub(ret.Handle, Handle, b.Handle, m.Handle, ctx.Handle));
             }
             return ret;
         }
@@ -359,7 +359,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_mul(ret.Handle, ptr, b.Handle, m.Handle, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_mul(ret.Handle, Handle, b.Handle, m.Handle, ctx.Handle));
             }
             return ret;
         }
@@ -368,7 +368,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_sqr(ret.Handle, ptr, m.Handle, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_sqr(ret.Handle, Handle, m.Handle, ctx.Handle));
             }
             return ret;
         }
@@ -377,7 +377,7 @@ namespace OpenSSL.Core
         {
             var ret = new BigNumber();
             using (Context ctx = new Context()) {
-                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_exp(ret.Handle, ptr, p.Handle, m.Handle, ctx.Handle));
+                NativeMethods.ExpectSuccess(NativeMethods.BN_mod_exp(ret.Handle, Handle, p.Handle, m.Handle, ctx.Handle));
             }
             return ret;
         }
@@ -606,7 +606,7 @@ namespace OpenSSL.Core
             if ((object)rhs == null)
                 return false;
 
-            return NativeMethods.BN_cmp(ptr, rhs.ptr) == 0;
+            return NativeMethods.BN_cmp(Handle, rhs.Handle) == 0;
         }
 
         /// <summary>
@@ -625,7 +625,7 @@ namespace OpenSSL.Core
         /// <param name="bio"></param>
         public override void Print(BIO bio)
         {
-            NativeMethods.ExpectSuccess(NativeMethods.BN_print(bio.Handle, ptr));
+            NativeMethods.ExpectSuccess(NativeMethods.BN_print(bio.Handle, Handle));
         }
         #endregion
 
@@ -636,7 +636,7 @@ namespace OpenSSL.Core
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.BN_free(ptr);
+            NativeMethods.BN_free(Handle);
         }
 
         #endregion
@@ -650,7 +650,7 @@ namespace OpenSSL.Core
         /// <returns></returns>
         public int CompareTo(BigNumber other)
         {
-            return NativeMethods.BN_cmp(ptr, other.ptr);
+            return NativeMethods.BN_cmp(Handle, other.Handle);
         }
 
         #endregion
@@ -683,7 +683,7 @@ namespace OpenSSL.Core
                 callback = handler;
                 this.arg = arg;
                 native_callback = new NativeMethods.GeneratorHandler(OnGeneratorThunk);
-                NativeMethods.BN_GENCB_set(ptr, native_callback, IntPtr.Zero);
+                NativeMethods.BN_GENCB_set(Handle, native_callback, IntPtr.Zero);
             }
 
             public void SetCallback(GeneratorHandler handler)
@@ -717,7 +717,7 @@ namespace OpenSSL.Core
 
             protected override void ReleaseHandle()
             {
-                NativeMethods.BN_GENCB_free(ptr);
+                NativeMethods.BN_GENCB_free(Handle);
             }
         }
 
@@ -741,7 +741,7 @@ namespace OpenSSL.Core
             /// Returns BN_CTX_get()
             /// </summary>
             public BigNumber BigNumber {
-                get { return new BigNumber(NativeMethods.ExpectNonNull(NativeMethods.BN_CTX_get(ptr)), false); }
+                get { return new BigNumber(NativeMethods.ExpectNonNull(NativeMethods.BN_CTX_get(Handle)), false); }
             }
 
             /// <summary>
@@ -749,7 +749,7 @@ namespace OpenSSL.Core
             /// </summary>
             public void Start()
             {
-                NativeMethods.BN_CTX_start(ptr);
+                NativeMethods.BN_CTX_start(Handle);
             }
 
             /// <summary>
@@ -757,7 +757,7 @@ namespace OpenSSL.Core
             /// </summary>
             public void End()
             {
-                NativeMethods.BN_CTX_end(ptr);
+                NativeMethods.BN_CTX_end(Handle);
             }
 
             /// <summary>
@@ -765,7 +765,7 @@ namespace OpenSSL.Core
             /// </summary>
             protected override void ReleaseHandle()
             {
-                NativeMethods.BN_CTX_free(ptr);
+                NativeMethods.BN_CTX_free(Handle);
             }
         }
         #endregion

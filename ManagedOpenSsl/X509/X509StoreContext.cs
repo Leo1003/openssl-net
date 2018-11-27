@@ -57,7 +57,7 @@ namespace OpenSSL.X509
         /// </summary>
         public X509Certificate CurrentCert {
             get {
-                var cert = NativeMethods.X509_STORE_CTX_get_current_cert(ptr);
+                var cert = NativeMethods.X509_STORE_CTX_get_current_cert(Handle);
                 return new X509Certificate(cert, false);
             }
         }
@@ -66,15 +66,15 @@ namespace OpenSSL.X509
         /// Returns X509_STORE_CTX_get_error_depth()
         /// </summary>
         public int ErrorDepth {
-            get { return NativeMethods.X509_STORE_CTX_get_error_depth(ptr); }
+            get { return NativeMethods.X509_STORE_CTX_get_error_depth(Handle); }
         }
 
         /// <summary>
         /// Getter returns X509_STORE_CTX_get_error(), setter calls X509_STORE_CTX_set_error()
         /// </summary>
         public int Error {
-            get { return NativeMethods.X509_STORE_CTX_get_error(ptr); }
-            set { NativeMethods.X509_STORE_CTX_set_error(ptr, value); }
+            get { return NativeMethods.X509_STORE_CTX_get_error(Handle); }
+            set { NativeMethods.X509_STORE_CTX_set_error(Handle, value); }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace OpenSSL.X509
         public void Init(X509Store store, X509Certificate cert, X509Chain uchain)
         {
             NativeMethods.ExpectSuccess(NativeMethods.X509_STORE_CTX_init(
-                ptr,
+                Handle,
                 store.Handle,
                 cert != null ? cert.Handle : IntPtr.Zero,
                 uchain.Handle));
@@ -116,7 +116,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public bool Verify()
         {
-            var ret = NativeMethods.X509_verify_cert(ptr);
+            var ret = NativeMethods.X509_verify_cert(Handle);
 
             if (ret < 0)
                 throw new OpenSslException();
@@ -133,7 +133,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.X509_STORE_CTX_free(ptr);
+            NativeMethods.X509_STORE_CTX_free(Handle);
         }
 
         #endregion

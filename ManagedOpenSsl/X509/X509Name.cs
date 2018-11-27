@@ -53,7 +53,7 @@ namespace OpenSSL.X509
         /// </summary>
         /// <param name="rhs"></param>
         public X509Name(X509Name rhs)
-            : base(NativeMethods.ExpectNonNull(NativeMethods.X509_NAME_dup(rhs.ptr)), true)
+            : base(NativeMethods.ExpectNonNull(NativeMethods.X509_NAME_dup(rhs.Handle)), true)
         {
         }
 
@@ -100,7 +100,7 @@ namespace OpenSSL.X509
         /// Returns X509_NAME_oneline()
         /// </summary>
         public string OneLine {
-            get { return NativeMethods.PtrToStringAnsi(NativeMethods.X509_NAME_oneline(ptr, null, 0), true); }
+            get { return NativeMethods.PtrToStringAnsi(NativeMethods.X509_NAME_oneline(Handle, null, 0), true); }
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace OpenSSL.X509
         /// Returns X509_NAME_entry_count()
         /// </summary>
         public int Count {
-            get { return NativeMethods.X509_NAME_entry_count(ptr); }
+            get { return NativeMethods.X509_NAME_entry_count(Handle); }
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace OpenSSL.X509
             var buf = Encoding.ASCII.GetBytes(value);
 
             NativeMethods.ExpectSuccess(NativeMethods.X509_NAME_add_entry_by_NID(
-                ptr,
+                Handle,
                 nid,
                 NativeMethods.MBSTRING_ASC,
                 buf,
@@ -288,7 +288,7 @@ namespace OpenSSL.X509
                 return null;
 
             var buf = new byte[1024];
-            var len = NativeMethods.X509_NAME_get_text_by_NID(ptr, nid, buf, buf.Length);
+            var len = NativeMethods.X509_NAME_get_text_by_NID(Handle, nid, buf, buf.Length);
 
             if (len <= 0)
                 throw new OpenSslException();
@@ -315,7 +315,7 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public int GetIndexByNid(int nid, int lastpos)
         {
-            var ret = NativeMethods.X509_NAME_get_index_by_NID(ptr, nid, lastpos);
+            var ret = NativeMethods.X509_NAME_get_index_by_NID(Handle, nid, lastpos);
 
             if (ret == lastpos)
                 return lastpos;
@@ -366,7 +366,7 @@ namespace OpenSSL.X509
         {
             var buf = new byte[cbSize];
             var len = (uint)cbSize;
-            NativeMethods.ExpectSuccess(NativeMethods.X509_NAME_digest(this.ptr, type.Handle, buf, ref len));
+            NativeMethods.ExpectSuccess(NativeMethods.X509_NAME_digest(this.Handle, type.Handle, buf, ref len));
 
             return new ArraySegment<byte>(buf, 0, (int)len);
         }
@@ -394,7 +394,7 @@ namespace OpenSSL.X509
         /// </summary>
         protected override void ReleaseHandle()
         {
-            NativeMethods.X509_NAME_free(ptr);
+            NativeMethods.X509_NAME_free(Handle);
         }
 
         /// <summary>
@@ -429,12 +429,12 @@ namespace OpenSSL.X509
         /// <returns></returns>
         public int CompareTo(X509Name other)
         {
-            return NativeMethods.X509_NAME_cmp(ptr, other.ptr);
+            return NativeMethods.X509_NAME_cmp(Handle, other.Handle);
         }
 
         public IntPtr GetPushHandle()
         {
-            return NativeMethods.ExpectNonNull(NativeMethods.X509_NAME_dup(ptr));
+            return NativeMethods.ExpectNonNull(NativeMethods.X509_NAME_dup(Handle));
         }
 
         #endregion
