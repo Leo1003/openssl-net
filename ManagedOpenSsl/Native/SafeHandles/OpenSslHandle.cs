@@ -5,11 +5,16 @@ using System.Text;
 
 namespace OpenSSL.Native.SafeHandles
 {
+    public delegate void FreeHandleFunc(IntPtr ptr);
+
     public abstract class OpenSslHandle : SafeHandle
     {
-        protected OpenSslHandle(IntPtr ptr, bool ownsHandle) : base(IntPtr.Zero, ownsHandle)
+        private readonly FreeHandleFunc freefunc;
+
+        protected OpenSslHandle(IntPtr ptr, bool ownsHandle, FreeHandleFunc func = null) : base(IntPtr.Zero, ownsHandle)
         {
             SetHandle(ptr);
+            freefunc = func;
         }
 
         public override bool IsInvalid {
@@ -18,7 +23,14 @@ namespace OpenSSL.Native.SafeHandles
             }
         }
 
-        protected abstract override bool ReleaseHandle();
+        protected override bool ReleaseHandle()
+        {
+            if (freefunc == null) {
+                return false;
+            }
+            freefunc(handle);
+            return true;
+        }
 
         internal IntPtr Handle {
             get {
